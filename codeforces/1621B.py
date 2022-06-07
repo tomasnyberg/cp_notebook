@@ -12,16 +12,15 @@ while i < len(lines):
         start, end, cost = map(int, lines[j].split(" "))
         if start <= smallest:
             if start < smallest:
-                cost_of_smallest = cost
+                cost_of_smallest = cost 
                 smallest = start
             else:
-                cost_of_smallest = min(cost, cost_of_smallest)
+                cost_of_smallest = min(cost, cost_of_smallest) # Change
         if end >= biggest:
             if end > biggest:
                 biggest = end
                 cost_of_biggest = cost
             else:
-                cost_of_biggest = min(cost_of_biggest, cost)
-        print("smallest and biggest", smallest, biggest)
-        print("cost of smallest and biggest", cost_of_smallest, cost_of_biggest)
+                cost_of_biggest = min(cost_of_biggest, cost) # Change
+        print(cost_of_biggest + cost_of_smallest)
     i += s+1
