@@ -6,21 +6,30 @@ for i in range(1, len(lines), 2):
     k += 1
     nums = list(map(int, lines[i+1].split(" ")))
     nums = list(map(math.log2, nums))
-    left = 0
-    right = k
+    for i in range(len(nums)):
+        nums[i] += i + 1
+    bad_pairs = {}
+    for i in range(len(nums) - 1):
+        if nums[i+1] <= nums[i]:
+            bad_pairs[i] = i+1
+    curr_bad = set()
+    for i in range(k-1):
+        if i in bad_pairs:
+            curr_bad.add(i)
     result = 0
-    while right <= len(nums):
-        sub = nums[left:right]
-        holds = True
-        for i in range(1, len(sub)):
-            sub[i] += i
-            if sub[i] <= sub[i-1]:
-                holds = False
-                break
-        if holds:
-            # print(sub)
+    a = 0
+    b = k-1
+    while b < len(nums):
+        # print(a, b, curr_bad)
+        if not curr_bad:
             result += 1
-        # print(sub)
-        left += 1
-        right += 1
+        if a in curr_bad:
+            curr_bad.remove(a)
+        if b in bad_pairs:
+            curr_bad.add(b)
+        a+=1
+        b+=1
     print(result)
+    # print(nums)
+    # print(bad_pairs)
+    # print()
