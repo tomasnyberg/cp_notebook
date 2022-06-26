@@ -3,14 +3,19 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 for line in lines[1:]:
     n = int(line)
-    taken = set()
+    if n < 4:
+        print(-1)
+        continue
     result = []
-    curr = 1
-    while len(taken) < n:
-        result.append(curr)
-        taken.add(curr)
-        for i in range(max(1, curr - 4), min(n+1, curr + 5)):
-            if i not in taken and i != curr and abs(i-curr) >= 2:
-                curr = i
-                break
-    print(result) 
+    for i in range(n, 0, -1):
+        if i % 2 == 1:
+            result.append(i)
+    result.append(4)
+    result.append(2)
+    for i in range(6, n+1):
+        if i % 2 == 0:
+            result.append(i)
+    for x in result:
+        print(x, end=" ")
+    print()
+
