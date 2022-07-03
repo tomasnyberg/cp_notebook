@@ -8,10 +8,16 @@ while i < len(lines):
     scores = []
     for j in range(i+1, i+1+m):
         x, score = map(int, lines[j].split(" "))
-        points.append([x, score])
-        scores.append(score)
+        points.append([x, score, j-i])
     i += m + 2
+    points.sort(key = lambda x: x[1])
+    points = points[:n*2]
     points.sort(key = lambda x: x[0])
-    scores.sort()
-    print(sum(scores[:n*2]))
-    print(points)
+    left = 0
+    right = len(points) - 1
+    print(sum(list(map(lambda x: x[1], points))))
+    while left < right:
+        print(points[left][2], points[right][2])
+        left += 1
+        right -= 1
+    print()
