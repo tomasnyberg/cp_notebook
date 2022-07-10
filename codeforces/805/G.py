@@ -15,9 +15,9 @@ def solve(adj_lists, num_set, start):
         return curr_taken
     to_remove = dfs(curr, set([start]), set())
     if len(num_set.difference(to_remove)) == 0:
-        print("YES")
+        return True
     else:
-        print("NO")
+        return False
 
 i = 0
 n = int(lines[0])
@@ -33,8 +33,15 @@ queries = int(lines[i])
 i+=1
 while queries > 0:
     nums = list(map(int, lines[i+1].split(" ")))
-    start = nums[0]
     num_set = set(nums)
-    solve(adj_lists, num_set, start)
+    found = False
+    for num in nums:
+        if solve(adj_lists, num_set, num):
+            found = True
+            break
+    if found:
+        print("YES")
+    else:
+        print("NO")
     i+=2
     queries -=1
