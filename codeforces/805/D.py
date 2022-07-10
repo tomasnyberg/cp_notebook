@@ -28,5 +28,5 @@ for i in range(1, len(lines),2 ):
     result = ""
     for idx, c in enumerate(str):
         if idx not in removed_indices:
-            result += c
-    print(result)
+            print(c, end="")
+    print()
