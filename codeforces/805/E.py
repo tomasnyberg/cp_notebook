@@ -1,9 +1,10 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-def solve(dominoes, one, two): # call this recursively
+def solve(dominoes, one, two, prevlen): # call this recursively
     undecided = []
     for a, b in dominoes:
+        # print(one, two, [a, b])
         if a == b:
             print("NO")
             return
@@ -14,8 +15,9 @@ def solve(dominoes, one, two): # call this recursively
         
         if (a not in one and a not in two) and (b not in one and b not in two):
             undecided.append([a,b])
+            continue
         
-        if a in one:
+        if a in one or b in one:
             if a in two or b in two:
                 print("NO")
                 return
@@ -23,24 +25,21 @@ def solve(dominoes, one, two): # call this recursively
                 two.add(a)
                 two.add(b)
                 continue
-        
-        if a in two:
+        if a in two or b in two:
             if a in one or b in one:
                 print("NO")
-                return
+                continue
             else:
                 one.add(a)
                 one.add(b)
-
+                continue
     if len(undecided) == 0:
         print("YES")
         return
-    if len(undecided) == len(dominoes): # We need to somehow choose a better candidate
-        a, b = undecided[0]
-        undecided = undecided[1:]
-        one.add(a)
-        one.add(b)
-    solve(undecided, one, two)
+    if len(undecided) == prevlen:
+        solve(undecided, set(), set(), len(undecided))
+    else:
+        solve(undecided, one, two, len(undecided))
             
 
 i = 1
@@ -53,6 +52,6 @@ while i < len(lines):
         dominoes.append([a,b])
         i+=1
         n-=1
-    solve(dominoes, set(), set())
+    solve(dominoes, set(), set(), len(dominoes))
     
 
