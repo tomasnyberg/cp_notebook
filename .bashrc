@@ -116,4 +116,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PS1="\[\033[38;5;39m\]\u\[$(tput sgr0)\]\[\033[38;5;2m\]@\[$(tput sgr0)\]\[\033[38;5;39m\]\h\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;33m\]\W\[$(tput sgr0)\]\[\033[38;5;196m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\] \\$ \[$(tput sgr0)\]"
+export PS1="\[\033[38;5;32m\]\u\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;123m\][\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]\h\[$(tput sgr0)\]\[\033[38;5;123m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
