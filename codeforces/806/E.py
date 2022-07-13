@@ -1,36 +1,29 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-def print_grid(grid):
-    for xs in grid:
-        print(xs)
+def rotateMatrix(matrix):
+    n = len(matrix)
+    for x in range(0, int(n / 2)):
+        for y in range(x, n-x-1):
+            temp = matrix[x][y]
+            matrix[x][y] = matrix[y][n-1-x]
+            matrix[y][n-1-x] = matrix[n-1-x][n-1-y]
+            matrix[n-1-x][n-1-y] = matrix[n-1-y][x]
+            matrix[n-1-y][x] = temp
 
 def solve(grid):
     result = 0
-    for steps in range(0, len(grid) // 2):
-        for i in range(steps, len(grid) - steps - 1):
-            # Fairly confident about a and b
-            a = grid[steps][i]
-            b = grid[i][len(grid) - steps - 1]
-            
-            c = grid[len(grid) - steps - 1][len(grid) - 1 -i] # Wrong
-            d = grid[len(grid) - 1 -i][steps]
-            # print(a,b,c,d)
-            # print(len(grid) - steps - 1, len(grid) - steps - i - 1)
-            # print(len(grid) - steps - i - 1, steps)
-            if a == b == c == d:
-                continue
-            sum = a + b + c + d
-            result += min(4 - sum, abs(0 - sum))
-        # print("result after ", steps, "steps", result)
+    counter = [[0 for _ in range(len(grid))] for _ in range(len(grid))]
+    for _ in range(4):
+        for i in range(len(grid)):
+            for j in range(len(grid)):
+                counter[i][j] += grid[i][j]
+        rotateMatrix(grid)
+    for i in range(len(grid) // 2):
+        for j in range(i, len(grid) - i - 1):
+            x = counter[i][j]
+            result += min(4 - x, x)
     print(result)
-
-    
-# a = [steps, i]
-# b = [i, 5 - steps - 1]
-# c = [5 - 0 - 1 - steps, 5 - 0 - i - 1]
-# d = [5 - 0 - i - 1, steps]
-
 
 i = 1
 while i < len(lines):
