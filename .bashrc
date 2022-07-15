@@ -119,3 +119,4 @@ if ! shopt -oq posix; then
 fi
 
 export PS1="\[\033[38;5;32m\]\u\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;123m\][\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]\h\[$(tput sgr0)\]\[\033[38;5;123m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+export LESS=eFRX # Makes git diff output always stay in terminal
