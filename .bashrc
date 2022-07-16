@@ -93,6 +93,12 @@ alias la='ls -A'
 alias l='ls -CF'
 alias gs="git status"
 alias gl="git log --oneline"
+alias gr="git restore"
+alias gp="git push"
+alias gd="git diff"
+alias gc="git commit"
+alias ga="git add"
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -117,6 +123,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
+# Top one is without pc name but with git branch name
+# export PS1="\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;9m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
 export PS1="\[\033[38;5;32m\]\u\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;123m\][\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]\h\[$(tput sgr0)\]\[\033[38;5;123m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
 export LESS=eFRX # Makes git diff output always stay in terminal
