@@ -1,14 +1,6 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-def print_grid(grid, cols):
-    for i in range(len(grid)):
-        if i % cols == 0 and i != 0:
-            print()
-        print(grid[i], end="")
-    print()
-
-
 i = 0
 while i < len(lines):
     n, m, q = map(int, lines[i].split(" "))
@@ -33,18 +25,17 @@ while i < len(lines):
     prefixsum = sum(icons[:totalstars])
     for x, y in queries:
         p = rows*(y-1) + (x-1)
+        totalstars += 1 if icons[p] == 0 else -1
         if icons[p] == 0: # We are putting in a new icon
-            totalstars += 1
             icons[p] = 1
             if p < totalstars - 1:
                 prefixsum += 1
             if icons[totalstars - 1] == 1: # Might be an issue with adding twice?
                 prefixsum += 1
         else:
-            if icons[totalstars - 1] == 1:
+            if icons[totalstars] == 1:
                 prefixsum -= 1
             icons[p] = 0
-            totalstars -= 1
             if p < totalstars:
                 prefixsum -= 1
         print(totalstars - prefixsum)
