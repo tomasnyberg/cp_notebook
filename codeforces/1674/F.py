@@ -40,17 +40,32 @@ while a < len(lines):
     rtsbf = starcount // m # Amount of rows that shuold be filled
     ctsbf = starcount % m # Amount of colummns that shuold be filled
     holes = find_holes(grid, rtsbf, ctsbf)
+    print("initial state, starcount", starcount)
     print_grid(grid)
+    print()
     for i, j in queries:
         i -= 1
         j -= 1
         starcount += 1 if grid[i][j] == 0 else -1 # add star or remove star from count
         rtsbf = starcount // m # Amount of rows that shuold be filled
         ctsbf = starcount % m # Amount of colummns that shuold be filled
+        if ctsbf > 0:
+            ctsbf -=1
+        else:
+            rtsbf -=1
+            ctsbf = m - 1
         coord = str(i) + " " + str(j)
         grid[i][j] = 0 if grid[i][j] == 1 else 1 # toggle
-        if coord in holes:
+        if grid[i][j] == 1 and coord in holes: # If we had a hole at the (now) filled location
             holes.remove(coord)
+        if grid[i][j] == 0 and (i < rtsbf or (i == rtsbf and j< ctsbf)): # The second boolean might be wrong
+            holes.add(coord)
         if grid[rtsbf][ctsbf] != 1:
-            holes.add(str(rtsbf+1) + " " + str(ctsbf +1))
-        print(len(holes)) 
+            holes.add(str(rtsbf) + " " + str(ctsbf))
+        print("flipped", i, j)
+        print("starcount", starcount)
+        print_grid(grid)
+        print("rtsbf", rtsbf, "ctsbf", ctsbf)
+        print(holes)
+        print(len(holes))
+        print() 
