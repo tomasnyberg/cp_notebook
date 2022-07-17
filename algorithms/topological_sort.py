@@ -1,7 +1,8 @@
 # Explanation : https://www.youtube.com/watch?v=eL-KzMXSXXI
 
 example = {1: [3], 2: [3, 4], 3: [], 4: [], 5: [], 6: [2, 3], 7: [1, 2, 3]}
-
+example2 = {'a':['d'], 'b':['d'], 'c':['a','b'], 'd': ['h', 'g'], 'e':['a','d','f'],
+'f':['j', 'k'], 'g':['i'], 'h':['i', 'j'], 'i':['l'], 'j':['m', 'l'], 'k':['j'], 'l':[], 'm':[]}
 def topological_sort(n, adj_lists):
     visited = set()
     result = []
@@ -12,10 +13,11 @@ def topological_sort(n, adj_lists):
                 continue
             dfs(nbr, result)
         result.append(curr)
-    for i in range(1, n + 1):
-        if i not in visited:
-            dfs(i, result)
+    for key in adj_lists:
+        if key not in visited:
+            dfs(key, result)
     result.reverse()
     return result    
 
-print(topological_sort(7, example))
+for key in topological_sort(13, example2):
+    print(key, example2[key])
