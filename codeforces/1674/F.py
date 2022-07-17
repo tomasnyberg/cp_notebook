@@ -30,12 +30,21 @@ while i < len(lines):
         for r in range(rows):
             icons.append(grid[r][c])
     totalstars = sum(icons)
+    prefixsum = sum(icons[:totalstars])
     for x, y in queries:
         p = rows*(y-1) + (x-1)
-        icons[p] = 1 if icons[p] == 0 else 0
-        totalstars += 1 if icons[p] == 1 else -1
-        result = 0
-        for k in range(totalstars):
-            if icons[k] == 0:
-                result +=1
-        print(result)
+        if icons[p] == 0: # We are putting in a new icon
+            totalstars += 1
+            icons[p] = 1
+            if p < totalstars - 1:
+                prefixsum += 1
+            if icons[totalstars - 1] == 1: # Might be an issue with adding twice?
+                prefixsum += 1
+        else:
+            if icons[totalstars - 1] == 1:
+                prefixsum -= 1
+            icons[p] = 0
+            totalstars -= 1
+            if p < totalstars:
+                prefixsum -= 1
+        print(totalstars - prefixsum)
