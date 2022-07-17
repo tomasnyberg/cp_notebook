@@ -8,13 +8,6 @@ def print_grid(grid, cols):
         print(grid[i], end="")
     print()
 
-def solve(grid, stars):
-    result = 0
-    for i in range(stars):
-        if grid[i] == 0:
-            result += 1
-    return result
-
 
 i = 0
 while i < len(lines):
@@ -24,7 +17,7 @@ while i < len(lines):
     grid = []
     i +=1
     while n > 0:
-        grid += list(map(lambda x: 1 if x == '*' else 0, lines[i]))
+        grid.append(list(map(lambda x: 1 if x == '*' else 0, lines[i])))
         n-= 1
         i+=1
     queries = []
@@ -32,10 +25,17 @@ while i < len(lines):
         queries.append(list(map(int, lines[i].split(" "))))
         i+=1
         q-=1
-    totalstars = sum(grid)
-    for r, c in queries:
-        idx = (r-1)*cols + (c-1)
-        grid[idx] = 1 if grid[idx] == 0 else 0
-        totalstars += 1 if grid[idx] == 1 else -1
-        print_grid(grid, cols)
-        print(solve(grid, totalstars))
+    icons = []
+    for c in range(cols):
+        for r in range(rows):
+            icons.append(grid[r][c])
+    totalstars = sum(icons)
+    for x, y in queries:
+        p = rows*(y-1) + (x-1)
+        icons[p] = 1 if icons[p] == 0 else 0
+        totalstars += 1 if icons[p] == 1 else -1
+        result = 0
+        for k in range(totalstars):
+            if icons[k] == 0:
+                result +=1
+        print(result)
