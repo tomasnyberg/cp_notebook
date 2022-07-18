@@ -26,11 +26,10 @@ while i < len(lines):
     i+=1
     friend = others.pop()
     seen = all_two_or_three(others)
-    dp = [False]*len(friend)
+    dp = [[False, []]]*len(friend)
     if friend[:2] in seen:
-        for j in range(0, 2): dp[j] = True
+        for j in range(0, 2): dp[j] = [True, dp[j][1] + [seen[friend[:2]]]]
     if friend[:3] in seen:
-        for j in range(0, 3): dp[j] = True
+        for j in range(0, 3): dp[j] = [True, dp[j][1] + [seen[friend[:3]]]]
     print(friend)
     print(dp)
-    print(seen)
