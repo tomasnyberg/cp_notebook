@@ -14,22 +14,29 @@ def all_two_or_three(others):
                 right +=1
     return seen
 
-i = 2
-while i < len(lines):
-    n, l = map(int, lines[i].split(" "))
-    i+=1
+a = 2
+while a < len(lines):
+    n, l = map(int, lines[a].split(" "))
+    a+=1
     others = []
     while n >= 0:
-        others.append(lines[i])
+        others.append(lines[a])
         n-=1
-        i+=1
-    i+=1
+        a+=1
+    a+=1
     friend = others.pop()
     seen = all_two_or_three(others)
-    dp = [[False, []]]*len(friend)
-    if friend[:2] in seen:
-        for j in range(0, 2): dp[j] = [True, dp[j][1] + [seen[friend[:2]]]]
-    if friend[:3] in seen:
-        for j in range(0, 3): dp[j] = [True, dp[j][1] + [seen[friend[:3]]]]
+    dp = []
+    for i in range(len(friend)):
+        dp.append([])
+    for i in range(len(dp)-1):
+        if not (i == 0 or (i >= 2 and len(dp[i-2]) > 0) or (i >= 3 and len(dp[i-3]) > 0)): continue
+        if friend[i:i+2] in seen:
+            dp[i].append(seen[friend[i:i+2]])
+        if i == len(dp) - 1: break # Skip len 3 ones
+        if friend[i:i+3] in seen:
+            dp[i].append(seen[friend[i:i+3]])
+    print(seen[friend[0:2]])
+    print(others)
     print(friend)
     print(dp)
