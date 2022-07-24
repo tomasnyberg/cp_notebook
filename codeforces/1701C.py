@@ -8,17 +8,17 @@ for i in range(1, len(lines), 2):
     for x in nums:
         proficientcounts[x-1]+=1
     low = 0
-    high = len(nums)*2
+    high = 2*len(nums)
     while low <= high:
         t = (high + low) >> 1
-        twohour_ones = 0
-        notcompleted = 0
+        extras = 0
+        uncompleted = 0 
         for w in range(workers):
-            completed = min(t, proficientcounts[w]) # How many tasks this worker completed
-            twohour_ones += (t - completed) >> 1
-            notcompleted += proficientcounts[w] - completed 
-        if notcompleted <= twohour_ones:
-            high = t-1
+            can_complete = min(t, proficientcounts[w])
+            extras += (t- can_complete) >> 1
+            uncompleted += proficientcounts[w] - can_complete 
+        if uncompleted <= extras:
+            high = t - 1
         else:
-            low = t+1
+            low = t + 1
     print(low)
