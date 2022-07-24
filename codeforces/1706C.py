@@ -25,9 +25,18 @@ for line in lines[2::2]:
             res += dp[i]
         print(res)
         continue
-    print(dp)
-    runningsum = 0
-    running = []
-    for i in range(0, len(nums)):
-        if i % 2 == 0 and i != 0:
-            runningsum += nums[i]
+    sum_at_even_indexes = 0
+    for i in range(1, len(nums) - 1):
+        if i % 2 == 0:
+            sum_at_even_indexes += dp[i]
+    even_indexes = [0]*len(nums)
+    for i in range(1, len(nums) - 1):
+        if i % 2 == 0:
+            even_indexes[i] = sum_at_even_indexes
+            sum_at_even_indexes -= dp[i]
+    running_odd = 0
+    best = 100000000000000000
+    for i in range(1, len(dp) - 1, 2):
+        best = min(running_odd + even_indexes[i+1], best)
+        running_odd += dp[i]
+    print(min(best, running_odd))
