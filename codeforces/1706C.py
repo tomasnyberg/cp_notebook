@@ -20,15 +20,9 @@ for line in lines[2::2]:
         dp[i] = max(leftneeded, rightneeded)
     # If we have an odd length, we simply have to take all the odd indexes, otherwise we aren't cool
     if len(nums) % 2 == 1:
-        res = 0
-        for i in range(1, len(nums)-1,2):
-            res += dp[i]
-        print(res)
+        print(sum(dp[1:-1:2]))
         continue
-    sum_at_even_indexes = 0
-    for i in range(1, len(nums) - 1):
-        if i % 2 == 0:
-            sum_at_even_indexes += dp[i]
+    sum_at_even_indexes = sum([x for x in dp[2::2]])
     even_indexes = [0]*len(nums)
     for i in range(1, len(nums) - 1):
         if i % 2 == 0:
