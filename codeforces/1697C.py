@@ -3,7 +3,6 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 
 def solve(s, t):
-    a = 0
     bs_needed = 0
     cs_needed = 0
     for a in range(0, len(s)):
@@ -15,17 +14,19 @@ def solve(s, t):
             # If we are trying to find bs to shift back and we encounter a c,
             # Or conversely, we are trying to find cs to shift back and we encounter an a.
             # In both of these cases, we cannot shift the chars we want back.
-            if schar == 'c' and bs_needed > 0 or schar == 'a' and cs_needed > 0:
+            if ((schar == 'c' or tchar == 'c') and bs_needed > 0) or ((schar == 'a' or tchar == 'a') and cs_needed > 0):
                 print("NO")
                 return
-            if bs_needed > 0 and tchar == 'b':
-                bs_needed += 1
-            if bs_needed > 0 and schar == 'b':
-                bs_needed -= 1
-            if cs_needed > 0 and tchar == 'c':
-                cs_needed +=1
-            if cs_needed > 0 and schar == 'c':
-                cs_needed -= 1
+            if bs_needed > 0:
+                if tchar == 'b':
+                    bs_needed += 1
+                if schar == 'b':
+                    bs_needed -= 1
+            else:
+                if tchar == 'c':
+                    cs_needed += 1
+                if schar =='c':
+                    cs_needed -=1
             continue
         if schar != tchar: # Set up our bs_needed or our cs_needed to be correct
             # In both of these cases there is no way we can continue (i think)
