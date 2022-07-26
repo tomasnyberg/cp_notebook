@@ -7,6 +7,7 @@ def solve(s, t):
     bs_needed = 0
     cs_needed = 0
     for a in range(0, len(s)):
+        # print("start" ,a, bs_needed, cs_needed)
         schar = chr(s[a])
         tchar = chr(t[a])
         # In the case that we are trying to find chars to shift back, don't look at anything else
@@ -23,7 +24,7 @@ def solve(s, t):
                 bs_needed -= 1
             if cs_needed > 0 and tchar == 'c':
                 cs_needed +=1
-            if bs_needed > 0 and schar == 'c':
+            if cs_needed > 0 and schar == 'c':
                 cs_needed -= 1
             continue
         if schar != tchar: # Set up our bs_needed or our cs_needed to be correct
@@ -35,6 +36,7 @@ def solve(s, t):
                 bs_needed = 1
             else:
                 cs_needed = 1
+        # print("end" , a, bs_needed, cs_needed)
     if bs_needed == 0 and cs_needed == 0:
         print("YES")
     else:
@@ -43,4 +45,4 @@ def solve(s, t):
 for i in range(2, len(lines), 3):
     s = list(map(ord, lines[i]))
     t = list(map(ord, lines[i+1]))
-    solve(s, t)
+    solve(s, t) 
