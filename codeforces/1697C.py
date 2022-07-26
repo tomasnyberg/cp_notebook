@@ -1,12 +1,10 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-
 def solve(s, t):
     bs_needed = 0
     cs_needed = 0
     for a in range(0, len(s)):
-        # print("start" ,a, bs_needed, cs_needed)
         schar = chr(s[a])
         tchar = chr(t[a])
         # In the case that we are trying to find chars to shift back, don't look at anything else
@@ -37,11 +35,7 @@ def solve(s, t):
                 bs_needed = 1
             else:
                 cs_needed = 1
-        # print("end" , a, bs_needed, cs_needed)
-    if bs_needed == 0 and cs_needed == 0:
-        print("YES")
-    else:
-        print("NO")
+    print("YES" if bs_needed == 0 and cs_needed == 0 else "NO")
 
 for i in range(2, len(lines), 3):
     s = list(map(ord, lines[i]))
