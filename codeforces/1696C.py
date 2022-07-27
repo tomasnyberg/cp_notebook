@@ -4,7 +4,15 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 def flattenamap(nums, m):
     for i in range(len(nums)):
         if nums[i] % m == 0 and nums[i] > m:
-            nums[i] = [nums[i]//m, m]
+            curr = nums[i]
+            multiplier = 0
+            while curr % m == 0:
+                curr //= m
+                multiplier += 1
+            nums[i] = [m**multiplier, curr]
+        elif nums[i] % m == 0 and nums[i] == m:
+            nums[i] = [m, 1]
+
     return nums
 
 def compareflats(xs, ys):
@@ -15,6 +23,7 @@ def compareflats(xs, ys):
         # If both of them hit an array, check like this
         if type(ys[b]) == type(ys) and type(xs[a]) == type(xs): # If b is at an array as well 
             # If they have an equal amount of elements, just move both ahead
+            if ys[b][1] != xs[a][1]: return False
             if ys[b][0] == xs[a][0]:
                 a += 1
                 b += 1
@@ -28,14 +37,14 @@ def compareflats(xs, ys):
             continue
         # xs is an array but ys isn't
         if type(xs[a]) == type(xs):
-            if ys[b] != m: return False
+            if ys[b] != xs[a][1]: return False
             xs[a][0] -= 1
             b+=1
             if xs[a][0] == 0:
                 a += 1
             continue
         if type(ys[b]) == type(xs):
-            if xs[a] != m: return False
+            if ys[b][1] != xs[a]: return False
             ys[b][0] -= 1
             a+=1
             if ys[b][0] == 0:
