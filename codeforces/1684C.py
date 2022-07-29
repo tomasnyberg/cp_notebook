@@ -6,12 +6,16 @@ def find_bad_cols(grid):
     for j in range(len(grid)):
         for k in range(m - 1):
             if grid[j][k] > grid[j][k+1]:
-                otherindex = k + 1
-                elem = grid[j][k+1]
-                while otherindex < len(grid[j]) - 1 and grid[j][otherindex + 1] == elem:
-                    otherindex += 1
-                bad_cols.add(k)
-                bad_cols.add(otherindex)
+                startindex = k
+                startelem = grid[j][k]
+                while startindex > 0 and grid[j][startindex-1] == startelem:
+                    startindex -=1
+                endindex = k + 1
+                endelem = grid[j][k+1]
+                while endindex < len(grid[j]) - 1 and grid[j][endindex + 1] == endelem:
+                    endindex += 1
+                bad_cols.add(startindex)
+                bad_cols.add(endindex)
     return bad_cols
 
 def swap_cols_in_grid(grid, a, b):
@@ -51,12 +55,9 @@ while i < len(lines):
     if len(bad_columns) == 0:
         print(1, 1)
         continue
-    for xs in grid:
-        print(xs)
-    print(bad_columns)
-    print()
-    if len(bad_columns) > 4:
-        print(-1)
-        continue
+    # for xs in grid:
+    #     print(xs)
+    # print(bad_columns)
+    # print()
     solve(bad_columns, grid)
     
