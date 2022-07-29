@@ -38,7 +38,6 @@ def solve(bad_columns, grid):
                     return
     print(-1)
 
-
 i = 1
 while i < len(lines):
     n, m = map(int, lines[i].split(" "))
@@ -48,16 +47,9 @@ while i < len(lines):
        grid.append(list(map(int, lines[i].split(" ")))) 
        n-=1
        i+=1
-    if m == 1: # If the length of the columns are just one, we can simply change it into itself
-        print(1, 1)
-        continue
     bad_columns = find_bad_cols(grid)
     if len(bad_columns) == 0:
         print(1, 1)
         continue
-    # for xs in grid:
-    #     print(xs)
-    # print(bad_columns)
-    # print()
     solve(bad_columns, grid)
     
