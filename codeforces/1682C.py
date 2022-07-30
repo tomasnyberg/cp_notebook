@@ -11,12 +11,10 @@ for line in lines[2::2]:
             doubles += 1
     left = doubles
     right = doubles
-    used = doubles*2
     for key in counts:
         if counts[key] == 1:
             if left > right:
                 right +=1
             else:
                 left += 1
-            used += 1
     print(max(left, right))
