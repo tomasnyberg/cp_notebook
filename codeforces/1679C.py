@@ -3,8 +3,23 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 n, q = map(int, lines[0].split(" "))
 
+def binary_search(intervals, target):
+    low = 0
+    high = len(intervals) - 1
+    while low <= high:
+        mid = (low + high) >> 1
+        if intervals[mid][0] <= target and intervals[mid][1] >= target:
+            return mid
+        if intervals[mid][0] > target:
+            high = mid - 1
+        else:
+            low = mid + 1
+    return -1
+
 rowsattacked = {} # Which row is attacked : set of cols 
-colsattacked = {} 
+colsattacked = {}
+goodrowintervals = [] # Ex. [1, 3] means that all rows 1 to 3 inclusive are good
+goodcolintervals = []
 for i in range(1, len(lines)):
     query = list(map(int, lines[i].split(" ")))
     # print(rowsattacked)
