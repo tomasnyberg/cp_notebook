@@ -19,13 +19,16 @@ def solve(text, stringdict):
                         mostprogress = [l-j, s]
         if mostprogress[0] == -1:
             print(-1)
-            print()
+            # print()
             return
-        print("most progress at", idx, "is equal to", mostprogress)
-        print(idx)
+        # print("most progress at", idx, "is equal to", mostprogress)
+        # print(idx)
+        taken.append([idx+1, stringdict[mostprogress[1]]])
         idx += mostprogress[0]
+    print(len(taken))
+    for start, word in taken:
+        print(word, start)
 
-    print()
 
 i = 1
 while i < len(lines):
