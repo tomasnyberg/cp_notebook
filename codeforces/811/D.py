@@ -5,15 +5,16 @@ def solve(text, stringdict):
     idx = 0
     taken = []
     while idx < len(text):
+        # print(idx)
         mostprogress = [-1, ""]
         for s in stringdict:
             l = len(s)
             for j in range(l):
                 if idx - j < 0:
                     break
-                # if idx + l > len(text):
-                #     print("here")
-                #     continue
+                if idx + l-j > len(text):
+                    # print("here")
+                    continue
                 if text[idx - j:idx-j+l] == s: # we can actually put in the string here
                     if l-j > mostprogress[0]:
                         mostprogress = [l-j, s]
@@ -22,8 +23,8 @@ def solve(text, stringdict):
             # print()
             return
         # print("most progress at", idx, "is equal to", mostprogress)
-        # print(idx)
-        taken.append([idx+1, stringdict[mostprogress[1]]])
+
+        taken.append([idx+1-(len(mostprogress[1]) - mostprogress[0]), stringdict[mostprogress[1]]])
         idx += mostprogress[0]
     print(len(taken))
     for start, word in taken:
