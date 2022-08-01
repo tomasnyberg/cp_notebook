@@ -11,8 +11,9 @@ def solve(text, stringdict):
             for j in range(l):
                 if idx - j < 0:
                     break
-                if idx + l > len(text):
-                    continue
+                # if idx + l > len(text):
+                #     print("here")
+                #     continue
                 if text[idx - j:idx-j+l] == s: # we can actually put in the string here
                     if l-j > mostprogress[0]:
                         mostprogress = [l-j, s]
@@ -21,7 +22,9 @@ def solve(text, stringdict):
             print()
             return
         print("most progress at", idx, "is equal to", mostprogress)
+        print(idx)
         idx += mostprogress[0]
+
     print()
 
 i = 1
