@@ -34,19 +34,11 @@ class fenwick_tree:
 
 n, q = map(int, lines[0].split(" "))
 
-freecols = [i for i in range(1, n+1)]
-freerows = [i for i in range(1, n+1)]
+col_fwt = fenwick_tree([1 for i in range(1, n+1)])
+row_fwt = fenwick_tree([1 for i in range(1, n+1)])
 colcounter = [0 for i in range(n+1)]
 rowcounter = [0 for i in range(n+1)]
 
-col_fwt = fenwick_tree(freecols)
-row_fwt = fenwick_tree(freerows)
-
-
-# [1,3,6,10,15,21,28,36]
-# [1,2,3,4,5,6,7,8]
-# update(3, 0-freecols[3], freecols, freecolsbit)
-# print(get_range_sum(2, 6, freecolsbit))
 for i in range(1, len(lines)):
     query = list(map(int, lines[i].split(" ")))
     if query[0] == 1 or query[0] == 2:
@@ -64,10 +56,10 @@ for i in range(1, len(lines)):
             # remove an existing rook, if we no longer have one in that row we
             # reset the value in our fenwick tree, to indicate that that one is now free
             if rowcounter[x] == 1:
-                row_fwt.set(x, x)
+                row_fwt.set(x, 1)
             rowcounter[x] -=1
             if colcounter[y] == 1:
-                col_fwt.set(y, y)
+                col_fwt.set(y, 1)
             colcounter[y] -=1
         continue
     x1, y1, x2, y2 = query[1:]
