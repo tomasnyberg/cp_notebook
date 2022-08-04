@@ -5,53 +5,36 @@ for i in range(2, len(lines), 4):
     a = list(map(int, lines[i].split(" ")))
     b = list(map(int, lines[i+1].split(" ")))
     c = list(map(int, lines[i+2].split(" ")))
-    taken = set()
-    looking_for = set() # Pairs that we are looking for
-    result = 1
+    adj_lists = {j: set() for j in range(1, len(a) + 1)}
+    bad_elems = set()
     for j in range(len(a)):
-        if c[j] != 0:
-            taken.add(c[j])
+        if a[j] == b[j]: continue
+        if c[j] != 0 or a[j] in bad_elems or b[j] in bad_elems:
+            bad_elems.update([a[j], b[j], c[j]])
             continue
-        pair = str(a[j]) + " " + str(b[j])
-        if pair in looking_for:
-            taken.update([a[j], b[j]])
-            result *= 2
-            continue
-        looking_for.add(str(b[j]) + " " + str(a[j]))
-        if a[j] == b[j]:
-            taken.add(a[j])
-    must_take_if_seen = set()
+        adj_lists[a[j]].add(b[j])
+        adj_lists[b[j]].add(a[j])
+    def dfs(curr):
+        bad_elems.add(curr)
+        for nbr in adj_lists[curr]:
+            if nbr not in bad_elems:
+                bad_elems.add(nbr)
+                dfs(nbr)
+    result = 1
     # print(a)
     # print(b)
     # print(c)
-    for j in range(len(a)):
-        # print(taken)
-        # print(must_take_if_seen)
-        if c[j] == 0 and a[j] not in must_take_if_seen and b[j] not in must_take_if_seen:
-            if a[j] in taken:
-                taken.add(b[j])
-                continue
-            if b[j] in taken:
-                taken.add(a[j])
-                continue
-            result *=2
-            must_take_if_seen.update([a[j], b[j]])
-        elif c[j] == 0 and a[j] in must_take_if_seen and a[j] not in taken:
-            taken.add(a[j])
-            must_take_if_seen.add(b[j])
-        elif c[j] == 0 and b[j] in must_take_if_seen and b[j] not in taken:
-            taken.add(b[j])
-            must_take_if_seen.add(b[j])
-        elif c[j] != 0:
-            if a[j] != c[j] and a[j] not in taken:
-                must_take_if_seen.add(a[j])
-            if b[j] != c[j] and a[j] not in taken:
-                must_take_if_seen.add(b[j])
-            if a[j] == c[j]: taken.add(a[j])
-            if b[j] == c[j]: taken.add(b[j])
-        else:
-            "case you missed"
+    # print(adj_lists)
+    for j in range(1, len(a) + 1):
+        if j not in bad_elems and len(adj_lists[j]) != 0:
+            result *= 2
+            dfs(j)
     print(result)
+    # print()
+        
+
+
+
     # print()
 
 
