@@ -1,3 +1,6 @@
+# Finds all the strongly connected components in an undirected graph given the adjacency lists
+# Note: expects the nodes to be 0 based, a lot of problems go from 1
+
 def union_find(adj_lists, n):
     parent = [i for i in range(n)]
     def union(a, b):
