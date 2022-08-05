@@ -36,26 +36,11 @@ for i in range(2, len(lines), 4):
         adj_lists[b[j]-1].add(b[j]-1)
         if c[j] != 0 or a[j] == b[j]:
             bad_nodes.update([a[j]-1, b[j]-1, c[j]-1])
-    
     sccs = union_find(adj_lists, len(a))
     result = 1
     for scc in sccs:
         if len(scc) == 1: continue
-        good = True
-        for x in scc:
-            if x in bad_nodes:
-                good = False
-                break
-        if good: result *=2
-    # print(sccs)
+        if all([x not in bad_nodes for x in scc]): result*=2
     print(result%(10**9+7))
-    
-
-    # print()
-        
-
-
-
-    # print()
 
 
