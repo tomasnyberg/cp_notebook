@@ -1,22 +1,29 @@
 import sys
+import math
 from heapq import heappush, heappop
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-def solve(nums):
-    hq = []
-    for x in nums:
-        heappush(hq, x)
-    while len(hq) >= 2:
-        first = heappop(hq) 
-        second = heappop(hq)
-        if second - first > 1:
+def solve(counts, total):
+    nums = [total]
+    while nums:
+        curr = heappop(nums)
+        if curr == 1 and curr not in counts:
             print("NO")
             return
-        heappush(hq, first + second)
+        if curr in counts:
+            counts[curr] -= 1
+            if counts[curr] == 0: del counts[curr]
+        else:
+            heappush(nums, curr//2)
+            heappush(nums, math.ceil(curr/2))
     print("YES")
 
 for i in range(1, len(lines),2 ):
     n = int(lines[i])
-    operations = n-1
     nums = list(map(int, lines[i+1].split(" ")))
-    solve(nums)
+    total = 0
+    counts = {}
+    for x in nums:
+        counts[x] = 1 if x not in counts else counts[x] + 1
+        total += x
+    solve(counts, total)
