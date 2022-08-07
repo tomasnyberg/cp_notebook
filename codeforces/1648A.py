@@ -1,5 +1,4 @@
 import sys
-from queue import deque
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def cum_sum(nums):
@@ -24,20 +23,13 @@ for i in range(n):
         rowoccurrences[val].append(i)
         coloccurrences[val].append(j)
 
-# print(rowoccurrences)
 result = 0
-for color in rowoccurrences:
-    arr = rowoccurrences[color]
-    arr.sort()
-    cumsum = cum_sum(arr)
-    for i in range(0, len(arr)-1):
-        result += cumsum[-1] - cumsum[i] - (len(arr)-1-i)*arr[i]
-
-for color in coloccurrences:
-    arr = coloccurrences[color]
-    arr.sort()
-    cumsum = cum_sum(arr)
-    for i in range(0, len(arr)-1):
-        result += cumsum[-1] - cumsum[i] - (len(arr)-1-i)*arr[i]
+for occurrencearray in [rowoccurrences, coloccurrences]:
+    for color in occurrencearray:
+        arr = occurrencearray[color]
+        arr.sort()
+        cumsum = cum_sum(arr)
+        for i in range(0, len(arr)-1):
+            result += cumsum[-1] - cumsum[i] - (len(arr)-1-i)*arr[i]
 print(result)
 
