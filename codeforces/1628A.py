@@ -16,12 +16,16 @@ for line in lines[2::2]:
             if len(seen) == maxseen + 1 and candidate[-1] != maxseen:
                 candidate = [i-kpos+1, maxseen]
         # print(candidate)
-        candidates.append(candidate)
         if candidate[0] == -1:
+            if 0 in seen:
+                candidates.append([-1, 0])
+            else:
+                candidates.append([-1, -1])
             break
+        candidates.append(candidate)
         kpos += candidate[0]
     print(len(candidates))
-    for _, big in candidates:
+    for seen, big in candidates:
         if big == -1:
             print(0, end=" ")
         else:
