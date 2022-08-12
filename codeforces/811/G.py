@@ -19,14 +19,16 @@ while i < len(lines):
         node += 1
         i+=1
         n-=1
-    traverse_to = {}
+    result = {}
     def dfs(node, sum, taken):
-        traverse_to[node] = (sum, taken)
+        # print(node, sum, taken)
+        result[node] = bisect.bisect_right(taken, sum)
         if node not in children: return
         for child, left, right in children[node]:
             dfs(child, sum+left, [*taken, (taken[-1] if len(taken) != 0 else 0) + right])
     dfs(1, 0, [])
+    # print()
     for j in range(2, ncopy+1):
-        print(bisect.bisect_right(traverse_to[j][1], traverse_to[j][0]), end= " ")
+        print(result[j], end=" ")
     print()
     # print(traverse_to)
