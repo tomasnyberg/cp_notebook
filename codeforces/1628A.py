@@ -12,9 +12,7 @@ for line in lines[2::2]:
             occurrences[x] = [idx]
     kpos = 0
     ans = []
-    # print(occurrences)
     while kpos < len(nums):
-        # print(kpos)
         furthesttaken = kpos
         for i in range(len(nums)+1):
             if i not in occurrences or kpos > occurrences[i][-1]:
@@ -23,7 +21,6 @@ for line in lines[2::2]:
                 break
             takeindex = occurrences[i][bisect.bisect_left(occurrences[i], kpos)]
             furthesttaken = max(furthesttaken, takeindex+1)
-            # print("Take", i, "at index", takeindex, "furthesttaken", furthesttaken)
         kpos = furthesttaken
     print(len(ans))
     for x in ans:
