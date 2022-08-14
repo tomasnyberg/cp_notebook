@@ -21,14 +21,23 @@ for i in range(1, len(lines),2 ):
     nums = list(map(int, lines[i+1].split(" ")))
     prim = []
     result = 0
+    visited = set()
     for idx, num in enumerate(nums):
+        if idx in visited: continue
         if num in primes:
             ptr = idx
             ones_in_path = 0
-            while ptr+e < len(nums) and nums[ptr+e] == 1:
+            visited = set()
+            while ptr+e < len(nums) and (nums[ptr+e] == 1 or nums[ptr+e] in primes):
                 # print(idx+1, ones_in_path + 1)
+                if nums[ptr+e] in primes:
+                    result += (ones_in_path*(ones_in_path+1)) // 2
+                    if ptr+e in visited:
+                        visited.remove(ptr+e)
+                    break
                 ones_in_path +=1
                 ptr += e 
+                visited.add(ptr)
             result += ones_in_path
         if num == 1: # Missing the case where we hit a prime number but can then keep on going
             ptr = idx
@@ -45,6 +54,3 @@ for i in range(1, len(lines),2 ):
                 ptr += e 
             result += ones_in_path if found_non_one else 0
     print(result)
-    # # print(nums)
-    # # print(prim)
-    # print()
