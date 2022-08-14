@@ -29,18 +29,19 @@ for i in range(1, len(lines),2 ):
                 ones_in_path +=1
                 ptr += e 
             result += ones_in_path
-        if num == 1:
+        if num == 1: # Missing the case where we hit a prime number but can then keep on going
             ptr = idx
             ones_in_path = 1
             found_non_one = False
             while ptr+e < len(nums) and (nums[ptr+e] == 1 or nums[ptr+e] in primes):
                 if nums[ptr+e] in primes:
-                    result += ones_in_path
+                    if found_non_one:
+                        break
                     found_non_one = True
-                    break
                 else:
                     ones_in_path += 1
                 ptr += e 
+            result += ones_in_path if found_non_one else 0
     print(result)
     # # print(nums)
     # # print(prim)
