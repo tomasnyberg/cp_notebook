@@ -26,6 +26,7 @@ for i in range(1, len(lines),2 ):
             ptr = idx
             ones_in_path = 0
             while ptr+e < len(nums) and nums[ptr+e] == 1:
+                # print(idx+1, ones_in_path + 1)
                 ones_in_path +=1
                 ptr += e 
             result += ones_in_path
@@ -39,7 +40,8 @@ for i in range(1, len(lines),2 ):
                         break
                     found_non_one = True
                 else:
-                    ones_in_path += 1
+                    if found_non_one:
+                        ones_in_path += 1
                 ptr += e 
             result += ones_in_path if found_non_one else 0
     print(result)
