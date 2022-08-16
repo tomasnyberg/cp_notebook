@@ -1,6 +1,6 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
-
+ 
 def sieve(num):
     prime = [True for i in range(num+1)]
     result = set()
@@ -14,43 +14,41 @@ def sieve(num):
         if prime[p]:
             result.add(p)
     return result
-
+ 
 primes = set(sieve(10**6 + 1))
 for i in range(1, len(lines),2 ):
     n, e = map(int, lines[i].split(" "))
     nums = list(map(int, lines[i+1].split(" ")))
-    prim = []
     result = 0
     visited = set()
     for idx, num in enumerate(nums):
         if idx in visited: continue
-        if num in primes:
-            ptr = idx
-            ones_in_path = 0
-            visited = set()
-            while ptr+e < len(nums) and (nums[ptr+e] == 1 or nums[ptr+e] in primes):
-                # print(idx+1, ones_in_path + 1)
-                if nums[ptr+e] in primes:
-                    result += (ones_in_path*(ones_in_path+1)) // 2
-                    if ptr+e in visited:
-                        visited.remove(ptr+e)
-                    break
-                ones_in_path +=1
-                ptr += e 
-                visited.add(ptr)
-            result += ones_in_path
-        if num == 1: # Missing the case where we hit a prime number but can then keep on going
-            ptr = idx
-            ones_in_path = 1
-            found_non_one = False
-            while ptr+e < len(nums) and (nums[ptr+e] == 1 or nums[ptr+e] in primes):
-                if nums[ptr+e] in primes:
-                    if found_non_one:
-                        break
-                    found_non_one = True
-                else:
-                    if found_non_one:
-                        ones_in_path += 1
-                ptr += e 
-            result += ones_in_path if found_non_one else 0
+        if num in primes or num == 1:
+            found_prime = num in primes
+            ones_before = 1 if num == 1 else 0
+            ones_after = 0
+            start = idx
+            while idx + e < len(nums) and (nums[idx+e] in primes or nums[idx+e] == 1):
+                if found_prime and nums[idx+e] in primes:
+                    break 
+                if not found_prime and (nums[idx+e] == 1 or nums[idx+e] in primes):
+                    visited.add(idx+e)
+                if nums[idx+e] in primes:
+                    found_prime = True
+                if not found_prime and nums[idx+e] == 1:
+                    ones_before += 1
+                elif found_prime and nums[idx+e] == 1:
+                    ones_after += 1
+                idx += e
+            total = 0
+            if found_prime:
+                result += ones_before*(ones_after+1)
+                result += ones_after
+                total += ones_before*(ones_after+1)
+                total += ones_after
+            # print("started at", start, "ended at", idx, "added", total)
+
     print(result)
+    # # print(nums)
+    # # print(prim)
+    # print()
