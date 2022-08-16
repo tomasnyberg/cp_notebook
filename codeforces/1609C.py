@@ -2,7 +2,7 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
  
 def sieve(num):
-    prime = [True for i in range(num+1)]
+    prime = [True for _ in range(num+1)]
     result = set()
     p = 2
     while (p * p <= num):
@@ -40,15 +40,6 @@ for i in range(1, len(lines),2 ):
                 elif found_prime and nums[idx+e] == 1:
                     ones_after += 1
                 idx += e
-            total = 0
             if found_prime:
-                result += ones_before*(ones_after+1)
-                result += ones_after
-                total += ones_before*(ones_after+1)
-                total += ones_after
-            # print("started at", start, "ended at", idx, "added", total)
-
+                result += ones_before*(ones_after+1) + ones_after
     print(result)
-    # # print(nums)
-    # # print(prim)
-    # print()
