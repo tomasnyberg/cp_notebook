@@ -4,16 +4,16 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 for i in range(2, len(lines), 3):
     a = list(map(int, lines[i].split(" ")))
     b = list(map(int, lines[i+1].split(" ")))
-    bsearcharray = []
-    bsearcharryindexes = []
     indexes = {}
-    for idx, x in enumerate(b):
-        if not bsearcharray or x > bsearcharray[-1]:
-            bsearcharray.append(x)
-            bsearcharryindexes.append(idx)
-    best = 10**9
-    for idx, x in enumerate(a):
-        bsearchidx = bisect.bisect_left(bsearcharray, x+1)
-        best = min(best, idx + bsearcharryindexes[bsearchidx])
-    print(best)
+    for arr in [a, b]:
+        for idx, x in enumerate(arr):
+            indexes[x] = idx
+    l = 10**9
+    ans = 10**9
+    for num in range(2*len(b), 0, -1):
+        if num % 2 == 0:
+            l = min(l, indexes[num])
+        else:
+            ans = min(ans, indexes[num] + l)
+    print(ans)
 
