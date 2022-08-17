@@ -17,7 +17,5 @@ for line in lines[2::2]:
     # A number is going to contribute with the sum of all numbers after it,
     # minus the amount of numbers after it - itself
     for idx, x in enumerate(nums):
-        sum_after = cs[-1] - cs[idx]
-        nums_after = len(nums) - idx - 1
-        result += -(sum_after - nums_after*x)
+        result -= cs[-1] - cs[idx] - (len(nums) - idx - 1)*x
     print(result)
