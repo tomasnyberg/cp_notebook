@@ -14,7 +14,8 @@ def merge_sort(xs, result):
                 merged += left[a:]
                 merged += right[b:]
                 break
-            if left[a] < right[b]:
+            # Note, you can change this to < if you don't want to count an equal element as an inversion
+            if left[a] <= right[b]:
                 merged.append(left[a])  
                 a += 1
             else:
