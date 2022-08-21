@@ -22,14 +22,19 @@ changes.sort(key=lambda x: x[0])
 result = 0
 on = 0
 diff = 0
+calculated = {}
 for time, up, down in changes:
     on += up
     diff += up
-    if down == 0: continue # Only look when there are things going down
+    if not down: continue # Only look when there are things going down
     # print("at time", time, "on:" , on, "diff:", diff)
     if on >= k:
-        to_add = nCr(on, k) - (nCr(on-diff, k) if on-diff >= k else 0)
-        result += to_add
+        to_remove = calculated[on-diff] if on-diff in calculated else nCr(on-diff, k) if on-diff >= k else 0
+        if to_remove: calculated[on-diff] = to_remove
+        to_add = calculated[on] if on in calculated else nCr(on, k) 
+        calculated[on] = to_add
+        result += to_add - to_remove
+        result %= 998244353
         diff = 0
     on -= down
 
