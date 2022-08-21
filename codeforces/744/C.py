@@ -22,12 +22,13 @@ while ptr < len(lines):
                 while True:
                     right = j + goodrows
                     left = j - goodrows
-                    if right == m or left < 0 or not grid[row][left] or not grid[row][right]: break
+                    if row < 0 or right == m or left < 0 or not grid[row][left] or not grid[row][right]: break
                     row -=1 
                     goodrows+=1
                 goodrows -=1
                 if goodrows >= k:
-                    print("found tick at", i, j)
+                    # print(goodrows)
+                    # print("found tick at", i, j)
                     if grid[i][j] == 1:
                         found +=1
                         grid[i][j] = -1
@@ -42,6 +43,6 @@ while ptr < len(lines):
                             found += 1
                             grid[row][left] = -1
                         row -= 1
-    for xs in grid:
-        print(xs)
+    # for xs in grid:
+    #     print(xs)
     print("YES" if found == total else "NO")
