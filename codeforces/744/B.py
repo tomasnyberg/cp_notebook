@@ -4,16 +4,14 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 from heapq import heappush, heappop
 from collections import deque
 
-# Rotate an array from a starting index to an ending index to the left by k steps
+# Left shift all elements in array starting from start and ending at end by k steps
 def rotate(arr, start, end, k):
-    if k == 0: return
-    k %= end - start + 1
-    while k > 0:
-        temp = arr[start]
-        for i in range(start, end):
-            arr[i] = arr[i+1]
-        arr[end] = temp
-        k -= 1
+    result = arr.copy()
+    len = end-start+1
+    k %= len
+    for i in range(start, end+1):
+        result[(i-start-k)%len+start] = arr[i]
+    return result
 
 
 for line in lines[2::2]:
@@ -26,9 +24,10 @@ for line in lines[2::2]:
                 smallest = [nums[j], j]
         if smallest[1] != i:
             rotationsneeded = smallest[1] - i
-            rotate(nums, i, smallest[1], rotationsneeded)
+            nums = rotate(nums, i, smallest[1], rotationsneeded)
             rotations.append([i+1, smallest[1] + 1, rotationsneeded])
     print(len(rotations))
+    # print(nums)
     for start, end, amount in rotations:
         print(start, end, amount)
 
