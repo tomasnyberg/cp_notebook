@@ -22,14 +22,17 @@ while i < len(lines):
         if not biggest or fighter > biggest[0]:
             if biggest:
                 dp[biggest[1]] = idx - biggest[1] - 1
+                if biggest[1] != 0:
+                    dp[biggest[1]] += 1
             biggest = [fighter, idx]
             dp.append(10**9)
         else:
             dp.append(0)
     for fighter, rounds in queries:
         fighter -=1
-        # How many rounds before he gets to the front
-        rounds -= fighter - (1 if fighter != 0 else 0)
+        # How many rounds before he gets to fight
+        if fighter != 1 and fighter != 0:
+            rounds -= fighter - 1
         if rounds < 0:
             print(0)
         else:
