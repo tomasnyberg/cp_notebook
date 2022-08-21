@@ -24,12 +24,16 @@ on = 0
 diff = 0
 for time, up, down in changes:
     on += up
-    print("at time", time, "on:" , on, "diff:", diff)
+    diff += up
+    if down == 0: continue # Only look when there are things going down
+    # print("at time", time, "on:" , on, "diff:", diff)
     if on >= k:
-        to_add = nCr(on, k)
+        to_add = nCr(on, k) - (nCr(on-diff, k) if on-diff >= k else 0)
         result += to_add
+        diff = 0
     on -= down
-print(changes)
+
+# print(changes)
 print(result)
 
 
