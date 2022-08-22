@@ -3,6 +3,26 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 # Going to assume we have a possible solution if we get here
 def print_solution(n, m, horizontal, vertical):
+    def find_adjacent_letters(grid, n, m):
+        found = set()
+        # Check top two
+        if n - 1 > 0:
+            found.add(grid[n-1][m])
+            found.add(grid[n-1][m+1])
+        # Check bottom two
+        if n + 2 < len(grid):
+            found.add(grid[n+2][m])
+            found.add(grid[n+2][m+1])
+        # Check two on the left
+        if m - 1 > 0:
+            found.add(grid[n][m-1])
+            found.add(grid[n+1][m-1])
+        # Check two on the right
+        if m + 2 < len(grid[0]):
+            found.add(grid[n][m+2])
+            found.add(grid[n+1][m+2])
+        return found
+
     squarepos = [[0, 1], [1,1], [1, 0]]
     result = [['.' for i in range(m)] for _ in range(n)]
     currchar = 0
@@ -24,17 +44,26 @@ def print_solution(n, m, horizontal, vertical):
         for j in range(0, m if m % 2 == 0 else m-1, 2): # Same here
             if horizontal > 0:
                 horizontal -= 2
+                nearby = find_adjacent_letters(result, i, j)
                 for k in range(2):
+                    while chr(currchar+97) in nearby:
+                        currchar += 1
+                        currchar %= 26
                     result[i+k][j] = chr(currchar+97)
                     result[i+k][j+1] = chr(currchar+97)
                     currchar += 1
                     currchar %= 26
             else:
+                nearby = find_adjacent_letters(result, i, j)
                 for k in range(2):
+                    while chr(currchar+97) in nearby:
+                        currchar += 1
+                        currchar %= 26
                     result[i][j+k] = chr(currchar + 97)
                     result[i+1][j+k] = chr(currchar + 97)
                     currchar += 1
                     currchar %= 26
+    # print(find_adjacent_letters(result, 0,0))
     for xs in result:
         [print(x, end="") for x in xs]
         print()
