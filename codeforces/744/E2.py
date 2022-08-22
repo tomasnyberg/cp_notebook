@@ -1,3 +1,4 @@
+from heapq import merge
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 from queue import deque
@@ -27,14 +28,20 @@ def merge_sort(xs, result):
 
 for line in lines[2::2]:
     nums = list(map(int, line.split(" ")))
+    numscopy = nums.copy()
+    numscopy.sort()
+    lastpositions = {}
+    for idx, x in enumerate(numscopy):
+        lastpositions[x] = idx
+    # print(lastpositions)
     dq = deque()
     for x in nums:
-        if not dq or x < dq[0]:
-            dq.appendleft(x)
-        else:
+        if not dq or lastpositions[x] >= lastpositions[dq[len(dq)//2]]:
             dq.append(x)
+        else:
+            dq.appendleft(x)
+    # print(dq)
     nums = list(dq)
-    print(nums)
     result = [0]
     merge_sort(nums, result)
     print(result[0])
