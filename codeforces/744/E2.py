@@ -60,24 +60,21 @@ for line in lines[2::2]:
     numscopy = list(sorted(nums.copy()))
     indexes = {}
     for idx, x in enumerate(numscopy):
-        if x not in indexes:
-            indexes[x] = idx
         indexes[x] = idx
     fwt = fenwick_tree([0]*len(nums))
     dq = deque()
-    
     for x in nums:
         #Calculate the number of elements < x using the FWT
         lessthan = fwt.prefixSum(indexes[x]+1)
         greaterthan = fwt.range_sum(indexes[x] + 1, len(nums))
-        # print(dq)
-        # print(x, "has", lessthan, "elements that are less than it ")
+        # If the amount of numbers <= x is less than the amount of numbers greater than x, we want
+        # To insert it (greedily) into the left of the deque, since that will result in less inversions,
+        # and we can greedily choose the best choice at any given moment, since it will not affect upcoming changes.
         if lessthan <= greaterthan:
             dq.appendleft(x)
         else:
             dq.append(x)
         fwt.add(indexes[x]+1, 1)
-    # print(dq)
     nums = list(dq)
     result = [0]
     merge_sort(nums, result)
