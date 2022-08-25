@@ -14,8 +14,7 @@ def score_arr(s):
 
 for i in range(1, len(lines),2):
     n, k = map(int, lines[i].split(" "))
-    s = (lines[i+1])
-    losses = sum([1 if c == 'L' else 0 for c in s])
+    s = lines[i+1]
     wins = sum([1 if c == 'W' else 0 for c in s])
     result = sum(score_arr(s))
     if wins == 0:
@@ -25,8 +24,7 @@ for i in range(1, len(lines),2):
         print(min(k, len(s))*2 - 1)
         continue
     split = s.split("W")
-    lentofirstw = len(split[0])
-    lenoflast = len(split[-1])
+    lentofirstandlast = len(split[0]) + len(split[-1])
     split = list(filter(lambda x: len(x) > 0, split[1:][:-1]))
     split.sort(key=lambda x: -len(x))
     while split:
@@ -37,22 +35,5 @@ for i in range(1, len(lines),2):
         result += len(split[-1])*2+1
         k-= len(split[-1])
         split.pop()
-    if k > 0:
-        if lenoflast > 0:
-            if lenoflast > k:
-                result += k*2
-                k = 0
-            else:
-                result += lenoflast * 2
-                k -= lenoflast
-        if k != 0 and lentofirstw > 0:
-            result += min(k, lentofirstw) * 2
+    result += min(k, lentofirstandlast) * 2 
     print(result)
-    # print(s)
-    # print(split)
-    # print()
-
-    
-    
-
-
