@@ -10,6 +10,8 @@ for i in range(1, len(lines), 3):
         if not nums[j]:
             need_to_fill[(j-(p-1))%k]+=1
     best = 10**9
-    for offset in need_to_fill:
-        best = min(best, offset*y + need_to_fill[offset]*x)
+    for j in range(p-1, n):
+        offset = (j-(p-1))%k
+        best = min(best, (j-(p-1))*y + need_to_fill[offset]*x)
+        need_to_fill[offset] -= 1 if not nums[j] else 0
     print(best)
