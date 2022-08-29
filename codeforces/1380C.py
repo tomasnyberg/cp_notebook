@@ -4,15 +4,10 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 for i in range(1, len(lines), 2):
     n, x = map(int, lines[i].split(" "))
     nums = list(map(int, lines[i+1].split(" ")))
-    nums.sort()
-    mapped = []
-    for j in range(len(nums)):
-        mapped.append(math.ceil(x /nums[j]))
+    nums.sort(key=lambda x: -x)
+    taken = 0
     result = 0
-    dp = [0]*len(nums)
-    for j in range(len(nums)-1,-1,-1):
-        dp[j] = 1 if j + mapped[j] <= len(nums) else 0
-        if j + mapped[j] < len(nums):
-            dp[j] += dp[j + mapped[j]] 
-    print(max(dp))
-        # if 
+    for j in range(len(nums)):
+        result += 1 if (taken+1)*nums[j] >= x else 0
+        taken = 0 if (taken+1)*nums[j] >= x else taken +1
+    print(result)
