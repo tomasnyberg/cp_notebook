@@ -100,3 +100,15 @@ class heapdict(MutableMapping):
     def peekitem(self):
         """D.peekitem() -> (k, v), return the (key, value) pair with lowest value;\n but raise KeyError if D is empty."""
         return (self.heap[0][1], self.heap[0][0])
+# NOTE: The heapdict works as follows: Key -> Priority.
+# This means you can't do something like this
+hd = heapdict()
+hd[-5] = 1
+hd[-2] = 1
+# Where you are keeping track of how many elems of some kind you have, and also want to know the smallest one at any given time
+
+# What you will need to do instead is something like this
+hd = heapdict()
+hd[-71] = [-73, 2]
+hd[-31] = [-100, 2]
+print(hd.peekitem())
