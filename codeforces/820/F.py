@@ -20,9 +20,20 @@ def subsums(s, w):
         right += 1
     return [possiblemods, result]
 
+def cum_sum(nums):
+    curr = 0
+    result = [0]*len(nums)
+    for idx, num in enumerate(nums):
+        curr += num
+        result[idx] = curr
+    return result
+
 i = 1
 while i < len(lines):
     s = lines[i]
+    snums = list(map(int, s))
+    CS = cum_sum(snums)
+    # print(CS)
     w, m = map(int, lines[i+1].split(" "))
     i+=2
     queries = []
@@ -35,7 +46,7 @@ while i < len(lines):
     # print(subsetsums)
     for l, r, k in queries:
         found = [-1, -1]
-        currval = int(s[l-1:r])
+        currval = (CS[r-1] - (CS[l-2] if l-2 >= 0 else 0))% 9
         for idx, mod in subsetsums:
             if found != [-1, -1]: break
             currmod = (mod*currval) % 9
