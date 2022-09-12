@@ -12,7 +12,8 @@ for line in lines[1:]:
     else:
         nums = list(filter(lambda x: x[0] >= nums[0][0] and x[0] <= nums[-1][0], nums))
     shortnums = nums[1:-1]
-    shortnums.sort(key=lambda x: x[0]-nums[0][0])
+    shortnums.sort(key=lambda x: abs(x[0]-nums[0][0]))
+    # print(shortnums)
     result = [1]
     totalcost = abs(nums[0][0] - nums[-1][0])
     for _, index in shortnums:
