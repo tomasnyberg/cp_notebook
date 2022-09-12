@@ -4,18 +4,18 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 def subsums(s, w):
     left = 0
     right = 0
-    curr = ""
+    curr = 0
     possiblemods = {}
     result = []
     while right < len(s):
-        curr += s[right]
-        if len(curr) == w:
-            num = int(curr) % 9
+        curr += int(s[right])
+        if right-left == w - 1:
+            num = curr % 9
             if num not in possiblemods: possiblemods[num] = []
             if len(possiblemods[num]) < 2:
                 possiblemods[num].append(left+1)
                 result.append(((left+1), num))
-            curr = curr[1:]
+            curr -= int(s[left])
             left += 1
         right += 1
     return [possiblemods, result]
@@ -37,14 +37,9 @@ while i < len(lines):
     w, m = map(int, lines[i+1].split(" "))
     i+=2
     queries = []
-    while m > 0:
-        queries.append(list(map(int, lines[i].split(" "))))
-        m-=1
-        i+=1
     possiblemods, subsetsums = subsums(s, w)
-    # print(possiblemods)
-    # print(subsetsums)
-    for l, r, k in queries:
+    while m > 0:
+        l, r, k = list(map(int, lines[i].split(" ")))
         found = [-1, -1]
         currval = (CS[r-1] - (CS[l-2] if l-2 >= 0 else 0))% 9
         for idx, mod in subsetsums:
@@ -64,4 +59,8 @@ while i < len(lines):
                         # print(possiblemods[lookingfor], found)
                         break
         print(*found)
+        m-=1
+        i+=1
+    # print(possiblemods)
+    # print(subsetsums)
 
