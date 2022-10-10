@@ -6,17 +6,14 @@ for line in lines[2::2]:
     total = sum(b)
     b.sort()
     badindex = -1
-    for idx1, candidate in enumerate(b[len(b)-5:]):
-        for idx, num in enumerate(b[:-2]):
-            if total - num - candidate == candidate:
+    for i in range(len(b)-1,len(b)-3, -1):
+        candidate = b[i]
+        for idx, num in enumerate(b):
+            if total - num - candidate == candidate and idx != i:
                 badindex = idx
                 break
         if badindex != -1:
             break
-    if sum(b[:-2]) == b[-2]:
-        badindex = len(b) - 2
-    if sum(b[:-2]) == b[-1]:
-        badindex = len(b) - 1
     if badindex == -1:
         print(-1)
         continue
