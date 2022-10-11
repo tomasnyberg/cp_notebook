@@ -18,11 +18,14 @@ for line in lines[2::2]:
     for fr, to in edges:
         adj_lists[fr].add(to)
         adj_lists[to].add(fr)
+    visited = set()
     def dfs(curr):
         if curr == len(nums):
             return True
-        while adj_lists[curr]:
-            nbr = adj_lists[curr].pop()
+        visited.add(curr)
+        for nbr in adj_lists[curr]:
+            assert(curr != nbr)
+            if curr > nbr or nbr in visited: continue
             if dfs(nbr): return True
         return False
     print("YES" if dfs(0) else "NO")
