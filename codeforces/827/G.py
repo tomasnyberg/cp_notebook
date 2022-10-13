@@ -6,6 +6,19 @@ def highest_bit(x, bitsset, idx):
         if (1 << i) & x:
             bitsset[i].append((x, idx))
 
+def flip_positive_bits(x):
+    start = False if x != 0 else True
+    for i in range(31, -1, -1):
+        if (1 << i) & x:
+            # print("starting", i)
+            start = True
+            x^=(1<<i)
+        elif start:
+            x |= (1 << i)
+    return x
+
+# print(flip_positive_bits(12))
+
 for line in lines[2::2]:
     bitsset = {i:[] for i in range(32)}
     nums = list(map(int, line.split(" ")))
@@ -17,7 +30,8 @@ for line in lines[2::2]:
     for i in range(31, -1, -1):
         if running & (1 << i): continue
         if bitsset[i]:
-            bitsset[i].sort(key=lambda x: x[0]^running)
+            bitsset[i].sort(key=lambda x: x[0]&(flip_positive_bits(running)))
+            # if i == 1: print(bitsset[i], bin(running))
             num, idx = -1, -1
             while idx in taken and bitsset[i]:
                 num,idx = bitsset[i].pop()
