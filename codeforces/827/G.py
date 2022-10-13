@@ -1,0 +1,30 @@
+import sys
+lines = list(map(str.strip, sys.stdin.readlines()))
+
+def highest_bit(x, bitsset, idx):
+    for i in range(31, -1,-1):
+        if (1 << i) & x:
+            bitsset[i].append((x, idx))
+
+for line in lines[2::2]:
+    bitsset = {i:[] for i in range(32)}
+    nums = list(map(int, line.split(" ")))
+    for idx,x in enumerate(nums):
+        highest_bit(x, bitsset, idx)
+    for key in bitsset:
+        bitsset[key].sort(key=lambda x: x[0])
+    result = []
+    taken = set([-1])
+    for i in range(31, -1, -1):
+        if bitsset[i]:
+            num, idx = -1, -1
+            while idx in taken and bitsset[i]:
+                num,idx = bitsset[i].pop()
+            if idx in taken:
+                continue
+            result.append(num)
+            taken.add(idx)
+    for idx, x in enumerate(nums):
+        if idx in taken: continue
+        result.append(x)
+    print(*result)

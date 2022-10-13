@@ -1,36 +1,26 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-def comparecounts(acounts, bcounts, atotal, btotal):
-    atotalcopy = atotal
-    btotalcopy = btotal
+def comparecounts(acounts, bcounts, amax, bmax):
     debuga = ""
     debugb = ""
-    broken = False
-    result= ""
-    for i in range(26):
-        curr = chr(i+97)
-        atotal -= acounts[curr]
-        btotal -= bcounts[curr]
-        debuga += curr*acounts[curr]
-        debugb += curr*bcounts[curr]
-        if atotal == 0 and btotal > 0:
+    atotal = 0
+    btotal = 0
+    result = "NO"
+    canmatch = True
+    for i in range(25, -1,-1):
+        debuga += chr(i+97)*acounts[i]
+        debugb += chr(i+97)*bcounts[i]
+        if btotal > atotal:
             result = "YES"
-        if btotal == 0 and atotal > 0:
-            result = "NO"
-        if acounts[curr] != bcounts[curr]:
-            if atotal == 0:
-                if acounts[curr] < bcounts[curr]:
-                    result = "YES"
-                else:
-                    result = "YES" if btotal > 0 else "NO"
-            else:
-                result = "YES" if acounts[curr] > bcounts[curr] else "NO"
+            break
+        atotal += acounts[i]
+        btotal += bcounts[i]
+    if btotal > atotal:
+        result = "YES"
     print(debuga, debugb)
-    if not broken:
-        print("YES" if atotalcopy < btotalcopy else "NO")
-    else:
-        print(result)
+    print(result)
+
 
 
 
@@ -44,13 +34,10 @@ while i < len(lines):
         queries.append((d,k,x))
         i += 1
         n -= 1
-    acounts = {'a':1}
-    bcounts = {'a':1}
-    for j in range(1, 26):
-        acounts[chr(j+97)] = 0
-        bcounts[chr(j+97)] = 0
-    atotal = 0
-    btotal = 0
+    acounts = [1] + [0]*25
+    bcounts = [1] + [0]*25
+    atotal = 1
+    btotal = 1
     for s, amount, newstr in queries:
         target_dict = acounts if s == '1' else bcounts
         amount = int(amount)
@@ -58,7 +45,7 @@ while i < len(lines):
         for c in newstr:
             counts[c] = 1 if c not in counts else counts[c] + 1
         for c in counts:
-            target_dict[c] += counts[c] * amount 
+            target_dict[ord(c)-97] += counts[c] * amount 
             if s == '1':
                 atotal += counts[c] * amount
             else:
