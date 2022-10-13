@@ -2,24 +2,15 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def comparecounts(acounts, bcounts, amax, bmax):
-    debuga = ""
-    debugb = ""
-    atotal = 0
-    btotal = 0
-    result = "NO"
-    canmatch = True
-    for i in range(25, -1,-1):
-        debuga += chr(i+97)*acounts[i]
-        debugb += chr(i+97)*bcounts[i]
-        if btotal > atotal:
-            result = "YES"
-            break
-        atotal += acounts[i]
-        btotal += bcounts[i]
-    if btotal > atotal:
-        result = "YES"
-    print(debuga, debugb)
-    print(result)
+    biggest_a = 0
+    biggest_b = 0
+    for i in range(26):
+        if acounts[i]: biggest_a = i
+        if bcounts[i]: biggest_b = i
+    if biggest_b > 0 or (biggest_a == biggest_b and acounts[biggest_a] < bcounts[biggest_b]):
+        print("YES")
+    else:
+        print("NO")
 
 
 
