@@ -2,8 +2,36 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def comparecounts(acounts, bcounts, atotal, btotal):
+    atotalcopy = atotal
+    btotalcopy = btotal
+    debuga = ""
+    debugb = ""
+    broken = False
+    result= ""
     for i in range(26):
         curr = chr(i+97)
+        atotal -= acounts[curr]
+        btotal -= bcounts[curr]
+        debuga += curr*acounts[curr]
+        debugb += curr*bcounts[curr]
+        if atotal == 0 and btotal > 0:
+            result = "YES"
+        if btotal == 0 and atotal > 0:
+            result = "NO"
+        if acounts[curr] != bcounts[curr]:
+            if atotal == 0:
+                if acounts[curr] < bcounts[curr]:
+                    result = "YES"
+                else:
+                    result = "YES" if btotal > 0 else "NO"
+            else:
+                result = "YES" if acounts[curr] > bcounts[curr] else "NO"
+    print(debuga, debugb)
+    if not broken:
+        print("YES" if atotalcopy < btotalcopy else "NO")
+    else:
+        print(result)
+
 
 
 i = 1
@@ -18,9 +46,9 @@ while i < len(lines):
         n -= 1
     acounts = {'a':1}
     bcounts = {'a':1}
-    for i in range(1, 26):
-        acounts[chr(i+97)] = 0
-        bcounts[chr(i+97)] = 0
+    for j in range(1, 26):
+        acounts[chr(j+97)] = 0
+        bcounts[chr(j+97)] = 0
     atotal = 0
     btotal = 0
     for s, amount, newstr in queries:
@@ -36,5 +64,5 @@ while i < len(lines):
             else:
                 btotal += counts[c] * amount
         comparecounts(acounts, bcounts, atotal, btotal)
-        print(acounts, bcounts)
+        # print(acounts, bcounts)
     
