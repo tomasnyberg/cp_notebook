@@ -21,7 +21,7 @@ for i in range(1, len(lines), 2 ):
     s, result = replacefirstlast(s)
     # print(s)
     for j in range(len(s)):
-        if s[j] == 'x' and 'x' not in s[j+1:j+k]:
+        if s[j] == 'x' and 'x' not in s[j+1:j+k+1]:
             for l in range(min(j + k, len(s)-1), j, -1):
                 if s[l] == '*':
                     s[l] = 'x'
