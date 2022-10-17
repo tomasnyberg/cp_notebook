@@ -34,8 +34,9 @@ for i in range(1, len(lines), 2):
     for idx, x in enumerate(bin(prod)[::-1]):
         if x == '1':
             lowest_bit_set = idx
-    needed = len(nums) + 1 - lowest_bit_set
-    print(bin(prod), len(nums), needed)
+            break
+    needed = len(nums) - lowest_bit_set
+    # print(bin(prod), len(nums), needed)
     powsoftwo = {1 << i:i for i in range(1, 35)}
     # print(powsoftwo)
     result = 0
