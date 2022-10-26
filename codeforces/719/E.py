@@ -17,7 +17,7 @@ for line in lines[2::2]:
     from_left = costs(line)
     from_right = costs(line[::-1])
     from_right.reverse()
-    res = 10**9
+    res = 10**25
     for i in range(len(from_left)):
         res = min(res, from_left[i] + from_right[i])
     print(res)
