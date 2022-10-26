@@ -8,13 +8,14 @@ sys.stdout.flush()
 total = int(input())
 target = total - k
 
+print("our target is", target)
+
 low = 1
 high = n
 while low < high:
     mid = (low + high) >> 1
-    print("?", low, high)
+    print("?", 1, mid)
     sys.stdout.flush()
-    # read an integer x from stdin
     x = int(input())
     if x >= target:
         low = mid + 1
