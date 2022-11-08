@@ -30,26 +30,43 @@ def bs(left, right, CS, needed):
     return low
 
 def solve(target, nums, CS, pointer):
+    # print("We are trying to get", target, "our pointer is at", pointer)
     initial_score = nums[pointer]
     spins = 0
     if initial_score >= target:
         return [pointer, 0]
     needed = target - initial_score
     # Spin the disc around to the right, get all the numbers there
-    right_search = bs(pointer, len(nums), CS, needed + CS[pointer])
-    left_gained = 0
+    right_search = bs(pointer + 1, len(nums), CS, needed + CS[pointer])
+    right_gained = 0
     # We gained every element from our current start to the end
     if right_search == len(nums):
-        left_gained += CS[-1] - CS[pointer] 
+        right_gained += CS[-1] - CS[pointer] 
     else:
-        left_gained += CS[right_search] - CS[pointer]
+        right_gained += CS[right_search] - CS[pointer]
     spins += right_search - pointer
-    needed -= left_gained
+    needed -= right_gained
+    # print("We gained", right_gained, "from the right")
     if needed <= 0: # If we got everything we needed from just the right side, we're good.
         return [right_search, spins]
     left_search = bs(0, pointer, CS, needed) # Don't add anything to needed since we are searching from the start
     left_gained = CS[left_search]
+    # print("We gained", left_gained, "from the left")
     needed -= left_gained
+    total_gained = left_gained + right_gained
+    if needed != 0 and total_gained <= 0:
+        return [-1, -1]
+    if needed > total_gained: # If we need more than we can gain in one full rotation
+        spins += len(nums)*(needed // total_gained) # Spin around completely 
+        needed %= total_gained
+    if needed > right_gained:
+        needed -= right_gained
+        spins += len(nums) - pointer
+        bs_left = bs(0, pointer, CS, needed)
+        return [bs_left, spins + bs_left]
+    else:
+        bs_right = bs(pointer, len(nums), CS, needed)
+        return [bs_right % len(nums), spins + (bs_right - pointer)]
     # print(needed)
     return [pointer,spins]
 
@@ -65,7 +82,12 @@ while i < len(lines):
     pointer = 0
     CS = cum_sum(nums)
     for x in m_nums:
+        if pointer == -1:
+            print("-1", end=" ")
         ptr, spins = solve(x, nums, CS, pointer)
+        if ptr == -1:
+            print("-1", end=" ")
+            continue
         print(spins, end=" ")
         pointer = ptr
     print()
