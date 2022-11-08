@@ -51,6 +51,7 @@ def solve(target, nums, CS, pointer):
         return [right_search, spins]
     left_search = bs(0, pointer, CS, needed) # Don't add anything to needed since we are searching from the start
     left_gained = CS[left_search]
+    spins += left_search + 1 if left_search != 0 else 0
     # print("We gained", left_gained, "from the left")
     needed -= left_gained
     total_gained = left_gained + right_gained
