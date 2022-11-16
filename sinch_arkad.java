@@ -91,6 +91,7 @@ class SolverClass implements Solver{
             for(Integer[] xs: candidates){
                     if (xs[0] > best[0]) best = xs;
             }
+            result.add(new Square(best[1], best[2], best[3]));
             for(int i = best[1]; i <= best[1]+best[3]; i++){
                 for(int j = best[2]; j <= best[2]+best[3]; j++){
                     matrix[i][j] *= -1;
