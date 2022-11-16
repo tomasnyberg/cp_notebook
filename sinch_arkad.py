@@ -40,13 +40,13 @@ def solve(matrix):
         best = max(candidates, key=lambda x: x[0])
         row, col, d = best[1]
         for i in range(row, row+d+1):
-            for j in range(row, row+d+1):
+            for j in range(col, col+d+1):
                 matrix[i][j] *= -1
 
 i = 0
 while i < len(lines):
     matrix = []
-    for _ in range(25):
+    while i < len(lines) and lines[i] != "":
         matrix.append(list(map(int, lines[i].split(" "))))
         i+=1
     i+=1
@@ -55,6 +55,7 @@ while i < len(lines):
         total += sum(xs)
     print("Total sum of matrix is", total)
     solve(matrix)
+    total = 0
     for xs in matrix:
         total += sum(xs)
     print("NEW total sum of matrix is", total)
