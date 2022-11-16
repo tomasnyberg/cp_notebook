@@ -43,7 +43,7 @@ public class sinch_arkad {
 
 }
 
-class SolverClass{
+class SolverClass implements Solver{
     private int[][] matrix;
 
     public void setup(int size, int m){
@@ -72,48 +72,32 @@ class SolverClass{
         return result;
     }
     
-    public class Candidate{
-        public int query;
-        public int i;
-        public int j;
-        public int d;
-    
-        public Candidate(int query, int i, int j, int d){
-            this.query = query;
-            this.i = i;
-            this.j = j;
-            this.d = d;
-        }
-    
-    }
-    
-    public int[][] solve(int[][] matrix, int m){
+    public List<Square> solve(int[][] matrix, int m){
         int n = m;
+        List<Square> result = new ArrayList<>();
         for(int a = 0; a < 5; a++){
             int[][] cs2d = prefixsum2d(matrix);
-            List<Candidate> candidates = new ArrayList<Candidate>();
+            List<Integer[]> candidates = new ArrayList<Integer[]>();
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < m; j++){
                     for(int d = 0; d < n; d++){
                         if(i+d == n || j+d == m) break;
-                        int query = -query(cs2d, i, j, i+d, j+d);
-                        candidates.add(new Candidate(query, i, j, d));
+                        Integer[] candidate = {-query(cs2d, i, j, i+d, j+d), i, j, d};
+                        candidates.add(candidate);
                     }
                 }
             }
-            Candidate best = null;
-            for(Candidate c: candidates){
-                if(best == null || c.query > best.query){
-                    best = c;
-                }
+            Integer[] best = {-1,-1,-1,-1}; // Score, i, j ,d
+            for(Integer[] xs: candidates){
+                    if (xs[0] > best[0]) best = xs;
             }
-            for(int i = best.i; i <= best.i+best.d; i++){
-                for(int j = best.j; j <= best.j+best.d; j++){
+            for(int i = best[1]; i <= best[1]+best[3]; i++){
+                for(int j = best[2]; j <= best[2]+best[3]; j++){
                     matrix[i][j] *= -1;
                 }
             }
-        }
-        return matrix;
+        }   
+        return result;
     }
 
 }
