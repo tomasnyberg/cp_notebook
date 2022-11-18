@@ -22,7 +22,12 @@ for line in lines[1:]:
     i = len(stringed) - 1
     while stringed[i] == '0':
         i-=1
-    num = int(stringed[i])
+    num = ""
+    while i >= 0 and stringed[i] != '0':
+        num += stringed[i]
+        i-=1
+    # print(num)
+    num = int(num[::-1])
     multiplier = 1
     result = -1
     timesmultid = 0
@@ -42,7 +47,7 @@ for line in lines[1:]:
             result = multiplier
             # print("Stop at", multiplier)
             for k in range(2, 11):
-                if multiplier * k < m:
+                if multiplier * k <= m:
                     result = multiplier * k
             break
     if result == -1:
