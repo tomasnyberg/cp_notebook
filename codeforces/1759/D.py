@@ -25,15 +25,19 @@ for line in lines[1:]:
     num = int(stringed[i])
     multiplier = 1
     result = -1
+    timesmultid = 0
     while True:
         i = 2
         while i < 11:
             if (num * i) % 10 == 0:
                 multiplier *= i
+                timesmultid += 1
                 num = (num*i) // 10
                 break
             i+=1
         if multiplier > m:
+            if timesmultid == 1:
+                break
             multiplier //= i
             result = multiplier
             # print("Stop at", multiplier)
