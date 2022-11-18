@@ -35,9 +35,11 @@ for line in lines[1:]:
             i+=1
         if multiplier > m:
             multiplier //= i
-            for i in range(2, 11):
-                if multiplier * i < m:
-                    result = multiplier * i
+            result = multiplier
+            # print("Stop at", multiplier)
+            for k in range(2, 11):
+                if multiplier * k < m:
+                    result = multiplier * k
             break
     if result == -1:
         print(n*m)
