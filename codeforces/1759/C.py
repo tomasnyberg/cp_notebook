@@ -16,11 +16,11 @@ for i in range(1, len(lines), 2):
     if (high + x > r and high - x < l) or (low + x > r and low - x < l):
         print(-1)
         continue
-    if high - low >= x:
+    if abs(high - low) >= x:
         print(1)
         continue
-    if r - high <= x:
-        print(3)
-    else:
+    if (high - l >= x and low - l >= x) or (r - low >= x and r - high >= x):
         print(2)
+    else:
+        print(3)
     # print("dunno")
