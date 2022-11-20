@@ -8,7 +8,6 @@ def outerTrees(trees):
         dp = (a[0] * b[0]) + (b[1] * a[1])
         lena = lenvec(a) 
         lenb = lenvec(b)
-        print(dp, lena, lenb, lena*lenb)
         division = dp / (lena*lenb)
         if division < -1:
             division = -1
@@ -25,16 +24,16 @@ def outerTrees(trees):
         smallest = [10**9, -1, None] # angle, index, The vector to that one
         for i in range(len(trees)):
             if trees[i] != curr:
-                print("Checking angle between", curr, trees[i])
+                # print("Checking angle between", curr, trees[i])
                 v = getvec(curr, trees[i])
-                print("Vectors", v, spinningvec)
-                print("Point", trees[i])
+                # print("Vectors", v, spinningvec)
+                # print("Point", trees[i])
                 a = angle(spinningvec, v)
-                print("Cross product", cp(v, spinningvec))
-                print("Angle", a)
-                print()
+                # print("Cross product", cp(v, spinningvec))
+                # print("Angle", a)
+                # print()
                 if cp(v, spinningvec) > 0: continue
-                if a == smallest[0]:
+                if abs(a - smallest[0]) <= 0.000001:
                     if lenvec(smallest[2]) > lenvec(v):
                         smallest = [a, i, v]
                 elif a < smallest[0]:
@@ -47,4 +46,5 @@ def outerTrees(trees):
         spinningvec = smallest[2]                        
     return list(map(list, list(result)))
 assert(outerTrees([[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]) == [[2,4],[1,1],[2,0],[4,2],[3,3]])
-print(outerTrees([[0,8],[9,8],[2,4]]))
+assert(list(sorted(outerTrees([[0,8],[9,8],[2,4]]))) == list(sorted([[0,8],[9,8],[2,4]])))
+print(outerTrees([[3,3],[2,4],[2,2],[7,4],[3,4]]))
