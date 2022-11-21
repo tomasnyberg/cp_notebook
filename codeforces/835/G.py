@@ -1,5 +1,6 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
+sys.setrecursionlimit(10**6)
 
 i = 1
 while i < len(lines):
@@ -11,26 +12,33 @@ while i < len(lines):
         adj_lists[u].add((v, w))
         adj_lists[v].add((u, w))
         i+=1
-    bsums = set()
-    bseen = set([b])
+    bsums = {}
+    bseen = set()
     def dfs_b(curr, score):
         bseen.add(curr)
         for nbr, wi in adj_lists[curr]:
-            if nbr == a: continue
             if nbr in bseen: continue
-            bsums.add(wi^score)
+            if wi^score not in bsums:
+                bsums[wi^score] = [nbr]
+            else:
+                bsums[wi^score].append(nbr)
             dfs_b(nbr, score^wi)
     dfs_b(b, 0)
+    # print(bsums)
     aseen = set()
     def dfs_a(curr, score):
         aseen.add(curr)
+        if score in bsums:
+            return True
         for nbr, wi in adj_lists[curr]:
             if nbr == b:
                 if score^wi == 0:
+                    # print("We found true when we went from", curr, "to", nbr)
                     return True
             else:
                 if nbr in aseen: continue
                 if score ^ wi in bsums:
+                    # print("We found true when we went from", curr, "to", nbr)
                     return True
                 if dfs_a(nbr, score^wi):
                     return True
