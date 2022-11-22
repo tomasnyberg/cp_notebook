@@ -2,9 +2,12 @@
 
 using namespace std;
 
-set<int> dfs_b(int curr, int score,map<int, vector<pair<int, int>>> &adj_lists){
-
-    return set<int>();
+void dfs_b(int curr, int score ,map<int, vector<pair<int, int>>> &adj_lists, set<int> &bsums, set<int> &bseen){
+    cout << "dfs b called" << endl;
+    bseen.insert(curr);
+    for(auto &p: adj_lists[curr]){
+        cout << p.first << " " << p.second << endl;
+    }
 }
 
 int main() {
@@ -16,7 +19,7 @@ int main() {
         int n, a, b;
         cin >> n >> a >> b;
         map<int, vector<pair<int, int>>> adj_lists;
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < n-1; i++){
             int from, to, w;
             cin >> from >> to >> w;
             adj_lists[i+1] = {};
@@ -26,7 +29,7 @@ int main() {
         set<int> bsums;
         set<int> bseen;
 
-        dfs_b(1, 0, adj_lists);
+        dfs_b(1, 0, adj_lists, bsums, bseen);
     }
     return 0;
 }
