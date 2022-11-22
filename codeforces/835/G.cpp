@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-void solve(){
 
+set<int> dfs_b(int curr, int score,map<int, vector<pair<int, int>>> &adj_lists){
+
+    return set<int>();
 }
 
 int main() {
@@ -13,14 +15,18 @@ int main() {
     while(t--){
         int n, a, b;
         cin >> n >> a >> b;
-        map<int, vector<pair<int, int>>> m;
+        map<int, vector<pair<int, int>>> adj_lists;
         for(int i = 0; i < n; i++){
             int from, to, w;
             cin >> from >> to >> w;
-            m[i+1] = {};
-            m[from].push_back({to, w});
-            m[to].push_back({from, w});
+            adj_lists[i+1] = {};
+            adj_lists[from].push_back({to, w});
+            adj_lists[to].push_back({from, w});
         }
+        set<int> bsums;
+        set<int> bseen;
+
+        dfs_b(1, 0, adj_lists);
     }
     return 0;
 }
