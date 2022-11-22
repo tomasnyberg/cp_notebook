@@ -3,10 +3,13 @@
 using namespace std;
 
 void dfs_b(int curr, int score ,map<int, vector<pair<int, int>>> &adj_lists, set<int> &bsums, set<int> &bseen){
-    cout << "dfs b called" << endl;
+    // cout << "dfs b called at " << curr << endl;
     bseen.insert(curr);
     for(auto &p: adj_lists[curr]){
-        cout << p.first << " " << p.second << endl;
+        if(bseen.find(p.first) != bseen.end()) continue;
+        // cout << "Here " << p.first << endl;
+        bsums.insert(score^p.second);
+        dfs_b(p.first, score^p.second, adj_lists, bsums, bseen);
     }
 }
 
@@ -22,14 +25,17 @@ int main() {
         for(int i = 0; i < n-1; i++){
             int from, to, w;
             cin >> from >> to >> w;
-            adj_lists[i+1] = {};
             adj_lists[from].push_back({to, w});
             adj_lists[to].push_back({from, w});
         }
         set<int> bsums;
         set<int> bseen;
-
-        dfs_b(1, 0, adj_lists, bsums, bseen);
+        dfs_b(b, 0, adj_lists, bsums, bseen);
+        // Print every value in the bsums set
+        for(auto &x: bsums){
+            cout << x << " ";
+        }
+        cout << "\n";
     }
     return 0;
 }
