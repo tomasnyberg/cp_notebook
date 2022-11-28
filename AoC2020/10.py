@@ -15,3 +15,20 @@ for i in range(1, len(nums)):
         threes += 1
 print(threes, ones)
 print(threes * ones)
+
+print(len(nums))
+dp = [-1]*len(nums)
+def dfs(i):
+    if i == len(nums) - 1:
+        return 1
+    if dp[i] != -1:
+        return dp[i]
+    total = 0
+    idx = i+1
+    while idx < len(nums) and nums[idx] - nums[i] <= 3:
+        total += dfs(idx)
+        idx += 1
+    dp[i] = total
+    return total
+
+print(dfs(0)) 
