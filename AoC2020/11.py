@@ -12,9 +12,14 @@ def occupied_near(m, i, j):
     for di, dj in dirs:
         ni = i + di
         nj = j + dj
-        if 0 <= ni < len(m) and 0 <= nj < len(m[0]):
+        while 0 <= ni < len(m) and 0 <= nj < len(m[0]):
             if m[ni][nj] == '#':
                 result += 1
+                break
+            elif m[ni][nj] == 'L':
+                break
+            ni += di
+            nj += dj
     return result
 
 def step(old):
@@ -28,11 +33,11 @@ def step(old):
             if old[i][j] == 'L' and count == 0:
                 new[i][j] = '#'
                 continue
-            if old[i][j] == '#' and count >= 4:
+            if old[i][j] == '#' and count >= 5:
                 new[i][j] = 'L'
     return new
 
-for xs in step(step(step(matrix))):
+for xs in step(step(matrix)):
     print(*xs)
 
 def equal_matrix(a, b):
