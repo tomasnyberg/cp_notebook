@@ -15,29 +15,10 @@ for line in lines[2::2]:
     nums = list(map(int, line.split(" ")))
     while check_delete(nums):
         continue
-    counts = {}
-    for x in nums:
-        counts[x] = 1 if x not in counts else counts[x] + 1
-    result = 0
-    while True:
-        # print(nums)
-        if len(nums) == 1:
-            result += 1
-            break
-        taken = False
-        for i in range(len(nums)):
-            if counts[nums[i]] > 1 and nums[i-1] != nums[(i+1)%len(nums)]:
-                # print("deleteing", i)
-                counts[nums[i]] -= 1
-                del nums[i]
-                result += 1
-                taken = True
-                break
-        if not taken:
-            counts[nums.pop()] -= 1
-            # print("deleting last")
-            result += 1
-        while(check_delete(nums)):
-            continue
-    print(result)
+    s = set(nums)
+    if len(s) == 2:
+        print(len(nums) // 2 + 1)
+        continue
+    else:
+        print(len(nums))
                 
