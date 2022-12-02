@@ -24,6 +24,8 @@ i+=1
 while lines[i] != "":
     i+=1
 
+my_ticket = list(map(int, lines[i-1].split(",")))
+print(my_ticket)
 tickets = []
 i+=2
 while i < len(lines):
@@ -80,7 +82,10 @@ while True:
                 result[j].remove(x)
 
 mul = 1
-print(result)
+for j in range(len(result)):
+    if result[j].pop().split(" ")[0] == "departure":
+        mul *= my_ticket[j]
+print(mul)
         
         
 
