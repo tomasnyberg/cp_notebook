@@ -2,7 +2,6 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 said = {}
-
 nums = list(map(int, lines[0].split(",")))
 for idx, x in enumerate(nums):
     said[x] = [idx]
@@ -21,6 +20,9 @@ for i in range(30000000 - len(nums)):
         if nums[-1] not in said:
             said[nums[-1]] = [len(nums) - 1]
         else:
-            said[nums[-1]].append(len(nums)-1)
-
-print(nums[-5:])
+            if len(said[nums[-1]]) == 1:
+                said[nums[-1]].append(len(nums)-1)
+            else:
+                said[nums[-1]][-2] = said[nums[-1]][-1]
+                said[nums[-1]][-1] = len(nums) - 1
+print(nums[-1])
