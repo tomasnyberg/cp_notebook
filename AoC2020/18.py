@@ -1,8 +1,8 @@
-import sys
+import sys, re
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-result = 0
-def eval_paren(line, start, end):
+
+def eval_paren(line, start, end, evaluated):
     result = 0
     i = start
     operator = None
@@ -11,26 +11,11 @@ def eval_paren(line, start, end):
             i += 1
             continue
         if line[i] == '(':
-            opened = 0
-            # Find the closing parenthesis
-            otherend = -1
-            for j in range(i, end):
-                if line[j] == '(':
-                    opened += 1
-                elif line[j] == ')':
-                    opened -= 1
-                    if opened == 0:
-                        otherend = j + 1
-                        break
-            res = eval_paren(line, i+1, otherend)
-            if operator:
-                if operator == '+':
-                    result += res
-                elif operator == '*':
-                    result *= res
-            else:
-                result = res
-            i = otherend
+            if operator == '+':
+                result += evaluated[i]
+            elif operator == '*':
+                result *= evaluated[i]
+            i+=1
             continue
         if line[i] in ['+', '*']:
             operator = line[i]
@@ -47,6 +32,16 @@ def eval_paren(line, start, end):
     return result
 result = 0
 for line in lines:
-    result += eval_paren(line, 0, len(line))
+    st = []
+    evaluated = {}
+    for i in range(len(line)):
+        if line[i] == '(':
+            st.append(i)
+        elif line[i] == ')':
+            start = st.pop()
+            evaluated[start] = eval_paren(line, start+1, i+1, evaluated)
+    result += eval_paren(line, 0, len(line), evaluated)
+    print(line)
+    print(evaluated)
 
 print(result)
