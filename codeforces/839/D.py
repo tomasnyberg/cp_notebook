@@ -16,17 +16,14 @@ for line in lines[2::2]:
         else:
             print(-1)
     elif nums[:-1] == sorted(nums[:-1]):
-        candidate = math.ceil((nums[-2] + nums[-1]) / 2)
-        for i in range(len(nums)):
-            nums[i] = abs(nums[i] - candidate)
-        if nums == sorted(nums):
-            print(candidate)
-        else:
-            print(-1)
-    elif nums[1:] == sorted(nums[1:]):
-        candidate = math.ceil((nums[0] + nums[1]) / 2)
-        for i in range(len(nums)):
-            nums[i] = abs(nums[i] - candidate)
+        candidates = [math.ceil((nums[-2] + nums[-1]) / 2), math.ceil((nums[-2] + nums[-1]) / 2) - 1]
+        for candidate in candidates:
+            numscopy = nums.copy()
+            for i in range(len(numscopy)):
+                numscopy[i] = abs(numscopy[i] - candidate)
+            if numscopy == sorted(numscopy):
+                nums = numscopy
+                break
         if nums == sorted(nums):
             print(candidate)
         else:
