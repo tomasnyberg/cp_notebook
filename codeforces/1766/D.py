@@ -6,18 +6,50 @@ def gcd(a, b):
         return a
     return gcd(b, a % b)
 
-def prime_factors(n):
-    i = 2
-    factors = []
-    while i * i <= n:
-        if n % i:
-            i += 1
-        else:
-            n //= i
-            factors.append(i)
-    if n > 1:
-        factors.append(n)
-    return factors
+import math as mt
+ 
+MAXN = 10**7 + 1
+ 
+# stores smallest prime factor for
+# every number
+spf = [0 for i in range(MAXN)]
+ 
+# Calculating SPF (Smallest Prime Factor)
+# for every number till MAXN.
+# Time Complexity : O(nloglogn)
+def sieve():
+    spf[1] = 1
+    for i in range(2, MAXN):
+         
+        # marking smallest prime factor
+        # for every number to be itself.
+        spf[i] = i
+ 
+    # separately marking spf for
+    # every even number as 2
+    for i in range(4, MAXN, 2):
+        spf[i] = 2
+ 
+    for i in range(3, mt.ceil(mt.sqrt(MAXN))):
+         
+        # checking if i is prime
+        if (spf[i] == i):
+             
+            # marking SPF for all numbers
+            # divisible by i
+            for j in range(i * i, MAXN, i):
+                 
+                # marking spf[j] if it is
+                # not previously marked
+                if (spf[j] == j):
+                    spf[j] = i
+sieve()
+def prime_factors(x):
+    ret = list()
+    while (x != 1):
+        ret.append(spf[x])
+        x //= spf[x]
+    return ret
 
 for line in lines[1:]:
     a, b = map(int, line.split())
