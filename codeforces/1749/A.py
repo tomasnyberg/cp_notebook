@@ -5,5 +5,7 @@ i = 1
 while i < len(lines):
     n, m = map(int, lines[i].split())
     i += 1
-    taken = set()
+    for _ in range(m):
+        i+=1
+    print("YES" if n > m else "NO")
     
