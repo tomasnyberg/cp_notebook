@@ -18,14 +18,13 @@ def sieve(num):
     return result
 primes = sieve(n + 1)
 result = 0
+divisor = 1
+count = 1
 for i in range(1, n+1):
-    result += pow(m, i, MOD)
-    result %= MOD
-cur = 1
-cnt = 1
-for i in range(1,n+1):
     if i in primes:
-        cur *= i
-    cnt = cnt*(m//cur)
-    result -= cnt
+        divisor *= i
+    result += pow(m, i, MOD)
+    count *= m // divisor
+    result -= count
+    result %= MOD
 print(result % MOD)
