@@ -33,8 +33,12 @@ def play(nums, k):
 
 for line in lines[2::2]:
     nums = list(map(int, line.split()))
-    res = 0
-    for k in range(0, 101):
-        if play(nums[:], k):
-            res = k
-    print(res)
+    low = 0
+    high = 100
+    while low < high:
+        mid = (low + high) >> 1
+        if play(nums[:], mid):
+            low = mid + 1
+        else:
+            high = mid
+    print(low-1)
