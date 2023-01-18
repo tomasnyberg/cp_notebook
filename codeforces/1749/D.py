@@ -24,7 +24,6 @@ for i in range(1, n+1):
 cur = 1
 cnt = 1
 for i in range(1,n+1):
-    if cur > m: continue
     if i in primes:
         cur *= i
     cnt = cnt*(m//cur)
