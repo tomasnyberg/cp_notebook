@@ -52,6 +52,12 @@ def find_wanted(xs):
         result[x] = str(result[x])
     return ''.join(result)
 
+def convert(s):
+    result = [0]*len(s)
+    for i in range(len(s)):
+        result[int(s[i]) - 1] = i
+    return ''.join(map(str, result))
+
 o = 1
 while o < len(lines):
     n, m = map(int, lines[o].split())
@@ -66,9 +72,11 @@ while o < len(lines):
                 to_insert += "0"
             else:
                 to_insert += str(arrays[i][j])
+        to_insert = convert(to_insert)
         insert(to_insert, root)
     for i in range(len(arrays)):
         wanted = find_wanted(arrays[i])
+        wanted = convert(wanted)
         # print(arrays[i], wanted)
         curr = ""
         result = 0
