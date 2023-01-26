@@ -1,10 +1,5 @@
-from functools import lru_cache
-
 def solve(n, k, p):
-    p = [0] + p
-    for i in range(1, n):
-        p[i] -= 1
-    
+    p = [0] + [x-1 for x in p]
     def check(h):
         d = [1] * n
         ops = 0
