@@ -13,7 +13,7 @@ for line in lines[1:]:
             result.append(1)
             remaining -= 1
         else:
-            result.append(min(6, remaining - n))
+            result.append(min(result[0], remaining - n))
             remaining -= result[-1]
     assert(sum(result) == s)
     print(*result)
