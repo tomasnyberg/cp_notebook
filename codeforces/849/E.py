@@ -3,17 +3,12 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 for line in lines[2::2]:
     nums = list(map(int, line.split()))
-    smallestnegative = -10**12
-    negatives = 0
+    smallestmagnitude = 10**9
     for num in nums:
-        if num <= 0:
-            negatives += 1
-            smallestnegative = max(smallestnegative, num)
-    if negatives % 2 == 0:
-        for i in range(len(nums)):
-            nums[i] = abs(nums[i])
-        print(sum(nums))
+        if abs(num) < smallestmagnitude:
+            smallestmagnitude = abs(num) 
+    negatives = [num for num in nums if num < 0]
+    if len(negatives) % 2 == 0:
+        print(sum(abs(num) for num in nums))
     else:
-        for i in range(len(nums)):
-            nums[i] = abs(nums[i])
-        print(sum(nums) - 2*abs(smallestnegative))
+        print(sum(abs(num) for num in nums) - 2*smallestmagnitude)
