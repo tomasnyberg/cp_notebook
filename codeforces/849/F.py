@@ -113,38 +113,23 @@ def f(x):
         result += int(c)
     return result
 
+import bisect
+
 def solve(queries, nums):
-    already_found = {}
-    def add_interval(x, y):
-        i = bisect_left(sl, x)
-        while i < len(sl) and sl[i] <= y:
-            before = nums[sl[i]]
-            nums[sl[i]] = f(nums[sl[i]])
-            if before == nums[sl[i]]:
-                already_found[sl[i]] = nums[sl[i]]
-                sl.pop(i)
-            else:
-                i+=1
-    def query(x):
-        if x in already_found:
-            return already_found[x]
-        start = bisect_left(sl, x)
-        end = bisect_right(sl, x)
-        if start == end:
-            return 0
-        return nums[sl[start]]
-    sl = SortedList([i for i in range(len(nums))])
-    for xs in queries:
-        # print("Nums before query", nums)
-        # print("SL before query", sl)
-        # print("The query is", list(map(lambda x: x-1, xs[1:])))
-        if xs[0] == 1: # Add interval
-            add_interval(xs[1]-1, xs[2]-1)
-        else: # Query
-            print(query(xs[1]-1))
-        # print("Nums after query", nums)
-        # print("SL after query", sl)
-        # print()
+    entry_points = SortedList()
+    exit_points = SortedList()
+    for query in queries:
+        if query[0] == 1:
+            entry_points.add(query[1])
+            exit_points.add(query[2] + 1)
+        elif query[0] == 2:
+            a = bisect.bisect_right(entry_points, query[1])
+            b = bisect.bisect_right(exit_points, query[1])
+            # print(a-b, query)
+            for _ in range(a-b):
+                nums[query[1] - 1] = f(nums[query[1] - 1])
+            print(nums[query[1] - 1])
+            
 
 i = 1
 while i < len(lines):
