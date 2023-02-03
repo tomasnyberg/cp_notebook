@@ -125,7 +125,6 @@ def solve(queries, nums):
                 sl.pop(i)
             else:
                 i+=1
-        
     def query(x):
         if x in already_found:
             return already_found[x]

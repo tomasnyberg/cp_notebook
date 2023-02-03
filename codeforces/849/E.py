@@ -3,7 +3,7 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 for line in lines[2::2]:
     nums = list(map(int, line.split()))
-    smallestnegative = -10**9
+    smallestnegative = -10**12
     negatives = 0
     for num in nums:
         if num <= 0:
