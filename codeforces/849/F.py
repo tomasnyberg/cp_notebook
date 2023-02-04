@@ -113,23 +113,27 @@ def f(x):
         result += int(c)
     return result
 
-import bisect
-
 def solve(queries, nums):
-    entry_points = SortedList()
-    exit_points = SortedList()
-    for query in queries:
-        if query[0] == 1:
-            entry_points.add(query[1])
-            exit_points.add(query[2] + 1)
-        elif query[0] == 2:
-            a = bisect.bisect_right(entry_points, query[1])
-            b = bisect.bisect_right(exit_points, query[1])
-            # print(a-b, query)
-            for _ in range(a-b):
-                nums[query[1] - 1] = f(nums[query[1] - 1])
-            print(nums[query[1] - 1])
-            
+	active = SortedList([i for i in range(len(nums))])
+	for q in queries:
+		for i in range(1, len(q)):
+			q[i] -= 1
+	for q in queries:
+		if q[0] == 1:
+			l, r = q[1], q[2]
+			# print("Changing:", l, r)
+			while active:
+				idx = bisect_left(active, l)
+				if idx == len(active) or active[idx] > r or active[idx] < l:
+					break
+				nums[active[idx]] = f(nums[active[idx]])
+				a = active[idx]
+				active.pop(idx)
+				if nums[a] > 9:
+					active.add(a)
+				l = a + 1
+		else:
+			print(nums[q[1]])
 
 i = 1
 while i < len(lines):
@@ -143,3 +147,4 @@ while i < len(lines):
         queries.append(xs)
         i+=1
     solve(queries, nums)
+
