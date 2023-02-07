@@ -8,15 +8,16 @@ for i in range(1, len(lines), 3):
     matrix.append(list(map(int, lines[i+1].split(" "))))
     matrix.append(list(map(int, lines[i+2].split(" "))))
     time_til_end_matrix = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+    matrix[0][0] = -1
     for row in range(len(matrix)):
         biggest = matrix[row][0]
-        for col in range(1, len(matrix[row])):
+        for col in range(0, len(matrix[row])):
             biggest = max(biggest+ 1, matrix[row][col] + 1)
             time_til_end_matrix[row][col] = biggest
     time_til_start_matrix = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
     for row in range(len(matrix)):
         biggest = matrix[row][-1]
-        for col in range(len(matrix[row])-2, -1, -1):
+        for col in range(len(matrix[row])-1, -1, -1):
             biggest = max(biggest + 1, matrix[row][col] + 1)
             time_til_start_matrix[row][col] = biggest
     # for xs in matrix:
@@ -35,7 +36,7 @@ for i in range(1, len(lines), 3):
         to_end = max(to_end + 1, matrix[other_row][-1] + 1)
         back = max(to_end + (len(matrix[0]) - ending_col - 1), time_til_start_matrix[other_row][ending_col])
         return back
-    result = 10**9
+    result = 10**20
     pos = [0, 0]
     time = 0
     while pos != [1, len(matrix[0])-1 ]:
