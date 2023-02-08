@@ -24,12 +24,5 @@ bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a
 
 
 int main() {
-    int t;
-    cin >> t;
-    while(t--){
-        int n; cin >> n;
-        string s; cin >> s;
-        sort(s.begin(),s.end());
-        cout << s.back() - 'a' + 1 << endl;
-    }
+    cout << "Hello world\n";
 }
