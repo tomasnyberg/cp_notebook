@@ -17,6 +17,14 @@ string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
 
+int f(int n){
+    int res = 0;
+    while(n){
+        res += n%10;
+        n /= 10;
+    }
+    return res;
+}
 
 int solve(){
     int n;
@@ -32,15 +40,22 @@ int solve(){
         if(type==1){
             int l,r;
             cin >> l >> r;
-            queries.push_back({type,l,r});
+            queries.push_back({type,l-1,r-1});
         } else {
             int x;
             cin >> x;
-            queries.push_back({type,x});
+            queries.push_back({type,x-1});
         }
     }
-    for (auto v : queries) print_v(v);
-    cout << "\n\n";
+    for (auto v : queries){
+        if (v[0] == 1){
+            for(int i = v[1];i<=v[2];++i){
+                a[i] = f(a[i]);
+            }
+        } else {
+            cout << a[v[1]] << endl;
+        }
+    }
     return 0;
 }
 
