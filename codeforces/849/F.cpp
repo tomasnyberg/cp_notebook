@@ -32,6 +32,8 @@ int solve(){
     cin >> n >> q;
     vector<int> a(n);
     for (int i=0;i<n;++i) cin >> a[i];
+    set<int> s;
+    for (int i=0;i<n;++i) s.insert(i);
     // Create a vector queries which holds the queries
     vector<vector<int>> queries;
     while(q--){
@@ -49,8 +51,11 @@ int solve(){
     }
     for (auto v : queries){
         if (v[0] == 1){
-            for(int i = v[1];i<=v[2];++i){
-                a[i] = f(a[i]);
+            auto it = s.lower_bound(v[1]);
+            while(it != s.end() && *it <= v[2]){
+                a[*it] = f(a[*it]);
+                if (a[*it] < 10) s.erase(it++);
+                else ++it;
             }
         } else {
             cout << a[v[1]] << endl;
