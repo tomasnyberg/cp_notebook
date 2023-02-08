@@ -24,5 +24,34 @@ bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a
 
 
 int main() {
-    cout << "Hello world\n";
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<int> v(n);
+        for (int i=0;i<n;++i) cin >> v[i];
+        // Copy the vector v to a new vector
+        vector<pair<int,int>> v2(n);
+        for (int i=0;i<n;++i){
+            v2[i].first = v[i];
+            v2[i].second = i;
+        };
+        // Sort the new vector
+        sort(v2.begin(), v2.end(), [](const auto &a, const auto &b) {
+            return a.first < b.first;
+        });
+        auto biggest = v2[n-1];
+        auto secondbiggest = v2[n-2];
+        for(int i = 0; i < n; i++){
+            if(i == biggest.second){
+                cout << biggest.first - secondbiggest.first << " ";
+            } else if (i == secondbiggest.second){
+                cout << secondbiggest.first - biggest.first << " ";
+            } else {
+                cout << v[i] - biggest.first << " ";
+            }
+        }
+        cout << endl;
+    }
 }
