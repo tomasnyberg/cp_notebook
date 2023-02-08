@@ -7,7 +7,11 @@ fi
 filename=$1.cpp
 
 cat > $filename <<EOF
-#include  <bits/stdc++.h>
+// #include  <bits/stdc++.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <math.h>
 
 using namespace std;
 
