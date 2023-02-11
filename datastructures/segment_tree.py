@@ -49,7 +49,7 @@ class segment_tree:
 
     def update(self, x, v):
         self._update_util( 0, 0, self.n-1, x, v )   
-        self.array[x] =v         
+        self.array[x] =v
 
 print("\nRange Sum:")
 # Range Sum
