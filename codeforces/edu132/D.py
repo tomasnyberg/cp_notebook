@@ -66,9 +66,11 @@ for q in queries:
         continue
     height = sx + ((n - sx)//k)*k
     # print("We can at most go to", height, sx, k)
-    highestwall = st.query(sy-1, ey-1)
+    left = min(sy-1, ey-1)
+    right = max(sy-1, ey-1)
+    highestwall = st.query(left, right)
     # print("the highest wall in the interval is", highestwall)
-    if highestwall >= height:
+    if highestwall >= height and highestwall > 0:
         print("NO")
     else:
         print("YES")
