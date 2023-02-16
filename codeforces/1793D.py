@@ -36,12 +36,18 @@ for i in range(1, len(lines), 2):
     phq = [p[idx]]
     qhq = [q[idx]]
     result = [0]
+    extra = 0
     pcurr, qcurr, left, right = expand(phq, qhq, 0, 0, p, q, idx, idx, 0, result)
     while pcurr != len(p) or qcurr != len(q):
         idx = p_indices[pcurr + 1] if pcurr <= qcurr else q_indices[qcurr + 1]
         steps = idx - right if idx > right else -(left - idx)
+        if idx > right and pcurr == qcurr:
+            extra += left
+        elif idx < left and pcurr == qcurr:
+            extra += len(p) - right - 1
         pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps, result)
     result[0] //= 2
+    result[0] += extra
     result = result[0]
     before = min(p_indices[1], q_indices[1])
     result += before*(before + 1)//2
