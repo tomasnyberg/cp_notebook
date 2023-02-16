@@ -42,6 +42,14 @@ for i in range(1, len(lines), 2):
         steps = idx - right if idx > right else -(left - idx)
         pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps, result)
     result[0] //= 2
+    result = result[0]
+    before = min(p_indices[1], q_indices[1])
+    result += before*(before + 1)//2
+    between = max(p_indices[1], q_indices[1]) - min(p_indices[1], q_indices[1]) - 1
+    result += between*(between + 1)//2
+    after = len(p) - max(p_indices[1], q_indices[1]) - 1
+    result += after*(after + 1)//2
+    print(result)
     
 
         
