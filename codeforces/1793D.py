@@ -3,7 +3,7 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 from heapq import heappop, heappush
 
 
-def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
+def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps, result):
     def check(pcurr, qcurr):
         while phq and phq[0] == pcurr + 1:
             pcurr += 1
@@ -11,6 +11,8 @@ def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
         while qhq and qhq[0] == qcurr + 1:
             qcurr += 1
             heappop(qhq)
+        if pcurr == qcurr:
+            result[0] += 1
         return pcurr, qcurr
     for _ in range(abs(steps)):
         if steps > 0:
@@ -21,6 +23,7 @@ def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
             left -= 1
             heappush(phq, p[left])
             heappush(qhq, q[left])
+        pcurr, qcurr = check(pcurr, qcurr)
     pcurr, qcurr = check(pcurr, qcurr)
     return pcurr, qcurr, left, right
 
@@ -32,11 +35,13 @@ for i in range(1, len(lines), 2):
     idx = p_indices[1]
     phq = [p[idx]]
     qhq = [q[idx]]
-    pcurr, qcurr, left, right = expand(phq, qhq, 0, 0, p, q, idx, idx, 0)
+    result = [0]
+    pcurr, qcurr, left, right = expand(phq, qhq, 0, 0, p, q, idx, idx, 0, result)
     while pcurr != len(p) or qcurr != len(q):
         idx = p_indices[pcurr + 1] if pcurr <= qcurr else q_indices[qcurr + 1]
         steps = idx - right if idx > right else -(left - idx)
-        pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps)
-    print(pcurr, qcurr)
+        pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps, result)
+    result[0] //= 2
+    
 
         
