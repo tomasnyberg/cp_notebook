@@ -42,9 +42,9 @@ for i in range(1, len(lines), 2):
         idx = p_indices[pcurr + 1] if pcurr <= qcurr else q_indices[qcurr + 1]
         steps = idx - right if idx > right else -(left - idx)
         if idx > right and pcurr == qcurr:
-            result += left
+            result += left*(abs(steps))
         elif idx < left and pcurr == qcurr:
-            result += len(p) - right - 1
+            result += (len(p) - right - 1)*(abs(steps))
         pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps, seen)
     result += len(seen)
     before = min(p_indices[1], q_indices[1])
