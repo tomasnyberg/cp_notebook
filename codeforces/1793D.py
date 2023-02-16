@@ -4,6 +4,14 @@ from heapq import heappop, heappush
 
 
 def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
+    def check(pcurr, qcurr):
+        while phq and phq[0] == pcurr + 1:
+            pcurr += 1
+            heappop(phq)
+        while qhq and qhq[0] == qcurr + 1:
+            qcurr += 1
+            heappop(qhq)
+        return pcurr, qcurr
     for _ in range(abs(steps)):
         if steps > 0:
             right += 1
@@ -13,12 +21,7 @@ def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
             left -= 1
             heappush(phq, p[left])
             heappush(qhq, q[left])
-    while phq and phq[0] == pcurr + 1:
-        pcurr += 1
-        heappop(phq)
-    while qhq and qhq[0] == qcurr + 1:
-        qcurr += 1
-        heappop(qhq)
+    pcurr, qcurr = check(pcurr, qcurr)
     return pcurr, qcurr, left, right
 
 for i in range(1, len(lines), 2):
