@@ -4,16 +4,15 @@ from heapq import heappop, heappush
 
 
 def expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps):
-    if steps < 0:
-        for _ in range(-steps):
-            left -= 1
-            heappush(phq, p[left])
-            heappush(qhq, q[left])
-    else:
-        for _ in range(steps):
+    for _ in range(abs(steps)):
+        if steps > 0:
             right += 1
             heappush(phq, p[right])
             heappush(qhq, q[right])
+        else:
+            left -= 1
+            heappush(phq, p[left])
+            heappush(qhq, q[left])
     while phq and phq[0] == pcurr + 1:
         pcurr += 1
         heappop(phq)
@@ -35,5 +34,6 @@ for i in range(1, len(lines), 2):
         idx = p_indices[pcurr + 1] if pcurr <= qcurr else q_indices[qcurr + 1]
         steps = idx - right if idx > right else -(left - idx)
         pcurr, qcurr, left, right = expand(phq, qhq, pcurr, qcurr, p, q, left, right, steps)
+    print(pcurr, qcurr)
 
         
