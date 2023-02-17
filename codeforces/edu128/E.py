@@ -17,8 +17,6 @@ def fill_in_min(extremes, matrix, d):
 
 for i in range(1, len(lines), 3):
     matrix = [lines[i+1], lines[i+2]]
-    for xs in matrix:
-        print(xs)
     left_mosts = []
     for c in range(len(matrix[0])):
         if matrix[0][c] == '*' or matrix[1][c] == '*':
@@ -35,14 +33,27 @@ for i in range(1, len(lines), 3):
             if matrix[1][c] == '*':
                 right_mosts.append((1,c))
             break
-    for xss in fill_in_min(left_mosts, matrix, 1):
-        for xs in xss:
-            print(xs)
-        print()
-    for xss in fill_in_min(right_mosts, matrix, -1):
-        for xs in xss:
-            print(xs)
-        print()
+    left_mins = fill_in_min(left_mosts, matrix, 1)
+    right_mins = fill_in_min(right_mosts, matrix, -1)
+    # for xss in left_mins:
+    #     for xs in xss:
+    #         print(xs)
+    #     print()
+    # for xss in right_mins:
+    #     for xs in xss:
+    #         print(xs)
+    #     print()
+    result = 10**9
+    results = {}
+    for c in range(len(matrix[0])):
+        for xss in left_mins:
+            for yss in right_mins:
+                for r in range(2):
+                    results[(r,c)] = xss[r][c] + yss[r][c] + (1 if matrix[1-r][c] == '*' else 0)
+                    result = min(result, xss[r][c] + yss[r][c] + (1 if matrix[1-r][c] == '*' else 0))
+    # print(results)
+    print(result)
+
 
 
 
