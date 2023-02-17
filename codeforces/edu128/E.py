@@ -49,8 +49,10 @@ for i in range(1, len(lines), 3):
         for xss in left_mins:
             for yss in right_mins:
                 for r in range(2):
-                    results[(r,c)] = xss[r][c] + yss[r][c] + (1 if matrix[1-r][c] == '*' else 0)
-                    result = min(result, xss[r][c] + yss[r][c] + (1 if matrix[1-r][c] == '*' else 0))
+                    extra = 0
+                    if matrix[1-r][c] == '*' and yss[1-r][c] > yss[r][c] and xss[1-r][c] > xss[r][c]:
+                        extra = 1
+                    result = min(result, xss[r][c] + yss[r][c] + extra)
     # print(results)
     print(result)
 
