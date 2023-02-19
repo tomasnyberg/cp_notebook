@@ -42,15 +42,13 @@ int main() {
         vector<vector<int>> dp(2, vector<int>(n, 1e9));
         dp[0][0] = s[1][0] == '*' ? 1 : 0;
         dp[1][0] = s[0][0] == '*' ? 1 : 0;
-        for(int c = 0; c < n; c++){
+        for(int c = 1; c < n; c++){
             for(int r = 0; r < 2; r++){
                 int a = (c-1 >= 0 ? dp[r][c-1] : 0) + 1 + (s[1-r][c] == '*' ? 1 : 0);
                 int b = (c-1 >= 0 ? dp[1-r][c-1] : 0) + 2;
                 dp[r][c] = min(a, b);
             }
         }
-        // print_v(dp[0]);
-        // print_v(dp[1]);
-        cout << min(dp[0][n-1], dp[1][n-1]) - 1 << endl;
+        cout << min(dp[0][n-1], dp[1][n-1])<< endl;
     }
 }
