@@ -50,24 +50,22 @@ class segment_tree:
     def update(self, x, v):
         self._update_util( 0, 0, self.n-1, x, v )   
         self.array[x] =v
+    
+    def __setitem__(self, x, v):
+        self.array[x] = v
+        self._update_util( 0, 0, self.n-1, x, v )
 
-print("\nRange Sum:")
-# Range Sum
-st = segment_tree([1,2,3,4,5,6,7,8])
-print(st)
-print(st.query(2,4))
-print(st.query(0,7))
-st.update(3,5)
-print(st.query(2,4))
-
-print("\nRange Max:")
-# Range Max
-st = segment_tree([1,2,3,4,5,6,7,8], max, basev=-float('inf'))
-print(st)
-print(st.query(2,4))
-st.update(3,6)
-print(st.query(2,4))
-
-print("\nRange product")
-st = segment_tree([1,2,3,4,5,6,7,8], lambda x, y: x*y, basev=1)
-print(st.query(2,4))
+import random
+# array of 100 random numbers 
+a = [random.randint(0,10000) for i in range(100000)]
+st = segment_tree(a)
+for i in range(100000):
+    if random.randint(0,1):
+        new_val = random.randint(0,100)
+        # update the value at index i to a random number
+        st[i] = new_val
+        a[i] = new_val
+    else:
+        low = random.randint(0,99)
+        high = random.randint(low,99)
+        assert st.query(low, high) == sum(a[low:high+1])
