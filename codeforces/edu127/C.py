@@ -18,8 +18,9 @@ for i in range(1, len(lines),2 ):
     # print(nums)
     for j in range(len(nums)):
         days_we_can = math.ceil((x-CS[j])/(j+1))
-        if CS[j] + (days_we_can + 1)*(j) <= x:
+        if CS[j] + (days_we_can)*(j + 1) <= x:
             days_we_can += 1
         # print("we can buy", j, "for", days_we_can, "days")
+        # print(CS[j] + (days_we_can )*(j + 1))
         result += days_we_can if days_we_can > 0 else 0
     print(result)
