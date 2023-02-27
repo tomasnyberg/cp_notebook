@@ -1,5 +1,6 @@
 import sys
 import bisect
+from functools import lru_cache
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def calculate_cost(programs, start, end, hot, cold):
@@ -18,44 +19,16 @@ for i in range(1, len(lines), 4):
     programs = list(map(int, lines[i + 1].split()))
     cold = list(map(int, lines[i + 2].split()))
     hot = list(map(int, lines[i + 3].split()))
-    seen = {}
-    for idx, x in enumerate(programs):
-        if x not in seen:
-            seen[x] = []
-        seen[x].append(idx)
-    hotstate_a = [-1, 0]
-    hotstate_b = [-1, 0]
-    time = 0
-    for idx, x in enumerate(programs):
-        if x in [hotstate_a[0], hotstate_b[0]]:
-            time += hot[x-1]
-        else:
-            if hotstate_a[0] == -1:
-                hotstate_a = [x, idx]
-                time += cold[x-1]
-                continue
-            if hotstate_b[0] == -1:
-                hotstate_b = [x, idx]
-                time += cold[x-1]
-                continue
-            a_next = seen[hotstate_a[0]][hotstate_a[1] + 1] if hotstate_a[1] + 1 < len(seen[hotstate_a[0]]) else n
-            timesave_a = 0
-            if a_next != n:
-                timesave_a = cold[hotstate_a[0]-1] - hot[hotstate_a[0]-1]
-            b_next = seen[hotstate_b[0]][hotstate_b[1] + 1] if hotstate_b[1] + 1 < len(seen[hotstate_b[0]]) else n
-            timesave_b = 0
-            if b_next != n:
-                timesave_b = cold[hotstate_b[0]-1] - hot[hotstate_b[0]-1]
-            time_taken_a = calculate_cost(programs, idx, a_next, hot, cold)
-            time_taken_b = calculate_cost(programs, idx, b_next, hot, cold)
-            if time_taken_a + timesave_a < time_taken_b + timesave_b:
-                time += cold[x-1]
-                hotstate_b = [x, idx]
-            else:
-                time += cold[x-1]
-                hotstate_a = [x, idx]
-    print(time)
-
+    @lru_cache(None)
+    def recur(j, a_hot, b_hot):
+        if j == n:
+            return 0
+        if programs[j] in (a_hot, b_hot):
+            return hot[programs[j]-1] + recur(j + 1, a_hot, b_hot)
+        a = cold[programs[j]-1] + recur(j + 1, a_hot, programs[j])
+        b = cold[programs[j]-1] + recur(j + 1, programs[j], b_hot)
+        return min(a, b)
+    print(recur(0, 0, 0))
 
 
             
