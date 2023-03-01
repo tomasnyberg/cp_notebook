@@ -1,43 +1,54 @@
 import sys
-from functools import lru_cache
 lines = list(map(str.strip, sys.stdin.readlines()))
-from collections import deque 
-MOD = 998244353
 
-def sieve(num):
-    prime = [True for i in range(num+1)]
-    result = set()
-    p = 2
-    while (p * p <= num):
-        if (prime[p] == True):
-            for i in range(p * p, num+1, p):
-                prime[i] = False
-        p += 1
-    for p in range(2, num+1):
-        if prime[p]:
-            result.add(p)
-    return result
+def binary_search(a, b, longest):
+    def check(x):
+        return x * 2**longest <= b
+    low = a
+    high = b
+    while low < high:
+        mid = (low + high) // 2
+        if check(mid):
+            low = mid + 1
+        else:
+            high = mid
+    return low - 1
 
-first_10 = sieve(20)
-print(first_10)
-
-l, r  = 1, 10**6
-adj = [[] for _ in range(10**6)]
-for i in range(l, r+1):
-    for j in range(i*2, r+1, i):
-        adj[i-l].append(j-l)
-
-def bfs(l, r):
-    dq = deque([0])
-    dist = [0 for _ in range(r-l+1)]
-    while dq:
-        u = dq.pop(0)
-        for v in adj[u]:
-            if dist[v] == 0:
-                dist[v] = dist[u] + 1
-                dq.append(v)
-    return dist
+def binary_search_3(a, b, longest):
+    def check(x):
+        return x * 3 * 2**(longest-1) <= b
+    low = a
+    high = b
+    while low < high:
+        mid = (low + high) // 2
+        if check(mid):
+            low = mid + 1
+        else:
+            high = mid
+    return low - 1
 
 
 for line in lines[1:]:
-    l, r = map(int, line.split())
+    a, b = map(int, line.split())
+    longest = 0
+    x = a
+    while x <= b:
+        longest += 1
+        x *= 2
+    longest -= 1
+    if longest == 0:
+        print(1, b-a +1)
+        continue
+    # print(a, " can at most be multipled by 2^", longest)
+    # print(a * 2**longest, longest)
+    res = binary_search(a, b, longest)
+    res2 = binary_search_3(a, b, longest)
+    # print("2s and threes", res, res2)
+    only_twos = res - a + 1
+    one_three = res2 - a + 1
+    # print("threes:", one_three)
+    # print(only_twos, one_three)
+    print(longest+1, only_twos + one_three*(longest))
+    
+
+     
