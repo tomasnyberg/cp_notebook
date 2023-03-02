@@ -4,27 +4,26 @@ from functools import lru_cache
 
 class TrieNode:
     def __init__(self):
-        self.children = {}
-        self.isWord = False
-        self.words = []
-        self.children = {}
+        self.children = [None, None]
         self.count = 0
 
 def insert(word: str, root: TrieNode, ii):
     curr = root
     for idx, c in enumerate(word):
-        if c not in curr.children:
-            curr.children[c] = TrieNode()
-        curr = curr.children[c]
-    curr.words.append(ii)
+        j = int(c)
+        if not curr.children[j]:
+            curr.children[j] = TrieNode()
+        curr = curr.children[j]
+    curr.count += 1
 
 def amount_in_trie(word: str, root: TrieNode):
     curr = root
     for c in word:
-        if c not in curr.children:
-            return [] ## TODO we could possible be able to skip this character
-        curr = curr.children[c]
-    return curr.words
+        j = int(c)
+        if not curr.children[j]:
+            return 0
+        curr = curr.children[j]
+    return curr.count
 
 oddroot = TrieNode()
 evenroot = TrieNode()
@@ -40,7 +39,7 @@ for idx, line in enumerate(lines[1:]):
     else:
         insert(s, oddroot, idx)
 
-result = set()
+result = 0
 for ii, line in enumerate(lines[1:]):
     num = 0
     for c in line:
@@ -60,15 +59,13 @@ for ii, line in enumerate(lines[1:]):
             lookingfor[idx] = '0'
             possibilities.append(''.join(lookingfor))
             lookingfor[idx] = '1'
-    matches = []
+    matches = 0
     if len(line) % 2 == 0:
         for possibility in possibilities:
             matches += amount_in_trie(possibility, oddroot)
     else:
         for possibility in possibilities:
             matches += amount_in_trie(possibility, evenroot)
-    for m in matches:
-        t = (min(ii,m), max(ii, m))
-        result.add(t)
+    result += matches
     # print("line", s, "can contribute with", matches)
-print(len(result))
+print(result//2)
