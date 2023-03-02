@@ -63,6 +63,18 @@ int amount_in_trie(string word, TrieNode* root) {
     return curr->count;
 }
 
+int count_ones(int num) {
+    int count = 0;
+    while (num != 0) {
+        if (num & 1) {
+            count++;
+        }
+        num >>= 1;
+    }
+    return count;
+}
+
+
 int main() {
     int n;
     cin >> n;
@@ -74,11 +86,15 @@ int main() {
     TrieNode* evenroot = new TrieNode();
     for (int i=0;i<n;++i) {
         int num = 0;
+        int seen =0;
         string s = words[i];
         for (int j=0;j<(int)s.size();++j) {
             num ^= (1 << (s[j] - 'a'));
+            seen |= (1 << (s[j] - 'a'));
         }
-        if(num == (1<<27)-1) continue;
+        if(count_ones(seen) == 26){
+            continue;
+        }
         string bin = bitset<26>(num).to_string();
         if (s.size() % 2 == 0){
             insert(bin, evenroot, i);
@@ -89,11 +105,15 @@ int main() {
     ll ans = 0;
     for(int ii = 0; ii < n; ii++){
         string s = words[ii];
+        int seen =0;
         int num = 0;
         for (int j=0;j<(int)s.size();++j) {
             num ^= (1 << (s[j] - 'a'));
+            seen |= (1 << (s[j] - 'a'));
         }
-        if(num == (1<<27)-1) continue;
+        if(count_ones(seen) == 26){
+            continue;
+        }
         bitset<26> bs = bitset<26>(num);
         for(int i = 0; i < 26; i++){
             if(num & (1 << i)){
