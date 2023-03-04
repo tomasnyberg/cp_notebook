@@ -1,22 +1,19 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
+from collections import deque
 
 for line in lines[2::2]:
-    s = line.lower()
-    index = 0
-    meow = "meow"
-    seenw = False
-    for c in s:
-        if c == meow[index]:
-            continue
-        elif index < 3 and c == meow[index+1]:
-            index += 1
-            if index == 3:
-                seenw = True
-        else:
-            seenw = False
+    s = list(line.lower())
+    s.reverse()
+    for char in ['m', 'e', 'o', 'w']:
+        atleastone = False
+        while s and s[-1] == char:
+            atleastone = True
+            s.pop()
+        if not atleastone:
+            s = True
             break
-    if index == 3 and seenw:
+    if not s:
         print("YES")
     else:
         print("NO")
