@@ -5,6 +5,7 @@
 #include <math.h>
 #include <algorithm>
 #include <cmath>
+#include <set>
 
 using namespace std;
 
@@ -81,6 +82,36 @@ int main() {
             b[i] = xs[i].second;
         }
         SparseTable st(b);
-        cout << st.query(0, n-1) << endl;
+        ll result = 1e18;
+        set<int> sl;
+        for(int i = 0; i < n; i++){
+            ll biggest = 1;
+            auto lb = sl.lower_bound(a[i]);
+            vector<int> candidates;
+            if (lb != sl.end()) {
+                candidates.push_back(*lb);
+            }
+            if(lb != sl.begin()){
+                auto prev = lb;
+                prev--;
+                candidates.push_back(*prev);
+            }
+            if(lb != sl.end()){
+                auto next = lb;
+                next++;
+                if(next != sl.end()) candidates.push_back(*next);
+            }
+            // Sort the candidates by the absolute diff between them and a[i]
+            sort(candidates.begin(), candidates.end(), [a, i](const auto& lhs, const auto& rhs) {
+                return abs(lhs - a[i]) < abs(rhs - a[i]);
+            });
+            // print_v(candidates);
+            ll biggestother = i == a.size() -1 ? candidates[0] : st.query(i+1, n-1);
+            ll otherbig = max(candidates.empty() ? -100000 : candidates[0], biggestother);
+            result = min(result, abs(a[i] - otherbig));
+            // cout << "i: " << i << " result " << result << endl;
+            sl.insert(b[i]);
+        }
+        cout << result << endl;
     }
 }
