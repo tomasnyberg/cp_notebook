@@ -20,8 +20,7 @@ increments = {}
 for c, v in units:
     increments[c] = max(increments.get(c, 0), v)
 
-dp = [0] * (C + 1)
-
+dp = [0] * (C + 2)
 
 for x in increments:
     for i in range(1, C+1):
@@ -29,7 +28,7 @@ for x in increments:
         cost = x * i
         if cost > C:
             break
-        dp[cost] = max(dp[cost], dp[cost-x] + increments[x])
+        dp[cost] = max(dp[cost], value)
 
 for i in range(1, len(dp)):
     dp[i] = max(dp[i], dp[i-1])
@@ -44,7 +43,7 @@ for m in monsters:
             high = mid
         else:
             low = mid + 1
-    print(low if low != C + 1 else -1, end=" ")
+    print(low if low <= C else -1, end=" ")
 print()
 
 
