@@ -2,57 +2,49 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 
-def is_palindrome(s):
-    n = len(s)
-    left_hash, right_hash = 0, 0
-    left_power, right_power = 1, 1
-    base, mod = 128, 10**9 + 7  # base and mod values for rolling hash
-    for i in range(n):
-        # Update the rolling hash for the left substring and right reversed substring
-        left_hash = (left_hash * base + ord(s[i])) % mod
-        right_hash = (right_hash + ord(s[i]) * right_power) % mod
-        left_power = (left_power * base) % mod
-        right_power = (right_power * base) % mod
+class RollingPalindromeChecker:
+    def __init__(self, base=131, mod=1_000_000_007):
+        self.base = base
+        self.mod = mod
+        self.left_hash = 0
+        self.right_hash = 0
+        self.power = 1
+        self.sequence = []
 
-        # Compare the hashes for the left and right reversed substrings
-        if left_hash == right_hash:
-            print(f"The prefix '{s[:i+1]}' is a palindrome")
+    def add_bit(self, bit):
+        self.sequence.append(bit)
+        self.left_hash = (self.left_hash * self.base + bit) % self.mod
+        self.right_hash = (self.right_hash + self.power * bit) % self.mod
+        self.power = (self.power * self.base) % self.mod
+
+    def is_palindromic(self):
+        return self.left_hash == self.right_hash and len(self.sequence) > 1
+
 
 for line in lines[2::2]:
-    s = line
+    s = list(map(int, (list(map(lambda x: '1' if x == '(' else '0', line)))))
+    # print(s)
     opened = 0
     n = len(s)
     removals = 0
     last_removed = 0
-    good_so_far = True
-    left_hash, right_hash = 0, 0
-    left_power, right_power = 1, 1
-    base, mod = 128, 10**9 + 7  # base and mod values for rolling hash
+    st = []
+    pc = RollingPalindromeChecker()
     for i, c in enumerate(s):
-        left_hash = (left_hash * base + ord(s[i])) % mod
-        right_hash = (right_hash + ord(s[i]) * right_power) % mod
-        left_power = (left_power * base) % mod
-        right_power = (right_power * base) % mod
-        if left_hash == right_hash and i - last_removed > 0:
-            if s[last_removed:i+1] == s[last_removed:i+1][::-1]:
-                # Reset our hashes
-                left_hash, right_hash = 0, 0
-                left_power, right_power = 1, 1
-                removals += 1
-                last_removed = i + 1
-                good_so_far = True
-                opened += 1 if c == '(' else -1
-                continue
-        if c == '(':
-            opened += 1
-        elif c == ')':
-            opened -= 1
-            if opened == 0 and good_so_far:
-                # Reset our hashes
-                left_hash, right_hash = 0, 0
-                left_power, right_power = 1, 1
-                removals += 1
-                last_removed = i + 1
-            if opened < 0:
-                good_so_far = False
+        opened += 1 if c == 1 else -1
+        pc.add_bit(c)
+        if opened < 0: st.append([2])
+        if st and st[-1] == 1 - c:
+            st.pop()
+        else:
+            st.append(c)
+        if not st or pc.is_palindromic():
+            if st and pc.is_palindromic():
+                if not s[last_removed:i+1] == s[last_removed:i+1][::-1]:
+                    continue
+            # print("Found good sequence", s[last_removed:i+1])
+            st = []
+            removals += 1
+            last_removed = i + 1
+            pc = RollingPalindromeChecker()
     print(removals, n - last_removed)
