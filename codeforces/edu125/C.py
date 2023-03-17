@@ -1,7 +1,6 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-
 class RollingPalindromeChecker:
     def __init__(self, base=131, mod=1_000_000_007):
         self.base = base
@@ -19,7 +18,6 @@ class RollingPalindromeChecker:
 
     def is_palindromic(self):
         return self.left_hash == self.right_hash and len(self.sequence) > 1
-
 
 for line in lines[2::2]:
     s = list(map(int, (list(map(lambda x: '1' if x == '(' else '0', line)))))
@@ -43,6 +41,7 @@ for line in lines[2::2]:
                 if not s[last_removed:i+1] == s[last_removed:i+1][::-1]:
                     continue
             # print("Found good sequence", s[last_removed:i+1])
+            opened = 0
             st = []
             removals += 1
             last_removed = i + 1
