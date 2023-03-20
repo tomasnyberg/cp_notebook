@@ -30,8 +30,8 @@ for line in lines[1:]:
         if (i, j) in seen:
             break
         seen.add((i, j))
-        moves += 1
-        if (i, j) in cornerdirs:
+        if (i, j) in cornerdirs and dir != cornerdirs[(i, j)]:
+            moves += 1
             dir = cornerdirs[(i, j)]
         if reachable(i, j, iend, jend, dir):
             good = True
@@ -48,5 +48,9 @@ for line in lines[1:]:
         dir = list(dir)
         dir[candidates[0][1]] *= -1
         dir = tuple(dir)
+        if (i, j) == (iend, jend):
+            good = True
+            break
+        moves += 1
         # print(i,j, dir)
     print(moves if good else -1)
