@@ -17,6 +17,9 @@ for line in lines[1:]:
     n, m, istart, jstart, iend, jend = map(int, (n, m, istart, jstart, iend, jend))
     dir = dir_map[dir]
     i, j = istart, jstart
+    if istart == iend and jstart == jend:
+        print(0)
+        continue
     # Find the intersection with column 1, row 1, column m, row n
     good = False
     cornerdirs  = {(1, 1):(1,1), (1, m):(1,-1), (n, 1):(-1,1), (n, m):(-1,-1)}
@@ -26,11 +29,13 @@ for line in lines[1:]:
         # Check if iend, jend is reachable with our current direction
         if (i, j) in seen:
             break
+        seen.add((i, j))
+        moves += 1
+        if (i, j) in cornerdirs:
+            dir = cornerdirs[(i, j)]
         if reachable(i, j, iend, jend, dir):
             good = True
             break
-        if (i, j) in cornerdirs:
-            dir = cornerdirs[(i, j)]
         until_left_wall = (1 - j) // dir[1]
         until_right_wall = (m - j) // dir[1]
         until_bottom_wall = (n - i) // dir[0]
@@ -38,11 +43,10 @@ for line in lines[1:]:
         candidates = [(until_left_wall, 1, "LEFTWALL"), (until_right_wall, 1, "RIGHTWALL"), (until_bottom_wall, 0, "BOTTOMWALL"), (until_top_wall, 0, "TOPWALL")]
         candidates = list(filter(lambda x: x[0] > 0, candidates))
         candidates.sort(key=lambda x: x[0])
-        assert(len(candidates) > 0)
         i += candidates[0][0] * dir[0]
         j += candidates[0][0] * dir[1]
         dir = list(dir)
         dir[candidates[0][1]] *= -1
         dir = tuple(dir)
-        seen.add((i, j))
-    print(moves if good else -1)    
+        # print(i,j, dir)
+    print(moves if good else -1)
