@@ -48,6 +48,9 @@ for line in lines[1:]:
             # print("here")
             # moves += 1
             dir = cornerdirs[(i, j)]
+        if reachable(i, j, iend, jend, dir):
+            good = True
+            break
         until_left_wall = (1 - j) // dir[1]
         until_right_wall = (m - j) // dir[1]
         until_bottom_wall = (n - i) // dir[0]
