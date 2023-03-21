@@ -8,7 +8,7 @@ def reachable(i, j, iend, jend, dir):
     dj = jend - j
     if abs(di) == abs(dj):
         # Check if di and dir[0] have the same parity, and dj and dir[1] have the same parity
-        return (di * dir[0] > 0) and (dj * dir[1] > 0)
+        return (di * dir[0] >= 0) and (dj * dir[1] >= 0)
     return False
 
 dir_map = {"DL": (1, -1), "DR": (1, 1), "UL": (-1, -1), "UR": (-1, 1)}
@@ -36,16 +36,18 @@ for line in lines[1:]:
         moves += 1
     while True:
         # Check if iend, jend is reachable with our current direction
+        # print(i, j, dir, moves)
         tup = (i, j, dir[0], dir[1])
         if tup in seen:
             break
         seen.add(tup)
-        if (i, j) in cornerdirs and dir != cornerdirs[(i, j)]:
-            moves += 1
-            dir = cornerdirs[(i, j)]
         if reachable(i, j, iend, jend, dir):
             good = True
             break
+        if (i, j) in cornerdirs and dir != cornerdirs[(i, j)]:
+            # print("here")
+            # moves += 1
+            dir = cornerdirs[(i, j)]
         until_left_wall = (1 - j) // dir[1]
         until_right_wall = (m - j) // dir[1]
         until_bottom_wall = (n - i) // dir[0]
