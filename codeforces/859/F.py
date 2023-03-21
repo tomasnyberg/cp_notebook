@@ -25,11 +25,21 @@ for line in lines[1:]:
     cornerdirs  = {(1, 1):(1,1), (1, m):(1,-1), (n, 1):(-1,1), (n, m):(-1,-1)}
     seen = set()
     moves = 0
+    if (i, j) in cornerdirs and dir != cornerdirs[(i, j)]:
+        dir = cornerdirs[(i, j)]
+        moves += 1
+    elif i + dir[0] == 0 or i + dir[0] == n+1:
+        dir = (dir[0] * -1, dir[1])
+        moves += 1
+    elif j + dir[1] == 0 or j + dir[1] == m+1:
+        dir = (dir[0], dir[1] * -1)
+        moves += 1
     while True:
         # Check if iend, jend is reachable with our current direction
-        if (i, j) in seen:
+        tup = (i, j, dir[0], dir[1])
+        if tup in seen:
             break
-        seen.add((i, j))
+        seen.add(tup)
         if (i, j) in cornerdirs and dir != cornerdirs[(i, j)]:
             moves += 1
             dir = cornerdirs[(i, j)]
