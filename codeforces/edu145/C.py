@@ -24,9 +24,13 @@ def find(k):
         
 def solve(n, k):
     start = [1000]*n
+    positive = n*(n+1)//2
+    negatived = 0
     for i in range(n + 1):
-        if count_positive_sum_subarrays(start) - k <= 0:
+        remaining = positive - (negatived*(negatived+1)//2)
+        if remaining - k <= 0:
             break
+        negatived += 1
         start[i] = -32
     to_get = -(count_positive_sum_subarrays(start) - k)
     idx = 0
