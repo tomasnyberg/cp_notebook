@@ -27,15 +27,16 @@ while i < len(lines):
     while a and b:
         curr_a = a.popleft()
         curr_target = b.popleft()
+        merged = [(curr_a, curr_target)]
         while b:
             target = lcm(curr_target, b[0])
-            print("Target", target, a[0], b[0])
-            if a[0] % (target//b[0]) == 0:
-                a.popleft()
-                b.popleft()
+            # print("Target", target, a[0], b[0])
+            if a[0] % (target//b[0]) == 0 and all(x % (target//y) == 0 for x, y in merged):
+                merged.append((a.popleft(), b.popleft()))
                 curr_target = target
             else:
                 break
+        # print(merged)
         result += 1
     print(result)
 
