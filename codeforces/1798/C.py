@@ -10,6 +10,14 @@ def gcd(a, b):
 def lcm(a, b):
     return a * b // gcd(a, b)
 
+def prime_factors(x):
+    counts = {}
+    for i in range(2, int(x**0.5) + 1):
+        while x % i == 0:
+            x //= i
+            counts[i] = counts.get(i, 0) + 1
+    return counts
+
 i = 1
 while i < len(lines):
     n = int(lines[i])
@@ -27,12 +35,14 @@ while i < len(lines):
     while a and b:
         curr_a = a.popleft()
         curr_target = b.popleft()
-        merged = [(curr_a, curr_target)]
+        curr_gcd = curr_a * curr_target
         while b:
             target = lcm(curr_target, b[0])
+            curr_gcd = gcd(curr_gcd, a[0] * b[0])
             # print("Target", target, a[0], b[0])
-            if a[0] % (target//b[0]) == 0 and all(x % (target//y) == 0 for x, y in merged):
-                merged.append((a.popleft(), b.popleft()))
+            if curr_gcd % target == 0:
+                a.popleft()
+                b.popleft()
                 curr_target = target
             else:
                 break
