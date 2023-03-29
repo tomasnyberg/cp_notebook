@@ -20,11 +20,11 @@ while i < len(lines):
         # print(xs)
         running = 0
         for j in range(len(xs)):
-            contribute = int((xs[j] - (running / (j))) * j) if j > 0 else 0
+            contribute = ((xs[j] - (running / (j))) * j) if j > 0 else 0
             result += contribute 
-            print(xs[j], "contributes with", contribute, "to result")
+            # print(xs[j], "contributes with", contribute, "to result")
             running += xs[j]
-    print(result)
+    print(int(result))
 
 
 
