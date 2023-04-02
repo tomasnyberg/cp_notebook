@@ -1,27 +1,14 @@
 import sys
 from decimal import Decimal, getcontext
-
-getcontext().prec = 50  # Set the precision of the decimal calculations
+import bisect
 
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def intersects_parabola(a, b, c, k):
-        # Ensure the parabola is upwards open
-    if a <= 0:
-        raise ValueError("The parabola must be upwards open (a > 0).")
-
-    # Find the discriminant (D) for the quadratic equation (ax^2 + bx + c - kx = 0)
     D = (b - k)**2 - 4 * a * (c)
-
-    # Check the conditions for intersection or touching
-    if D > 0:
-        # The parabola and the line intersect at two distinct points
-        return True
-    elif D == 0:
-        # The parabola and the line touch each other (tangent)
+    if D >= 0:
         return True
     else:
-        # The parabola and the line do not intersect or touch
         return False
 
 ii = 1
@@ -36,9 +23,24 @@ while ii< len(lines):
     for _ in range(m):
         parabolas.append(list(map(int, lines[ii].split())))
         ii+=1
-    ks = [min(ks), max(ks)]
+    ks = list(set(ks))
+    ks.sort()
+    # nks = [min(ks), max(ks)]
+    # for i in range(1, min(len(ks), 10)):
+    #     nks.append(ks[i])
+    # for i in range(len(ks)-1, max(len(ks) - 10, -1), -1):
+    #     nks.append(ks[i])
     for a, b, c in parabolas:
-        for k in ks:
+        lb = bisect.bisect_left(ks, b)
+        rb = bisect.bisect_right(ks, b)
+        candidates = []
+        for idx in [lb, rb]:
+            if idx < len(ks):
+                candidates.append(ks[idx])
+            if idx > 0:
+                candidates.append(ks[idx-1])
+        
+        for k in candidates:
             if not intersects_parabola(a, b, c, k):
                 print("YES")
                 print(k)
@@ -48,4 +50,4 @@ while ii< len(lines):
         #     print(smallestk)
         else:
             print("NO")
-    print()
+    # # print()
