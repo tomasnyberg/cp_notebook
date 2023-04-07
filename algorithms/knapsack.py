@@ -7,8 +7,21 @@ def knapsack(values, weights, capacity):
         for j in range(1, capacity + 1):
             dp[i][j] = dp[i - 1][j]
             if weights[i - 1] <= j:
-                dp[i][j] = max(dp[i][j], dp[i - 1][j - weights[i - 1]] + values[i - 1])
+                dp[i][j] = max(dp[i][j], dp[i - 1]
+                               [j - weights[i - 1]] + values[i - 1])
     return (dp[-1][-1], dp)
+
+
+def memefficient_knapsack(values, weights, capacity):
+    dp = [[0] * (capacity + 1) for _ in range(2)]
+    for i in range(1, len(values) + 1):
+        for j in range(1, capacity + 1):
+            dp[i % 2][j] = dp[(i - 1) % 2][j]
+            if weights[i - 1] <= j:
+                dp[i % 2][j] = max(dp[i % 2][j], dp[(i - 1) %
+                                   2][j - weights[i - 1]] + values[i - 1])
+    return dp[len(values) % 2][-1]
+
 
 def find_items(dp):
     items = []
@@ -20,9 +33,9 @@ def find_items(dp):
         i -= 1
     return items
 
-values = [2,2,4,5,3]
-weights = [3,1,3,4,2]
+
+values = [2, 2, 4, 5, 3]
+weights = [3, 1, 3, 4, 2]
 ans, dp = knapsack(values, weights, 7)
 print("Chosen items (0 indexed):", find_items(dp))
 print("Max possible value:", ans)
-
