@@ -14,12 +14,26 @@ def minimal_amount(target, curr):
         result = min(result, 1 + minimal_amount(target, curr + curr // i))
     return result
 
+x = 2*10**3 
+dp = [10**9] * (x + 1)
+dp[1] = 0
+
+for i in range(1, x + 1):
+    dp[i] = min(dp[i], 1 + dp[i - 1])
+    for j in range(1, i + 1):
+        if i + i//j >= len(dp): break
+        dp[i + (i//j)] = min(dp[i] + 1, dp[i + (i//j)])
+
+# print(dp)
+
 def count_bits(n):
-    big = 0
-    for i in range(30):
-        if n & (1 << i):
-            big = i
-    return big + bin(n).count('1') - 1
+    return dp[n]
+
+# for i in range(1, 1000):
+#     if i % 100 == 0:
+#         print(i)
+#     if count_bits(i) != minimal_amount(i, 1):
+#         print(i, bin(i), count_bits(i), minimal_amount(i, 1))
 
 def knapsack(values, weights, capacity):
     dp = [[0 for _ in range(capacity + 1)] for _ in range(len(values) + 1)]
@@ -33,7 +47,7 @@ def knapsack(values, weights, capacity):
 for i in range(1, len(lines), 3):
     n, k = map(int, lines[i].split())
     b = list(map(int, lines[i + 1].split()))
-    b = list(map(lambda x: minimal_amount(x, 1), b))
+    b = list(map(lambda x: dp[x], b))
     coins = list(map(int, lines[i + 2].split()))
     removed = set()
     result = 0
@@ -43,5 +57,5 @@ for i in range(1, len(lines), 3):
             removed.add(j)
     b = [b[j] for j in range(len(b)) if j not in removed]
     coins = [coins[j] for j in range(len(coins)) if j not in removed]
-    ans, dp = knapsack(coins, b, k)
+    ans, _ = knapsack(coins, b, k)
     print(ans + result)
