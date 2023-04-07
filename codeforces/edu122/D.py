@@ -1,18 +1,29 @@
 import sys
 import math
+from functools import lru_cache
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 # a = 1
 # for i in range(15):
 #     a += a // 1
 #     print(i, a)
+@lru_cache(None)
+def minimal_amount(target, curr):
+    if target < curr:
+        return 10**9
+    if target == curr:
+        return 0
+    result = 10**9
+    for i in range(1, curr + 1):
+        result = min(result, 1 + minimal_amount(target, curr + curr // i))
+    return result
 
 def count_bits(n):
-    res = 0
-    while n > 0:
-        res += n % 2
-        n //= 2
-    return res
+    big = 0
+    for i in range(30):
+        if n & (1 << i):
+            big = i
+    return big + bin(n).count('1') - 1
 
 def knapsack(values, weights, capacity):
     dp = [[0 for _ in range(capacity + 1)] for _ in range(len(values) + 1)]
@@ -26,10 +37,18 @@ def knapsack(values, weights, capacity):
 for i in range(1, len(lines), 3):
     n, k = map(int, lines[i].split())
     b = list(map(int, lines[i + 1].split()))
-    print(b)
+    # print(b)
     b = list(map(count_bits, b))
-    print(b)
     coins = list(map(int, lines[i + 2].split()))
-    print(coins)
+    removed = set()
+    result = 0
+    for j in range(len(b)):
+        if b[j] == 0:
+            result += coins[j]
+            removed.add(j)
+    b = [b[j] for j in range(len(b)) if j not in removed]
+    coins = [coins[j] for j in range(len(coins)) if j not in removed]
+    # print(b)
+    # print(coins)
     ans, dp = knapsack(coins, b, k)
-    print(ans)
+    print(ans + result)
