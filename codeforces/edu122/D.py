@@ -25,6 +25,7 @@ for i in range(1, len(lines), 3):
     n, k = map(int, lines[i].split())
     b = list(map(int, lines[i + 1].split()))
     b = list(map(lambda x: dp[x], b))
+    k = min(k, sum(b))
     coins = list(map(int, lines[i + 2].split()))
     removed = set()
     result = 0
