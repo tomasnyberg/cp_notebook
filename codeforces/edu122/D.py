@@ -3,10 +3,6 @@ import math
 from functools import lru_cache
 lines = list(map(str.strip, sys.stdin.readlines()))
 
-# a = 1
-# for i in range(15):
-#     a += a // 1
-#     print(i, a)
 @lru_cache(None)
 def minimal_amount(target, curr):
     if target < curr:
@@ -37,8 +33,7 @@ def knapsack(values, weights, capacity):
 for i in range(1, len(lines), 3):
     n, k = map(int, lines[i].split())
     b = list(map(int, lines[i + 1].split()))
-    # print(b)
-    b = list(map(count_bits, b))
+    b = list(map(lambda x: minimal_amount(x, 1), b))
     coins = list(map(int, lines[i + 2].split()))
     removed = set()
     result = 0
@@ -48,7 +43,5 @@ for i in range(1, len(lines), 3):
             removed.add(j)
     b = [b[j] for j in range(len(b)) if j not in removed]
     coins = [coins[j] for j in range(len(coins)) if j not in removed]
-    # print(b)
-    # print(coins)
     ans, dp = knapsack(coins, b, k)
     print(ans + result)
