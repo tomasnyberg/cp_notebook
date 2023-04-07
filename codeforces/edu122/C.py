@@ -3,8 +3,9 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 def compare(hm, dm, hc, dc):
-    return math.ceil(hc / dm) > math.floor(hm / dc)
-
+    ttk_a = math.ceil(hm / dc)
+    ttk_b = math.ceil(hc / dm)
+    return ttk_a <= ttk_b
 
 for i in range(1, len(lines), 3):
     health_char, damage_char = map(int, lines[i].split())
