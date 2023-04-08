@@ -19,19 +19,18 @@ while i < len(lines):
     for _ in range(n):
         matrix.append(list(map(int, lines[i].split())))
         i+=1
+    dots = 0
+    for xs in matrix:
+        dots += sum(xs)
+    if k >= dots and k % 2 == dots % 2:
+        print("YES")
+        continue
     for j in range(n):
         for jj in range(n):
-            if matrix[j][jj] != matrix[len(matrix) - j - 1][len(matrix) - jj - 1]:
+            if matrix[j][jj] != matrix[n - j - 1][n - jj - 1]:
                 k -= 1
                 matrix[j][jj] = 0
-                matrix[len(matrix) - j - 1][len(matrix) - jj - 1] = 0   
-    for _ in range(2):
-        rotateMatrix(matrix)
-    for j in range(n):
-        for jj in range(n):
-            if matrix[j][jj] != matrix[len(matrix) - j - 1][len(matrix) - jj - 1]:
-                k = -1
-                break
+                matrix[n - j - 1][n - jj - 1] = 0
     if k < 0 or k % 2 != 0:
         print("NO")
     else:
