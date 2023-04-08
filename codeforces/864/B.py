@@ -25,12 +25,29 @@ while i < len(lines):
     if k >= dots and k % 2 == dots % 2:
         print("YES")
         continue
+    broken = False
     for j in range(n):
         for jj in range(n):
-            if matrix[j][jj] != matrix[n - j - 1][n - jj - 1]:
-                k -= 1
+            if matrix[j][jj] == matrix[n - j - 1][n - jj - 1]:
+                dots -= matrix[j][jj]  + matrix[n - j - 1][n - jj - 1]
                 matrix[j][jj] = 0
                 matrix[n - j - 1][n - jj - 1] = 0
+    for j in range(n):
+        if broken: break
+        for jj in range(n):
+            if matrix[j][jj] != matrix[n - j - 1][jj]:
+                k-= 1
+                dots -= 1
+                if k >= dots and k % 2 == dots % 2:
+                    print("YES")
+                    broken = True
+                    break
+                matrix[j][jj] = 0
+                matrix[n - j - 1][n - jj - 1] = 0
+    if broken: continue
+    if k >= dots and k % 2 == dots % 2:
+        print("YES")
+        continue
     if k < 0 or k % 2 != 0:
         print("NO")
     else:
