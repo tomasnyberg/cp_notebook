@@ -2,7 +2,7 @@ import sys
 from decimal import Decimal, getcontext
 
 def query(x, y):
-    print(x, y)
+    print("?", x, y)
     sys.stdout.flush()
     return int(input())
 
