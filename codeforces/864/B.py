@@ -19,36 +19,29 @@ while i < len(lines):
     for _ in range(n):
         matrix.append(list(map(int, lines[i].split())))
         i+=1
+    if n == 1:
+        print("YES")
+        continue
     dots = 0
     for xs in matrix:
         dots += sum(xs)
     if k >= dots and k % 2 == dots % 2:
         print("YES")
         continue
-    broken = False
     for j in range(n):
         for jj in range(n):
             if matrix[j][jj] == matrix[n - j - 1][n - jj - 1]:
                 dots -= matrix[j][jj]  + matrix[n - j - 1][n - jj - 1]
                 matrix[j][jj] = 0
                 matrix[n - j - 1][n - jj - 1] = 0
+    operations = 0
     for j in range(n):
-        if broken: break
         for jj in range(n):
-            if matrix[j][jj] != matrix[n - j - 1][jj]:
-                k-= 1
-                dots -= 1
-                if k >= dots and k % 2 == dots % 2:
-                    print("YES")
-                    broken = True
-                    break
+            if matrix[j][jj] != matrix[n - j - 1][n - jj - 1]:
+                operations += 1
                 matrix[j][jj] = 0
                 matrix[n - j - 1][n - jj - 1] = 0
-    if broken: continue
-    if k >= dots and k % 2 == dots % 2:
+    if k >= operations and (k - operations) % 2 == 0:
         print("YES")
-        continue
-    if k < 0 or k % 2 != 0:
-        print("NO")
     else:
-        print("YES")
+        print("NO")
