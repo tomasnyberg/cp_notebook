@@ -25,7 +25,7 @@ while i < len(lines):
     dots = 0
     for xs in matrix:
         dots += sum(xs)
-    if k >= dots and k % 2 == dots % 2:
+    if k >= dots and (k - dots) % 2 == 0:
         print("YES")
         continue
     for j in range(n):
@@ -41,7 +41,7 @@ while i < len(lines):
                 operations += 1
                 matrix[j][jj] = 0
                 matrix[n - j - 1][n - jj - 1] = 0
-    if k >= operations and (k - operations) % 2 == 0:
+    if k >= operations and ((k - operations) % 2 == 0 or n % 2 == 1):
         print("YES")
     else:
         print("NO")
