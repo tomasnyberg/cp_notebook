@@ -19,27 +19,20 @@ while i < len(lines):
     for _ in range(n):
         matrix.append(list(map(int, lines[i].split())))
         i+=1
-    copy = []
     for j in range(n):
-        copy.append([0]*n)
-        for k in range(n):
-            copy[j][k] = matrix[j][k]
+        for jj in range(n):
+            if matrix[j][jj] != matrix[len(matrix) - j - 1][len(matrix) - jj - 1]:
+                k -= 1
+                matrix[j][jj] = 0
+                matrix[len(matrix) - j - 1][len(matrix) - jj - 1] = 0   
     for _ in range(2):
-        rotateMatrix(copy)
-    operations = 0
+        rotateMatrix(matrix)
     for j in range(n):
-        if operations > k: break
-        for k in range(n):
-            if matrix[j][k] != copy[j][k]:
-                operations += 1
-                if operations > k:
-                    break
-    print("YES" if k <= operations  else "NO")
-
-    # for xs in matrix:
-    #     print(xs)
-    # print()
-    # for xs in copy:
-    #     print(xs)
-
-    # print()
+        for jj in range(n):
+            if matrix[j][jj] != matrix[len(matrix) - j - 1][len(matrix) - jj - 1]:
+                k = -1
+                break
+    if k < 0 or k % 2 != 0:
+        print("NO")
+    else:
+        print("YES")
