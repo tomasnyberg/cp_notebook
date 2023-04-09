@@ -17,7 +17,7 @@ unordered_map<int, ll> node_importance;
 unordered_map<int, int> child_counts;
 vector<int> parents;
 
-pair<int, int> importance_dfs(int node) {
+pair<ll, ll> importance_dfs(int node) {
     if (visited.count(node) > 0) {
         return {0, 0};
     }
