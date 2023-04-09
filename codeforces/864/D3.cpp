@@ -22,16 +22,15 @@ string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
 
-void dfs(ll node, vector<set<pair<ll, ll>>> &adj, vector<ll> &parent, vector<ll> &siz, vector<ll> &sum){
+void dfs(ll node, vector<vector<int>> &adj, vector<ll> &parent, vector<ll> &siz, vector<ll> &sum, vector<set<pair<ll, ll>>> &adj_lists){
     siz[node] = 1;
-    for(auto y: adj[node]){
-        ll nbr = y.first;
-        if (y.first == parent[node]) continue;
+    for(auto nbr: adj[node]){
+        if (nbr == parent[node]) continue;
         parent[nbr] = node;
-        dfs(nbr, adj, parent, siz, sum);
+        dfs(nbr, adj, parent, siz, sum, adj_lists);
         siz[node] += siz[nbr];
         sum[node] += sum[nbr];
-        adj[node].emplace(-siz[nbr], nbr);
+        adj_lists[node].emplace(-siz[nbr], nbr);
     }
 }
 
@@ -42,6 +41,7 @@ int main() {
     cin >> n >> m;
     vector<ll> importances = vector<ll>(n);
     vector<vector<ll>> queries = vector<vector<ll>>(m);
+    vector<vector<int>> adj = vector<vector<int>>(n);
     vector<set<pair<ll, ll>>> adj_lists = vector<set<pair<ll, ll>>>(n);
     vector<ll> parents = vector<ll>(n);
     vector<ll> sizes = vector<ll>(n);
@@ -53,7 +53,8 @@ int main() {
         cin >> fr >> to;
         fr--;
         to--;
-        adj_lists[fr].insert({to, 0});
+        adj[fr].push_back(to);
+        adj[to].push_back(fr);
     }
     for(int i = 0; i < m; i++){
         int type, node;
@@ -61,8 +62,30 @@ int main() {
         node--;
         queries[i] = {type, node};
     }
-    dfs(0, adj_lists, parents, sizes, importances);
-    print_v(parents);
-    print_v(sizes);
-    print_v(importances);
+    dfs(0, adj, parents, sizes, importances, adj_lists);
+    for(int i = 0; i < m; i++){
+        int type = queries[i][0];
+        int node = queries[i][1];
+        if (type == 1){
+            cout << importances[node] << "\n";
+        } else {
+            if (adj_lists[node].empty()) {
+                continue;
+            }
+            ll y = adj_lists[node].begin()->second;
+            adj_lists[parents[node]].erase({-sizes[node], node});
+            adj_lists[node].erase({-sizes[y], y});
+            sizes[node] -= sizes[y];
+            sizes[y] += sizes[node];
+            importances[node] -= importances[y];
+            importances[y] += importances[node];
+            adj_lists[y].emplace(-sizes[node], node);
+            adj_lists[parents[node]].emplace(-sizes[y], y);
+            parents[y] = parents[node];
+            parents[node] = y;
+        }
+    }
+    // print_v(parents);
+    // print_v(sizes);
+    // print_v(importances);
 }
