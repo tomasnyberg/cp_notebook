@@ -12,21 +12,20 @@ def check(xs):
 
 for line in lines[2::2]:
     nums = list(map(int, line.split()))
-    print(nums)
-    for i in range(1, len(nums)):
-        if i != 1 and nums[i-2] > nums[i-1]:
-            to_add = nums[i-2] - nums[i-1]
-            nums[i-1] += to_add
-            nums[i] += to_add 
-        if i != len(nums)-1 and nums[i+1] < nums[i]:
-            to_add = nums[i+1] + nums[i]
-            nums[i-1] += to_add
-            nums[i] += to_add 
-    print(nums)
-    if len(nums) % 2 == 1:
-        a = nums[1:] == list(sorted(nums[1:]))
-        b = nums[:-1] == list(sorted(nums[:-1]))
-        print("YES" if a or b else "NO")
-    else:
-        print("YES" if nums == list(sorted(nums)) else "NO")
+    # print(nums)
+    for i in range(1,len(nums)):
+        if nums[i] >= 0:
+            to_remove = nums[i]
+            nums[i-1] -= to_remove
+            nums[i] = 0
+    total_add = 0
+    # print(nums)
+    for i in range(1, len(nums) - 1):
+        if nums[i] < nums[i-1]:
+            to_add = nums[i-1] - nums[i]
+            nums[i] += to_add
+            nums[i + 1] += to_add
+    # print(nums)
+    a = nums == list(sorted(nums))
+    print("YES" if a else "NO")
     
