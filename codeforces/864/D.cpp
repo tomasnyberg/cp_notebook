@@ -52,6 +52,11 @@ void rotate(ll x) {
     child_counts[x] -= max_child_nodes;
     adj_lists[max_child][x] = child_counts[x];
     adj_lists[x].erase(max_child);
+    ll parent = parents[x];
+    adj_lists[parent][max_child] = child_counts[max_child];
+    adj_lists[parent].erase(x);
+    parents[x] = max_child;
+    parents[max_child] = parent;
 }
 
 int main() {
