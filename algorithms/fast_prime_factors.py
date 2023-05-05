@@ -27,3 +27,13 @@ def prime_factors(x):
         ret.append(spf[x])
         x //= spf[x]
     return ret
+
+def prime_factors_slow(x):
+    res = []
+    for i in range(2, math.ceil(math.sqrt(x))):
+        while x % i == 0:
+            res.append(i)
+            x //= i
+    if x != 1:
+        res.append(x)
+    return res
