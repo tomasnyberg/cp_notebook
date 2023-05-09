@@ -5,6 +5,7 @@
 #include <math.h>
 #include <algorithm>
 #include <set>
+#include <random>
 
 using namespace std;
 
@@ -52,16 +53,19 @@ int main() {
         // for(int i = 0; i < athletes.size(); i++){
         //     print_v(athletes[i]);
         // }
-        set<int> candidates;
+        vector<int> candidates;
         for(int i = 0; i < n; i++){
-            candidates.insert(i);
+            candidates.push_back(i);
         }
         int result = -1;
+        set<int> to_erase;
         while(candidates.size()){
-            int one_candidate = *candidates.begin();
-            // cout << "Trying candidate " << one_candidate << endl;
-            candidates.erase(one_candidate);
-            set<int> to_erase;
+            // Choose a random integer in the range 0 to candidates.size()
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<> dis(0, candidates.size()-1);
+            int one_candidate = candidates[dis(gen)];
+            to_erase.insert(one_candidate);
             int beatsCount = 0;
             for(int i = 0; i < athletes.size(); i++){
                 if(beats(athletes[one_candidate], athletes[i])){
@@ -74,9 +78,13 @@ int main() {
                 result = one_candidate;
                 break;
             }
-            for(auto x: to_erase){
-                candidates.erase(x);
+            vector<int> new_candidates;
+            for(int i = 0; i < n; i++){
+                if(to_erase.find(i) == to_erase.end()){
+                    new_candidates.push_back(i);
+                }
             }
+            candidates = new_candidates;
         }
         if(result == -1){
             cout << result << endl;
