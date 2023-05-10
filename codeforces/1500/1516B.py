@@ -3,21 +3,14 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 
 for line in lines[2::2]:
     nums = list(map(int, line.split(" ")))
-    running = 0
-    for x in nums:
-        running ^= x
-    if running == 0:
-        print("YES")
-        continue
-    good = True
-    count = 0
-    while nums:
-        curr = nums.pop()
-        while nums and curr != running or (nums and nums[-1] == 0):
-            curr ^= nums.pop()
-        if curr != running:
-            good = False
-            break
-        count += 1
-    print("YES" if good and count >= 2 else "NO")
+    n = len(nums)
+    prefix = [0] * 2005
+    for i in range(1, n+1):
+        prefix[i] = prefix[i-1] ^ nums[i - 1]
+    good = prefix[n] == 0
+    for i in range(1, n+1):
+        for j in range(i+1, n):
+            good |= prefix[i] == (prefix[j]^prefix[i]) == (prefix[n]^prefix[j])
+    print("YES" if good else "NO")
+        
 
