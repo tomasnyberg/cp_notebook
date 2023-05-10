@@ -13,7 +13,7 @@ for line in lines[2::2]:
     count = 0
     while nums:
         curr = nums.pop()
-        while nums and curr != running:
+        while nums and curr != running or (nums and nums[-1] == 0):
             curr ^= nums.pop()
         if curr != running:
             good = False
