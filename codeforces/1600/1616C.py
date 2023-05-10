@@ -1,24 +1,34 @@
-# Might need to change this one slightly
-def sum_of_sub(xs, left, right):
-    res = 0
-    for x in xs[left:right+1]:
-        res += x
-    return res
+import sys
+lines = list(map(str.strip, sys.stdin.readlines()))
+import random
 
-example = [3,4,6,8,11,2,7]
-def good_subarray(xs, left, right):
-    subsum = sum_of_sub(xs, left, right)
-    expression = (xs[left] + xs[right])*(right - left + 1)/2
-    return subsum == expression
-s = set()
+def is_good_array(arr):
+    n = len(arr)
+    for l in range(n):
+        for r in range(l, n):
+            subsegment_sum = sum(arr[l:r+1])
+            expected_sum = (arr[l] + arr[r]) * (r - l + 1) / 2
+            if subsegment_sum != expected_sum:
+                return False
+    return True
 
-for i in range(1, 11):
-    for j in range(1, 11):
-        for k in range(1, 11):
-            for l in range(1, 11):
-                for ö in range(1, 11):
-                    for ä in range(1, 11):
-                        if good_subarray([i,j,k, l, ö, ä], 0, 5):
-                            s.add((i+j+k+l+ö+ä))
-print(s)
-print(len(s))
+for line in lines[2::2]:
+    nums = list(map(int, line.split(" ")))
+    longest = 1
+    for i in range(len(nums)):
+        for other in range(i+1, len(nums)):
+            for steps in range(1, 100):
+                if i + steps > other: break
+                if (other - i) % steps: continue
+                diff = (nums[other] - nums[i]) / ((other-  i) //steps)
+                count = 1
+                mul = 1
+                for j in range(i + steps, len(nums), steps):
+                    if nums[j] == (nums[i] + diff * mul):
+                        count += 1
+                    mul += 1
+                # print(i, other, steps, diff, count)
+                longest = max(longest, count)
+    print(len(nums) - longest)
+                
+    
