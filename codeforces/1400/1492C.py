@@ -4,27 +4,23 @@ import bisect
 
 for i in range(0, len(lines), 3):
     n, m = map(int, lines[i].split(" "))
-    a, b = lines[i+1], lines[i+2]
-    n, m = len(a), len(b)
-    alist, blist = list(a), list(b)
-    furthest = [0] * (n + 1)
-    bpointer = len(b) - 1
-    for j in range(n-1, -1, -1):
-        if bpointer < 0: break
-        if alist[j] == b[bpointer]:
-            furthest[j] = bpointer
-            bpointer -= 1
-        else:
-            furthest[j] = furthest[j+1]
-    furthest.pop()
-    lastseen = {}
-    for j in range(len(furthest)):
-        lastseen[furthest[j]] = j
-    bpointer = 0
-    result = 0
-    for j in range(len(a)):
-        if bpointer >= len(b): break
-        result = max(result, lastseen[bpointer] - j + 1 if bpointer != m-1 else lastseen[bpointer] - j)
-        if alist[j] == b[bpointer]:
-            bpointer += 1
-    print(result)
+    s, p = lines[i+1], lines[i+2]
+    pos = 0
+    a, b = [], []
+    for i in range(m):
+        while s[pos] != p[i]:
+            pos += 1
+        a.append(pos)
+        pos += 1
+    pos = n-1
+    for i in range(m-1, -1, -1):
+        while s[pos] != p[i]:
+            pos -= 1
+        b.append(pos)
+        pos -= 1
+    b.reverse()
+    best = 0
+    for i in range(m-1):
+        best = max(best, b[i+1]-a[i])
+    print(best)
+        
