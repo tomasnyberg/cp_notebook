@@ -13,6 +13,18 @@ def optimal(xs):
             return max(xs[i] + recur(i+1, True), recur(i+1, False))
     return recur(0, False)
 
+def optimal_iter(xs):
+    n = len(xs)
+    dp = [0] * (n + 1) # dp[i] represents the optimal solution for xs[0:i]
+
+    for i in range(1, n + 1):
+        not_take = dp[i - 1]
+        take = xs[i - 1] + (dp[i - 2] if i - 2 >= 0 else 0)
+        dp[i] = max(take, not_take)
+
+    return dp[n]
+
+
 nums = list(map(int, lines[1].split(" ")))
 counts = {}
 for x in nums:
@@ -35,8 +47,6 @@ for key in counts:
         taken.add(ptr)
         curr_xs.append(ptr*counts[ptr])
         ptr += 1
-    for x in curr_xs:
-        taken.add(x)
-    result += optimal(curr_xs)
+    result += optimal_iter(curr_xs)
 print(result)
     
