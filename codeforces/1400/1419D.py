@@ -21,9 +21,9 @@ def check(x, nums, construct=False):
     for _ in range(x):
         to_insert.append(nums.pop())
     to_insert.reverse()
-    while nums and nums[-1] <= to_insert[-1]:
-        result.append(nums.pop())
     while to_insert:
+        while nums and nums[-1] <= to_insert[-1]:
+            result.append(nums.pop())
         if not nums:
             return False
         result.append(nums.pop())
@@ -39,6 +39,7 @@ def check(x, nums, construct=False):
         return good >= x
     else:
         return result
+check(3, nums)
 
 low = 0
 high = len(nums) - 1
