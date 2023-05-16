@@ -34,18 +34,9 @@ i = 1
 while i < len(lines):
     n, m = map(int, lines[i].split(" "))
     i+=1
-    segments = []
+    or_value = 0
     while m:
-        l, r, x = map(int, lines[i].split(" ")) 
-        segments.append((l, r, x))
+        or_value |= list(map(int, lines[i].split(" ")))[-1]
         m -= 1
         i += 1
-    nums = [0]*(n + 1)
-    for l, r, x in segments:
-        nums[r] = x
-    subseqs = 0
-    segments.sort(key=lambda x: x[1])
-    for l, r, x in segments:
-        nums[r] = max(nums[r], x)
-    nums.pop(0)
-    print(xorSum(nums, n) % 1000000007)
+    print(or_value * pow(2, n-1, 1000000007) % 1000000007)
