@@ -20,6 +20,7 @@ def check(x, nums, construct=False):
     result = []
     for _ in range(x):
         to_insert.append(nums.pop())
+    to_insert.reverse()
     while nums and nums[-1] <= to_insert[-1]:
         result.append(nums.pop())
     while to_insert:
