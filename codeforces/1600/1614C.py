@@ -27,6 +27,7 @@ def xorSum(arr, n):
     for i in range(n):
         bits |= arr[i]
     ans = bits * pow(2, n-1)
+    ans %= 1000000007
     return ans
 
 i = 1
@@ -47,4 +48,4 @@ while i < len(lines):
     for l, r, x in segments:
         nums[r] = max(nums[r], x)
     nums.pop(0)
-    print(xorSum(nums, n))
+    print(xorSum(nums, n) % 1000000007)
