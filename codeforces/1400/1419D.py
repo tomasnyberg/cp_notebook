@@ -20,16 +20,23 @@ def check(x, nums, construct=False):
     result = []
     for _ in range(x):
         to_insert.append(nums.pop())
-    while nums and nums[-1] == to_insert[-1]:
+    while nums and nums[-1] <= to_insert[-1]:
         result.append(nums.pop())
+    while to_insert:
+        if not nums:
+            return False
+        result.append(nums.pop())
+        result.append(to_insert.pop())
+    while nums:
+        result.append(nums.pop())
+    good = 0
+    for i in range(1, len(result) - 1):
+        if result[i-1] > result[i] < result[i+1]:
+            good += 1
+    # print(result, good, x)
     if not construct:
-        return len(nums) >= x + 1
+        return good >= x
     else:
-        while to_insert:
-            result.append(nums.pop())
-            result.append(to_insert.pop())
-        while nums:
-            result.append(nums.pop())
         return result
 
 low = 0
