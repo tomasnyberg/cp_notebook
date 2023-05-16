@@ -15,6 +15,7 @@ for i in range(1, len(lines), 2):
         popped = nums.pop()
         rc[popped] = rc.get(popped, 0) + 1
         r-=1
+    # Remove ones that already match
     for j in seen:
         small = min(lc.get(j, 0), rc.get(j, 0))
         if j in lc:
@@ -23,16 +24,19 @@ for i in range(1, len(lines), 2):
             rc[j] -= small
         L -= small
         R -= small
+    # Make L the bigger one
     if L < R:
         lc, rc = rc, lc
         L, R = R, L
     result = 0
+    # Move from L to R until they match
     for j in lc:
         extra = L -R
+        if not extra: break
         cando = lc[j] // 2
         do = min(cando*2, extra)
         result += do // 2
         L -= do
-    result += (L-R) // 2 + (L+R) // 2
+    result += L
     print(result)
     
