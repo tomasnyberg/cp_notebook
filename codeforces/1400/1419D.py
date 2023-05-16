@@ -4,7 +4,7 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 n = int(lines[0])
 if n == 1 or n == 2:
     print(0)
-    print(*list(range(1, n+1)))
+    print(*list(map(int, lines[1].split(" "))))
     exit()
 
 nums = list(map(int, lines[1].split(" ")))
@@ -17,18 +17,19 @@ def check(x, nums, construct=False):
             return nums
     nums = nums[:][::-1]
     to_insert = []
+    result = []
     for _ in range(x):
         to_insert.append(nums.pop())
     while nums and nums[-1] == to_insert[-1]:
-        nums.pop()
+        result.append(nums.pop())
     if not construct:
         return len(nums) >= x + 1
     else:
-        result = []
         while to_insert:
             result.append(nums.pop())
             result.append(to_insert.pop())
-        result.append(nums.pop())
+        while nums:
+            result.append(nums.pop())
         return result
 
 low = 0
