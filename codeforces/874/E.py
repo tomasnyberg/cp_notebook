@@ -13,3 +13,24 @@ for line in lines[2::2]:
     for i in range(len(nums)):
         union(i, nums[i]-1)
     highest = (len(set(find(i) for i in range(len(nums)))))
+    seen = set()
+    incycle = [0]
+    def dfs(x):
+        start = x
+        iterations = 0
+        while x not in seen or x == start:
+            # print(x)
+            if x == start and iterations > 2:
+                incycle[0] += iterations
+                return 1
+            iterations += 1
+            seen.add(x)
+            x = nums[x] - 1
+        # print()
+        return 0
+    lowest = 0
+    for i in range(len(nums)):
+        lowest += dfs(i)
+    if incycle[0] == len(nums): lowest -= 1
+    print(lowest + 1, highest)
+    
