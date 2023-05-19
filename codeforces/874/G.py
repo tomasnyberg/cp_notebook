@@ -16,17 +16,13 @@ while ii < len(lines):
         edge_indices[(u-1, v-1)] = idx
         edge_indices[(v-1, u-1)] = idx
         idx += 1
-        # TODO remember which edges were cut
         ii += 1
-    if n < 3:
-        print(-1)
-        continue
     parents = [-1 for _ in range(n)]
     parents[0] = 0
     q = deque([0])
     while q:
         u = q.popleft()
-        adj_lists[u] = [v for v in adj_lists[u] if parents[v] == -1]
+        adj_lists[u] = [v for v in adj_lists[u] if v != parents[u]]
         for v in adj_lists[u]:
             parents[v] = u
             q.append(v)
@@ -63,9 +59,11 @@ while ii < len(lines):
         else:
             cuts.append(edge_indices[(u, parents[u])])
         q.append(parents[u])
-    if any([x > 3 for x in sizes]):
+    # print(sizes)
+    if any([sizes[find(parents_uf, i)] != 3 for i in range(n)]):
         print(-1)
     else:
+        cuts = list(set(cuts))
         print(len(cuts))
         print(*cuts)
     # print(-1 if any([x > 3 for x in sizes]) else cuts)
