@@ -12,4 +12,4 @@ for line in lines[2::2]:
         parents[find(x)] = find(y)
     for i in range(len(nums)):
         union(i, nums[i]-1)
-    print(len(set(find(i) for i in range(len(nums)))))
+    highest = (len(set(find(i) for i in range(len(nums)))))
