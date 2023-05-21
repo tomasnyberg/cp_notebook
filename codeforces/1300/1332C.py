@@ -5,21 +5,20 @@ for ii in range(1, len(lines), 2):
     n, k = map(int, lines[ii].split(" "))
     s = list(lines[ii+1])
     result = 0
-    bests = {i:{} for i in range(k)}
     for start in range(k):
-        seen = {}
-        opposites = {}
+        best = {}
         for i in range(start, n, k):
-            opposite = n-i-1
-            bests[opposite % k][s[i]] = bests[opposite % k].get(s[i], 0) + 1
-            bests[start][s[i]] = bests[start].get(s[i], 0) + 1
-    for start in range(k):
-        best = max(bests[start].items(), key=lambda x: x[1])[0]
+            opposite = n-1-i
+            if opposite != i:
+                best[s[opposite]] = best.get(s[opposite], 0) + 1
+            best[s[i]] = best.get(s[i], 0) + 1
+        to_put = max(best.items(), key=lambda x: x[1])[0]
         for i in range(start, n, k):
-            opposite = n-i-1
-            s[n-i-1] = best
-            s[i] = best
-    for i in range(n):
-        if s[i] != lines[ii+1][i]:
-            result += 1
+            opposite = n-1-i
+            if s[i] != to_put:
+                result += 1
+                s[i] = to_put
+            if s[opposite] != to_put:
+                result += 1
+                s[opposite] = to_put
     print(result)
