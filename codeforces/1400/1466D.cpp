@@ -5,6 +5,8 @@
 #include <math.h>
 #include <algorithm>
 #include <map>
+#include <queue>
+#include <set>
 
 using namespace std;
 
@@ -31,18 +33,33 @@ int main() {
     cin >> t;
     while(t--){
         int n; cin >> n;
-        vector<int> a(n);
-        for (int i=0;i<n;++i) cin >> a[i];
-        // Initialize a map with keys from 0 to n
-        map<int, vector<int>> m;
+        vector<ll> a(n);
+        ll score = 0;
+        for (int i=0;i<n;++i){
+            cin >> a[i];
+            score += a[i];
+        }
+        vector<int> degree(n);
         for(int i=0;i<n - 1;++i){
             int fr, to;
             cin >> fr >> to;
-            m[fr].push_back(to);
-            m[to].push_back(fr);
+            fr--; to--;
+            degree[fr]++;
+            degree[to]++;
         }
-        for(auto x: m){
-            print_v(x.second);
+        vector<ll> possible;
+        for (int i=0;i<n;++i){
+            for (int j=0;j<degree[i] - 1;++j){
+                possible.push_back(a[i]);
+            }
         }
+        sort(possible.begin(), possible.end(), greater<int>());
+        for(int i = 0; i < n - 1; i++){
+            cout << score << " ";
+            if(i < possible.size()){
+                score += possible[i];
+            }
+        }
+        cout << endl;
     }
 }
