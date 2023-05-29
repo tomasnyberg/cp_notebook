@@ -51,6 +51,10 @@ int main() {
             cout << 1 << "\n";
             continue;
         }
-        cout << 1-odds << "\n";
+        if(odds == -1){
+            cout << 0 << "\n";
+        } else {
+            cout << 1-odds << "\n";
+        }
     }
 }
