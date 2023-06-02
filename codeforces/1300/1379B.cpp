@@ -23,18 +23,16 @@ string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
 
-vector<ll> find_numbers(ll l, ll r, ll m, ll n){
-    ll a = m / n;
-    if(a < l) a = l;
-    if(a > r) a = r;
-    for(ll d = -1; d < 2; d++){
-        ll cand = a + d;
-        if(cand < l || cand > r) continue;
-        ll diff = m - cand * n;
+vector<ll> find_numbers(ll l, ll r, ll m, ll a){
+    ll n = m / a;
+    for(int d = -1; d < 2; d++){
+        ll candidate = n + d;
+        if(candidate <= 0) continue;
+        ll diff = m - a * candidate;
         if(abs(diff) > r - l) continue;
         // Initialize a vector res of size 3
         vector<ll> res(3);
-        res[0] = cand;
+        res[0] = a;
         if(diff < 0){
             res[1] = l;
             res[2] = l - diff;
@@ -44,7 +42,7 @@ vector<ll> find_numbers(ll l, ll r, ll m, ll n){
         }
         return res;
     }
-    return {0, -1, -1};
+    return {-1, -1, -1};
 }
 
 int main() {
@@ -53,7 +51,7 @@ int main() {
     ll t; cin >> t;
     while(t--){
         ll l, r, m; cin >> l >> r >> m;
-        for(ll n = 1; n <= m; n++){
+        for(ll n = l; n <= r; n++){
             vector<ll> res = find_numbers(l, r, m, n);
             if(res[1] != -1){
                 cout << res[0] << " " << res[1] << " " << res[2] << "\n";
