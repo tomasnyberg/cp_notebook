@@ -25,7 +25,7 @@ first = read_int()
 first_thousand = [first]
 positions = {first:1}
 count = 1
-while len(first_thousand) < 1000:
+for _ in range(1000):
     # res = nums[count]
     res = query_clockwise(1) # UNCOMMENT
     count += 1
