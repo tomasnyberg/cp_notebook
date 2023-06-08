@@ -30,13 +30,15 @@ for line in lines:
     ans = 1
     while low - 1 != pos:
         mid = (low + high) // 2
-        if mid <= pos:
-            ans *= bigger
-            bigger -= 1
+        if mid == pos:
             low = mid + 1
-        else:
+        elif mid <= pos:
             ans *= smaller
             smaller -= 1
+            low = mid + 1
+        else:
+            ans *= bigger
+            bigger -= 1
             high = mid
     ans *= factorial(bigger + smaller)
     ans %= MOD
