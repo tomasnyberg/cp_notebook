@@ -28,7 +28,7 @@ for line in lines:
     bigger = n - x
     smaller = x - 1
     ans = 1
-    while low - 1 != pos:
+    while low < high:
         mid = (low + high) // 2
         if mid == pos:
             low = mid + 1
