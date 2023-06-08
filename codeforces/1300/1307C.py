@@ -6,10 +6,10 @@ def combo_breaker(s, combo):
     firstseen = 0
     result = 0
     for c in s:
+        if c == combo[1]:
+            result += firstseen
         if c == combo[0]:
             firstseen += 1
-        elif c == combo[1]:
-            result += firstseen
     return result
 
 for s in lines:
@@ -19,7 +19,6 @@ for s in lines:
         for j in range(26):
             first = chr(ord('a') + i)
             second = chr(ord('a') + j)
-            if first == second: continue
             result = max(result, combo_breaker(s, (first, second)))
     print(result)
             
