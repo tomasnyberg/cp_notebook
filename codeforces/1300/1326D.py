@@ -2,45 +2,27 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 from functools import lru_cache
 
-def findLongestPalindromicString(text):
-    N = len(text)
-    if N == 0:
-        return
-    N = 2*N+1    # Position count
-    L = [0] * N
-    L[0] = 0
-    L[1] = 1
-    C = 1     # centerPosition
-    R = 2     # centerRightPosition
-    i = 0    # currentRightPosition
-    iMirror = 0     # currentLeftPosition
-    maxLPSLength = 0
-    maxLPSCenterPosition = 0
-    start = -1
-    end = -1
-    diff = -1
-    for i in range(2,N):
-        iMirror = 2*C-i
-        L[i] = 0
-        diff = R - i
-        if diff > 0:
-            L[i] = min(L[iMirror], diff)
-        try:
-            while ((i+L[i]) < N and (i-L[i]) > 0) and \
-                    (((i+L[i]+1) % 2 == 0) or \
-                    (text[(i+L[i]+1)//2] == text[(i-L[i]-1)//2])):
-                L[i]+=1
-        except Exception as e:
-            pass
-        if L[i] > maxLPSLength and (L[i] - i == 0 or L[i] + i == len(L) - 1):        # Track maxLPSLength
-            maxLPSLength = L[i]
-            maxLPSCenterPosition = i
-        if i + L[i] > R:
-            C = i
-            R = i + L[i]
-    start = (maxLPSCenterPosition - maxLPSLength) // 2
-    end = start + maxLPSLength - 1
-    return text[start:end+1]
+def manacher(s):
+    s = '#'.join('^{}$'.format(s))
+    n = len(s)
+    P = [0] * n
+    C = R = 0
+    for i in range(1, n-1):
+        if R > i:
+            i_mirror = 2*C - i  # i's mirror position in the previously calculated palindrome
+            P[i] = min(R-i, P[i_mirror])  # Truncate P[i] at R if it overflows
+        # Attempt to expand
+        while s[i + 1 + P[i]] == s[i - 1 - P[i]]:
+            P[i] += 1
+        # Update C and R if i's palindrome expands past R
+        if i + P[i] > R:
+            C, R = i, i + P[i]
+    best = [-1,-1]
+    for i in range(1, n-1):
+        if P[i] > best[0] and (i - P[i] == 1 or P[i] + i == len(P) - 2):
+            best = [P[i], i]
+    max_length, center_index = best
+    return s[center_index - max_length:center_index + max_length].replace("#", "")
 
 for s in lines[1:]:
     if s == s[::-1]:
@@ -58,5 +40,5 @@ for s in lines[1:]:
         i += 1
         j -= 1
     end = end[::-1]
-    middle = findLongestPalindromicString(s[i:j+1])
+    middle = manacher(s[i:j+1])
     print(start + middle + end)
