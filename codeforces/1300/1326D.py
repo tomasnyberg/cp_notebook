@@ -48,8 +48,7 @@ for s in lines[1:]:
     least = [10**9, 0, 0]
     for i in range(len(s) - 1):
         least = min(least, [check(s, i, i), i, i])
-        if s[i] == s[i+1]:
-            least = min(least, [check(s, i, i+1), i, i+1])
+        least = min(least, [check(s, i, i+1), i, i+1])
     print(check(s, least[1], least[2], True))
         
 
