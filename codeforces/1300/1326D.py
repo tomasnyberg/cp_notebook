@@ -32,13 +32,15 @@ def findLongestPalindromicString(text):
                 L[i]+=1
         except Exception as e:
             pass
-        if L[i] > maxLPSLength:        # Track maxLPSLength
+        if L[i] > maxLPSLength and (L[i] - i == 0 or L[i] + i == len(L) - 1):        # Track maxLPSLength
             maxLPSLength = L[i]
             maxLPSCenterPosition = i
         if i + L[i] > R:
             C = i
             R = i + L[i]
-    return L
+    start = (maxLPSCenterPosition - maxLPSLength) // 2
+    end = start + maxLPSLength - 1
+    return text[start:end+1]
 
 def expand(s, i, j):
     same = i == j
@@ -67,16 +69,4 @@ for s in lines[1:]:
         j -= 1
     end = end[::-1]
     middle = findLongestPalindromicString(s[i:j+1])
-    longest = [-1,-1]
-    zeroes = 1
-    for ii in range(1, len(middle)):
-        if middle[i] == ii or middle[ii] + ii == len(middle) - 1:
-            longest = max(longest, [middle[ii], ii - zeroes])
-        if middle[ii] == 0:
-            zeroes += 1
-    candidates = []
-    idx = longest[1]
-    for a, b in [(idx, idx), (idx, idx+1), (idx-1, idx)]:
-        candidates.append(expand(s[i:j+1], a, b))
-    middle = max(candidates, key=len)
     print(start + middle + end)
