@@ -22,9 +22,9 @@ string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
 
-std::string manacher(std::string s) {
+string manacher(string s) {
     // Transform s into T.
-    std::string T = "^#" + std::string(1, s[0]);
+    string T = "^#" + string(1, s[0]);
     for (int i = 1; i < s.size(); ++i) {
         T += "#";
         T += s[i];
@@ -32,12 +32,12 @@ std::string manacher(std::string s) {
     T += "#$";
 
     int n = T.size();
-    std::vector<int> P(n, 0);
+    vector<int> P(n, 0);
     int C = 0, R = 0;
     for (int i = 1; i < n-1; ++i) {
         if (R > i) {
             int i_mirror = 2*C - i;
-            P[i] = std::min(R - i, P[i_mirror]);
+            P[i] = min(R - i, P[i_mirror]);
         }
         
         // Attempt to expand
@@ -61,8 +61,8 @@ std::string manacher(std::string s) {
     }
 
     // Extract the longest palindromic string
-    std::string longest = T.substr(center_index - max_length, 2 * max_length);
-    longest.erase(std::remove(longest.begin(), longest.end(), '#'), longest.end());
+    string longest = T.substr(center_index - max_length, 2 * max_length);
+    longest.erase(remove(longest.begin(), longest.end(), '#'), longest.end());
     return longest;
 }
 
