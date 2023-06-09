@@ -42,20 +42,10 @@ def findLongestPalindromicString(text):
     end = start + maxLPSLength - 1
     return text[start:end+1]
 
-def expand(s, i, j):
-    same = i == j
-    a = ""
-    b = ""
-    while i >= 0 and j < len(s) and s[i] == s[j]:
-        a += s[i]
-        b += s[j]
-        i -= 1
-        j += 1
-    a = a[1:] if same else a
-    return a + b
-
-
 for s in lines[1:]:
+    if s == s[::-1]:
+        print(s)
+        continue
     start = ""
     end = ""
     i = 0
