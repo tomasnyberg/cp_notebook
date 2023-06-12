@@ -33,7 +33,7 @@ for line in lines[1:]:
             firstseen[line[i]] = i
         lastseen[line[i]] = i
     line = list(line)
-    result = 0
+    result = -10**25
     # Replace first with something
     all_indices = set()
     all_indices.update(firstseen.values())
