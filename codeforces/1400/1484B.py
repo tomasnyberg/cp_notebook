@@ -2,11 +2,15 @@ import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 
 for line in lines[2::2]:
+# for line in ["1 3 5 7 9 0 2 4 6"]:
     nums = list(map(int, line.split()))
     if len(nums) == 1 or all([x == nums[0] for x in nums]):
         print(0)
         continue
     if all([nums[i] - nums[i+1] == 1 for i in range(len(nums) - 1)]):
+        print(0)
+        continue
+    if all([nums[i] - nums[i+1] == nums[0] - nums[1] for i in range(len(nums) - 1)]):
         print(0)
         continue
     # We can't have two decreasing in a row unless their diff is 1 and c == m-1
@@ -27,18 +31,17 @@ for line in lines[2::2]:
         if nums[i] > nums[i+1]:
             mod = nums[i] + c - nums[i+1]
             break
-    if all([nums[i] < nums[i+1] for i in range(len(nums) - 1)]):
-        print(0)
-        continue
     if bad:
         print(-1)
+        continue
+    if all([nums[i] < nums[i+1] for i in range(len(nums) - 1)]):
+        print(0)
         continue
     for i in range(len(nums) - 1):
         if nums[i] > nums[i+1]:
             if nums[i] + c - nums[i+1] != mod:
                 bad = True
                 break
-    # print("MOD", mod)
     if bad or mod <= max(nums):
         print(-1)
         continue
