@@ -27,6 +27,9 @@ for line in lines[2::2]:
         if nums[i] > nums[i+1]:
             mod = nums[i] + c - nums[i+1]
             break
+    if all([nums[i] < nums[i+1] for i in range(len(nums) - 1)]):
+        print(0)
+        continue
     if bad:
         print(-1)
         continue
@@ -35,6 +38,7 @@ for line in lines[2::2]:
             if nums[i] + c - nums[i+1] != mod:
                 bad = True
                 break
+    # print("MOD", mod)
     if bad or mod <= max(nums):
         print(-1)
         continue
