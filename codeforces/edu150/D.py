@@ -14,6 +14,7 @@ while ii < len(lines):
         ranges.append((l, r))
         ii+=1
     ranges.sort()
+    start_times = [x[0] for x in ranges]
     @lru_cache(None)
     def recur(i):
         if i == len(ranges):
@@ -24,10 +25,12 @@ while ii < len(lines):
             if ranges[j][0] > ranges[i][1]:
                 break
             extra = 0
-            k = j + 1
-            while k < len(ranges) and ranges[k][0] <= max(ranges[j][1], ranges[i][1]):
-                extra += 1
-                k += 1
+            end = max(ranges[j][1], ranges[i][1])
+            k = bisect.bisect_right(start_times, end)
+            extra = k - j - 1
+            # while k < len(ranges) and ranges[k][0] <= max(ranges[j][1], ranges[i][1]):
+            #     extra += 1
+            #     k += 1
             result = min(result, removed + extra + recur(k))
             removed += 1
         return min(result, 1 + recur(i+1))
