@@ -27,31 +27,23 @@ def calculate_score(line):
 
 for line in lines[1:]:
     lastseen = {}
+    firstseen = {}
     for i in range(len(line)):
+        if line[i] not in firstseen:
+            firstseen[line[i]] = i
         lastseen[line[i]] = i
     line = list(line)
     result = 0
     # Replace first with something
-    for k in values:
-        idx = -1
-        for i in range(len(line)):
-            if line[i] == k:
-                line[i] = 'E'
-                idx = i
-                break
-        else:
-            continue
-        # print(''.join(line), calculate_score(line))
-        result = max(result, calculate_score(line))
-        line[idx] = k
-    # Replace last with something
-    for k in values:
-        if k not in lastseen:
-            continue
-        idx = lastseen[k]
-        for y in values:
-            if y == k: continue
-            line[idx] = y
+    all_indices = set()
+    all_indices.update(firstseen.values())
+    # all_indices.update(lastseen.values())
+    # print(all_indices)
+    for idx in all_indices:
+        temp = line[idx]
+        for c in "ABCDE":
+            line[idx] = c
+            # print(''.join(line), calculate_score(line))
             result = max(result, calculate_score(line))
-        line[idx] = k
+        line[idx] = temp
     print(result)
