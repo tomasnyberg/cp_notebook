@@ -4,7 +4,7 @@ from collections import defaultdict
 from functools import lru_cache
 import bisect
 
-sys.setrecursionlimit(2010)
+sys.setrecursionlimit(5000)
 
 ii = 1
 while ii < len(lines):
