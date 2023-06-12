@@ -4,48 +4,30 @@ lines = list(map(str.strip, sys.stdin.readlines()))
 for line in lines[2::2]:
 # for line in ["1 3 5 7 9 0 2 4 6"]:
     nums = list(map(int, line.split()))
-    if len(nums) == 1 or all([x == nums[0] for x in nums]):
-        print(0)
-        continue
-    if all([nums[i] - nums[i+1] == 1 for i in range(len(nums) - 1)]):
-        print(0)
-        continue
-    if all([nums[i] - nums[i+1] == nums[0] - nums[1] for i in range(len(nums) - 1)]):
-        print(0)
-        continue
-    # We can't have two decreasing in a row unless their diff is 1 and c == m-1
-    # if for any index i, 1 <= i < len(nums) - 1, we have nums[i-1] > nums[i] > nums[i+1]
-    # our answer is -1
-    #unless their diff is 1 and c == m-1
-    c = -1
-    mod = -1
-    for i in range(len(nums)-1):
-        if nums[i] <= nums[i+1]:
-            c = nums[i+1] - nums[i]
-            break
-    bad = False
+    positives = set()
+    negatives = set()
     for i in range(len(nums) - 1):
-        if nums[i] <= nums[i+1] and nums[i+1] - nums[i] != c:
-            bad = True
-            break
-        if nums[i] > nums[i+1]:
-            mod = nums[i] + c - nums[i+1]
-            break
-    if bad:
+        if nums[i+1] - nums[i] >= 0:
+            positives.add(nums[i+1] - nums[i])
+        else:
+            negatives.add(nums[i] - nums[i+1])
+    if len(positives) > 1 or len(negatives) > 1:
         print(-1)
         continue
-    if all([nums[i] < nums[i+1] for i in range(len(nums) - 1)]):
+    if len(positives) == 0 or len(negatives) == 0:
         print(0)
         continue
-    for i in range(len(nums) - 1):
-        if nums[i] > nums[i+1]:
-            if nums[i] + c - nums[i+1] != mod:
-                bad = True
-                break
-    if bad or mod <= max(nums):
+    a = positives.pop() 
+    b = negatives.pop()
+    m = a + b
+    c = a
+    if any([x >= m for x in nums]):
         print(-1)
         continue
-    print(mod, c)
+    print(m, c)
+        
+
+
 
 
 
