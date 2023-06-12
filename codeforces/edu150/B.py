@@ -9,10 +9,13 @@ for line in lines[2::2]:
         if first:
             if not nums or x >= nums[-1]:
                 nums.append(x)
-            else:
-                nums.append(x)
+                print("1", end="")
+            elif x <= nums[0]:
                 first = False
-            print("1", end="")
+                print("1", end="")
+                nums.append(x)
+            else:
+                print("0", end="")
         else:
             if x >= nums[-1] and x <= nums[0]:
                 nums.append(x)
