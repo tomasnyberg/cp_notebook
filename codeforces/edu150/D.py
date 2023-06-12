@@ -4,6 +4,8 @@ from collections import defaultdict
 from functools import lru_cache
 import bisect
 
+sys.setrecursionlimit(2010)
+
 ii = 1
 while ii < len(lines):
     n = int(lines[ii])
