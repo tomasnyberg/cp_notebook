@@ -16,34 +16,21 @@ def calculate_score(line):
             result += values[line[i]]
             # print("+", values[line[i]])
     return result
-# s = "ABCEEEDCBA"
-# s = list(s)
-# for i in range(len(s)):
-#     temp = s[i]
-#     s[i] = 'E'
-#     print(calculate_score(s))
-#     s[i] = temp
-# print(calculate_score(s))
 
-for line in lines[1:]:
-    lastseen = {}
-    firstseen = {}
-    for i in range(len(line)):
-        if line[i] not in firstseen:
-            firstseen[line[i]] = i
-        lastseen[line[i]] = i
-    line = list(line)
+for s in lines[1:]:
+    s = list(s)
+    last = {}
+    first = {}
+    for i in range(len(s)):
+        if not s[i] in first:
+            first[s[i]] = i
+        last[s[i]] = i
+    indices = set(last.values()) | set(first.values())
     result = -10**25
-    # Replace first with something
-    all_indices = set()
-    all_indices.update(firstseen.values())
-    # all_indices.update(lastseen.values())
-    # print(all_indices)
-    for idx in all_indices:
-        temp = line[idx]
-        for c in "ABCDE":
-            line[idx] = c
-            # print(''.join(line), calculate_score(line))
-            result = max(result, calculate_score(line))
-        line[idx] = temp
+    for x in ['A', 'B', 'C', 'D', 'E']:
+        for idx in indices:
+            temp = s[idx]
+            s[idx] = x
+            result = max(result, calculate_score(s))
+            s[idx] = temp
     print(result)
