@@ -12,6 +12,10 @@ def lcm(a, b):
 
 for line in lines[1:]:
     n, k = map(int, line.split())
+    while k > 3:
+        print(1, end=' ')
+        n -= 1
+        k -= 1
     if n % 3 == 0:
         print(n // 3, n // 3, n // 3)
         continue
