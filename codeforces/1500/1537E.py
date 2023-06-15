@@ -18,11 +18,10 @@ while ii < len(lines):
     s = list(s)
     prefixes = []
     curr = ""
+    smallest = ""
     for i in range(len(s)):
         curr += s[i]
-        prefixes.append(extend(curr, k))
-    prefixes.sort()
-    best = prefixes[0]
-    while len(best) < k:
-        best += best
-    print(best[:k])
+        extended = extend(curr, k)
+        if not smallest or extended < smallest:
+            smallest = extended
+    print(smallest)
