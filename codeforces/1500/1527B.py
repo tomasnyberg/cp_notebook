@@ -11,7 +11,7 @@ from functools import lru_cache
 # 10010""".split("\n")
 
 for s in lines[2::2]:
-    if len(s) % 2 == 1 and s[len(s) // 2] == '0' and len(s) > 1:
+    if len(s) % 2 == 1 and s[len(s) // 2] == '0' and len(s) > 1 and s.count('0') > 1:
         print("ALICE")
     else:
         print("BOB")
