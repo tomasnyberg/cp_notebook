@@ -21,24 +21,18 @@ for line in lines[1:]:
         give = g // 2 - 1
     else:
         give = g // 2
-    def check(x): # Can we give x employees give money?
-        given = x* give
-        remaining = silver - given
-        remaining_employees = n - x
-        if remaining_employees*(give + g) >= remaining:
-            return True
-        else:
-            return False
+    save = silver
+    remaining = silver - give * n
     low = 0
-    high = n
+    high = 10**10
     while low < high:
         mid = (low + high) // 2
-        if check(mid):
+        if remaining - mid * g > 0:
             low = mid + 1
         else:
             high = mid
-    if not check(low):
-        low -= 1
-    print(silver - ((n - (low))*g))
+    save -= low * g
+    save = max(0, save)
+    print(save)
         
 
