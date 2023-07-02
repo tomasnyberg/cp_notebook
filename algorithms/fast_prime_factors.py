@@ -30,7 +30,7 @@ def prime_factors(x):
 
 def prime_factors_slow(x):
     res = []
-    for i in range(2, math.ceil(math.sqrt(x))):
+    for i in range(2, math.ceil(math.sqrt(x) + 1)):
         while x % i == 0:
             res.append(i)
             x //= i
