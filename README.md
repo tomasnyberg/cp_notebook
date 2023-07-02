@@ -2,4 +2,4 @@
 All code is written by me, you are free to use it however you'd like.
 ___
 
-Currently I am using only python, I might switch over to or start incorporating c++ in the near future, just using python for now since it works in most cases.
+I do most of my "competitive" programming in python, though occasionally I will use c++ if the constraints effectively require it. As such, most of my templates and prewritten algorithms are only available in Python.
