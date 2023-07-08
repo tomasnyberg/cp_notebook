@@ -7,16 +7,19 @@ def construct(k):
     leaves = k
     total += leaves * k
     leaves *= k
+    if total > 10**18:
+        return
     seen.add(total)
     for _ in range(10000):
         total += leaves * k
-        seen.add(total)
         leaves *= k
-        if total > 10**6:
+        if total > 10**18:
             break
+        seen.add(total)
 
-for k in range(2, 10**6):
+for k in range(2, 10**7):
     construct(k)
+print(len(seen))
 
 for line in lines[1:]:
     n = int(line)
