@@ -19,10 +19,10 @@ while ii < len(lines):
     solve_times = []
     ii+=1
     for _ in range(n):
-        solve_times.append(list(map(int, lines[ii].split())))
+        nums = (list(map(int, lines[ii].split())))
+        solve_times.append(optimal(nums, h))
         ii+=1
-    solve_times = list(enumerate(map(lambda x: optimal(x, h), solve_times)))
-    solve_times.sort(key=lambda x: (x[1][0], -x[1][1]), reverse=True)
+    solve_times = list(sorted(enumerate(solve_times), key=lambda x: (x[1][0], -x[1][1]), reverse=True))
     for i in range(len(solve_times)):
         if solve_times[i][0] == 0:
             print(i+1)
