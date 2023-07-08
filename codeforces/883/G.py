@@ -19,9 +19,9 @@ while ii < len(lines):
     adj_lists = {i:{} for i in range(1 << n)}
     for state in range(1 << n):
         for d, remove, add in medicines:
-            target = (state ^ remove) | add
+            target = (state & ~remove) | add
             adj_lists[state][target] = min(adj_lists[state].get(target, float('inf')), d)
-    hq = [(0, state)]
+    hq = [(0, symptoms)]
     found = False
     visited = set()
     while hq:
