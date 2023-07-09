@@ -14,29 +14,34 @@ def calculate(x, iterations):
 # TODO we might want to first look at the small numbers since they grow super quickly
 
 # print(calculate(2, 4))
-# seen = set()
-# def construct(k):
-#     total = k+1
-#     leaves = k
-#     total += leaves * k
-#     leaves *= k
-#     if total > 10**18:
-#         return
-#     seen.add(total)
-#     for _ in range(10000):
-#         total += leaves * k
-#         leaves *= k
-#         if total > 10**18:
-#             break
-#         seen.add(total)
+seen = set()
+def construct(k):
+    total = k+1
+    leaves = k
+    total += leaves * k
+    leaves *= k
+    if total > 10**18:
+        return
+    seen.add(total)
+    for _ in range(10000):
+        total += leaves * k
+        leaves *= k
+        if total > 10**18:
+            break
+        seen.add(total)
 
-# for k in range(2, 10**4):
-#     construct(k)
+# print(calculate(10**5, 5) > 10**18)
+
+for k in range(2, 10**5):
+    construct(k)
 # print(len(seen))
 
 for line in lines[1:]:
     n = int(line)
-    for iterations in range(3, 30):
+    if n in seen:
+        print("YES")
+        continue
+    for iterations in range(3, 6):
         low = 2
         high = 10**18
         while low < high:
