@@ -5,7 +5,7 @@ from functools import lru_cache
 from collections import Counter
 
 import math
-N = 10**5 + 100
+N = 2*10**5 + 100
 # stores smallest prime factor for every number
 spf = [0 for i in range(N)]
 def sieve():
@@ -51,9 +51,11 @@ def generate_divisors(prime_factors):
 
 for line in lines[2::2]:
     nums = list(map(int, line.split()))
+    n = len(nums)
+    nums = [num for num in nums if num <= len(nums) + 1]
     counts = dict(Counter(nums))
     result = 0
-    for i in range(1, len(nums) + 1):
+    for i in range(1, n + 1):
         pfs = prime_factors(i)
         divisors = generate_divisors(pfs)
         curr = 0
