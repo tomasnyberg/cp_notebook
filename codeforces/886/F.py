@@ -35,6 +35,8 @@ def prime_factors(x):
 
 from itertools import product
 
+# Quickly generates divisors, time complexity approximately O(d) where d is the number of divisors.
+# For n < 200 000 the biggest d is approx 160, so O(nd) usually fits within constraints.
 def generate_divisors(prime_factors):
     # For each prime factor, generate a list of its powers up to its exponent.
     factor_powers = [ [prime**exp for exp in range(factor_exp + 1)] for prime, factor_exp in prime_factors.items()]
@@ -48,19 +50,3 @@ def generate_divisors(prime_factors):
         divisors.add(divisor)
     
     return sorted(divisors)
-
-for line in lines[2::2]:
-    nums = list(map(int, line.split()))
-    n = len(nums)
-    nums = [num for num in nums if num <= len(nums) + 1]
-    counts = dict(Counter(nums))
-    result = 0
-    for i in range(1, n + 1):
-        pfs = prime_factors(i)
-        divisors = generate_divisors(pfs)
-        curr = 0
-        for divisor in divisors:
-            curr += counts.get(divisor, 0)
-        result = max(result, curr)
-    print(result)
-        

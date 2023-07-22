@@ -37,3 +37,17 @@ def prime_factors_slow(x):
     if x != 1:
         res.append(x)
     return res
+
+from itertools import product
+
+def generate_divisors(prime_factors):
+    factor_powers = [ [prime**exp for exp in range(factor_exp + 1)] for prime, factor_exp in prime_factors.items()]
+    divisors = {1}
+    for combination in product(*factor_powers):
+        divisor = 1
+        for val in combination:
+            divisor *= val
+        divisors.add(divisor)
+    
+    return sorted(divisors)
+
