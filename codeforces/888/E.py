@@ -1,6 +1,8 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
 import heapq
+from collections import defaultdict
+from collections import deque
 # TODO Remember to add int wrapping if using dict
 # lines = """3
 # 6 3
@@ -48,29 +50,34 @@ for _ in range(t):
     for k, v in mixings.items():
         for i in range(len(v)):
             v[i] -=1
+    graph = defaultdict(list)
+    rev_graph = defaultdict(list)
+    for key, values in mixings.items():
+        for v in values:
+            graph[v].append(key)
+            rev_graph[key].append(v)
+    indeg = [0] * n
+    for i in range(n):
+        for neighbor in graph[i]:
+            indeg[neighbor] += 1
+    queue = deque()
+    for i in range(n):
+        if indeg[i] == 0:
+            queue.append(i)
+    top_order = []
+    while queue:
+        node = queue.popleft()
+        top_order.append(node)
+        for neighbor in graph[node]:
+            indeg[neighbor] -= 1
+            if indeg[neighbor] == 0:
+                queue.append(neighbor)
     min_costs = costs[:]
     for potion in supplies:
         min_costs[potion-1] = 0
-    queue = []
-    for i in range(len(min_costs)):
-        if min_costs[i] == 0:
-            continue
-        mix = mixings.get(i, [])
-        if mix:
-            min_costs[i] = min(min_costs[i], sum(min_costs[m] for m in mix))
-        queue.append((min_costs[i], i))
-    heapq.heapify(queue)
-    visited = set(i for i in range(n) if min_costs[i] == 0)
-    # print("costs", min_costs)
-    # print("mixings", mixings)
-    while queue:
-        cost, potion = heapq.heappop(queue)
-        if potion in visited:
-            continue
-        visited.add(potion)
+    for potion in top_order:
         mix = mixings.get(potion, [])
         if mix:
             mix_cost = sum(min_costs[m] for m in mix)
-            if mix_cost < min_costs[potion]:
-                min_costs[potion] = mix_cost
+            min_costs[potion] = min(min_costs[potion], mix_cost)
     print(*min_costs)
