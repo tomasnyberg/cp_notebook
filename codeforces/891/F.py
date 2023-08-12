@@ -36,8 +36,9 @@ while i < len(lines):
     queries = []
     d = {}
     for x in a:
+        x = Wrapper(x)
         if x not in d:
-            d[x] = Wrapper(0)
+            d[x] = 0
         d[x] += 1
     for _ in range(q):
         l, r = map(int, lines[i].split())
@@ -46,30 +47,22 @@ while i < len(lines):
     res = []
     for x, y in queries:
         count = 0
-        # Calculate discriminant for quadratic equation
         discriminant = x**2 - 4*y
-        # If discriminant is negative, no real roots
         if discriminant < 0:
             print(0, end=' ')
             continue
-        
-        # Calculate the two potential values of a
         a1 = (x + math.sqrt(discriminant)) / 2
         a2 = (x - math.sqrt(discriminant)) / 2
-        
-        # Check if both a1 and x-a1 exist in the array and aren't the same number (unless their frequency > 1)
-        if a1 in d and (x - a1) in d:
-            if a1 == (x - a1) and d[a1] > 1:
-                count += (d[a1] * (d[a1] - 1)) // 2
-            elif a1 != (x - a1):
-                count += d[a1] * d[x - a1]
-
-        # Check if both a2 and x-a2 exist in the array and aren't the same number (unless their duency > 1)
-        if a2 in d and (x - a2) in d:
-            if a2 == (x - a2) and d[a2] > 1:
-                count += (d[a2] * (d[a2] - 1)) // 2
-            elif a2 != (x - a2):
-                count += d[a2] * d[x - a2]
+        for c in [a1, a2]:
+            if c != int(c):
+                continue
+            c = Wrapper(c)
+            complement = Wrapper(x - c)
+            if c in d and complement in d:
+                if c == complement and d[c] > 1:
+                    count += (d[c] * (d[c] - 1)) // 2
+                elif c != complement:
+                    count += d[c] * d[complement]
         print(count // 2, end= ' ')
     print()
 
