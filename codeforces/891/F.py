@@ -51,19 +51,24 @@ while i < len(lines):
         if discriminant < 0:
             print(0, end=' ')
             continue
-        a1 = (x + math.sqrt(discriminant)) / 2
-        a2 = (x - math.sqrt(discriminant)) / 2
-        for c in [a1, a2]:
-            if c != int(c):
-                continue
-            c = Wrapper(c)
-            complement = Wrapper(x - c)
-            if c in d and complement in d:
-                if c == complement and d[c] > 1:
-                    count += (d[c] * (d[c] - 1)) // 2
-                elif c != complement:
-                    count += d[c] * d[complement]
-        print(count // 2, end= ' ')
+
+        sqrt_discriminant = int(math.sqrt(discriminant))
+        
+        # Check if it's a perfect square
+        if sqrt_discriminant ** 2 == discriminant:
+            # Calculate the two potential values of c without floating point division
+            a1 = (x + sqrt_discriminant) // 2
+            a2 = (x - sqrt_discriminant) // 2
+            
+            for c in [a1, a2]:
+                c = Wrapper(c)
+                complement = Wrapper(x - c)
+                if c in d and complement in d:
+                    if c == complement and d[c] > 1:
+                        count += (d[c] * (d[c] - 1)) // 2
+                    elif c != complement:
+                        count += d[c] * d[complement]
+        print(count // 2, end=' ')
     print()
 
 
