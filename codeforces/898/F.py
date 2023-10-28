@@ -39,7 +39,7 @@ for ii in range(1, len(lines), 3):
                     return True
         return False
     low = 0
-    high = n
+    high = n + 1
     while low < high:
         mid = (low + high) // 2
         if check(mid):
