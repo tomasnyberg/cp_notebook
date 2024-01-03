@@ -1,5 +1,6 @@
 import sys
 lines = list(map(str.strip, sys.stdin.readlines()))
+from collections import deque
 # TODO Remember to add int wrapping if using dict
 
 for ii in range(1, len(lines), 2):
@@ -20,33 +21,36 @@ for ii in range(1, len(lines), 2):
             allways[nums[i]].add(x)
     visited = set()
     curr = []
-    def dfs(node, append=True):
-        if node in visited:
-            return
-        visited.add(node)
-        if append:
-            curr.append(node)
-        for neighbor in (allways[node] if append else inbetween[node]):
-            if neighbor not in visited:
-                dfs(neighbor, append)
+    def bfs(start, append=True):
+        visited = set()
+        queue = deque([start])
+        while queue:
+            node = queue.popleft()
+            if node in visited:
+                continue
+            visited.add(node)
+            if append:
+                curr.append(node)
+            for neighbor in (allways[node] if append else inbetween[node]):
+                if neighbor not in visited:
+                    queue.append(neighbor)
+        return visited
     counts = 0
     groups = []
     for i in range(1, n+1):
         if i not in visited:
             counts += 1
-            dfs(i)
+            visited |= bfs(i)
             groups.append(curr)
             curr = []
     result = 1
     MOD = 998244353
-    visited = set()
     for group in groups:
         count = 0
         for node in group:
-            dfs(node, False)
+            visited = bfs(node, False)
             if len(visited) == len(group):
                 count += 1
-            visited = set()
         result *= count*2
         result %= MOD
     print(len(groups), result)
