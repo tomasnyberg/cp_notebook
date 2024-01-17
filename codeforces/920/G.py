@@ -32,17 +32,17 @@ while ii < len(lines):
     matrix = []
     for _ in range(n):
         curr = (list(map(lambda x: 1 if x == '#' else 0, lines[ii])))
-        matrix.append([0]*m + curr + [0]*m)
+        matrix.append([0]*(2*m) + curr + [0]*(2*m))
         ii+=1
-    for _ in range(n):
-        matrix.append([0]*(3*m))
+    for _ in range(2*n):
+        matrix.append([0]*(5*m))
     matrix.reverse()
-    for _ in range(n):
-        matrix.append([0]*(3*m))
+    for _ in range(2*n):
+        matrix.append([0]*(5*m))
     matrix.reverse()
     csmatrix = cumsum2d(matrix)
     combs = [(1,1), (1,-1), (-1,1), (-1,-1)]
-    k = min(k, max(n,m))
+    k = min(k, max(n,m)*2)
     def score(i, j, vert_dir, diagdir, k):
         if i < 0 or i >= len(matrix) or j < 0 or j >= len(matrix[0]):
             return 0
@@ -69,9 +69,9 @@ while ii < len(lines):
     seenmatrix = []
     # for xs in matrix:
     #     print(xs)
-    for i in range(n, 2*n):
+    for i in range(2*n, 3*n):
         curr = []
-        for j in range(m, 2*m):
+        for j in range(2*m, 3*m):
             curr.append(matrix[i][j])
             for vert_dir, diagdir in combs:
                 sc = score(i, j, vert_dir, diagdir, k)
