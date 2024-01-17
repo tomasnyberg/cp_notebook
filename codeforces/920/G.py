@@ -43,11 +43,15 @@ while ii < len(lines):
     csmatrix = cumsum2d(matrix)
     combs = [(1,1), (1,-1), (-1,1), (-1,-1)]
     k = min(k, max(n,m)*2)
+    count = [0]
     def score(i, j, vert_dir, diagdir, k):
         if i < 0 or i >= len(matrix) or j < 0 or j >= len(matrix[0]):
             return 0
+        if i < 2*n or i >= 3*n or j < 2*m or j >= 3*m:
+            return 0
         if k == 0:
             return matrix[i][j]
+        count[0] += 1
         square = (k+2)//2
         
         # print("k and square", k, square)
@@ -75,6 +79,8 @@ while ii < len(lines):
             curr.append(matrix[i][j])
             for vert_dir, diagdir in combs:
                 sc = score(i, j, vert_dir, diagdir, k)
+                # print("count", count[0])
+                count[0] = 0
                 # print(i, j, sc)
                 result = max(result, sc)
         seenmatrix.append(curr)
