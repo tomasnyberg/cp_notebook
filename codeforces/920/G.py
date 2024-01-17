@@ -51,17 +51,16 @@ while ii < len(lines):
             return 0
         if k == 0:
             return matrix[i][j]
+
         count[0] += 1
         square = (k+2)//2
         
-        # print("k and square", k, square)
         points = [[i, j], [i+(square-1)*vert_dir, j+(square-1)*diagdir], [i+(square-1)*vert_dir, j], [i, j+(square-1)*diagdir]]
         for xs in points:
             xs[0] = max(xs[0], 0)
             xs[0] = min(xs[0], len(matrix)-1)
             xs[1] = max(xs[1], 0)
             xs[1] = min(xs[1], len(matrix[0])-1)
-        # print(points)
         points.sort()
         a,b = points[0]
         A,B = points[3]
@@ -71,20 +70,13 @@ while ii < len(lines):
         return scorethis + vert_score + diag_score
     result = 0
     seenmatrix = []
-    # for xs in matrix:
-    #     print(xs)
     for i in range(2*n, 3*n):
         curr = []
         for j in range(2*m, 3*m):
-            curr.append(matrix[i][j])
             for vert_dir, diagdir in combs:
                 sc = score(i, j, vert_dir, diagdir, k)
                 # print("count", count[0])
                 count[0] = 0
                 # print(i, j, sc)
                 result = max(result, sc)
-        seenmatrix.append(curr)
-    # print("Seen matrix")
-    # for xs in seenmatrix:
-    #     print(xs)
     print(result)
