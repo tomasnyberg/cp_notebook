@@ -19,6 +19,12 @@ def query(cs2d, a, b, A, B): # a, b are the coordinates of the top left corner, 
     result -= cs2d[A][b-1] if b-1 >= 0 else 0
     return result
 
+# lines ="""4
+# 2 1 3
+# #
+# #
+# """.splitlines()
+
 ii = 1
 while ii < len(lines):
     n, m, k = map(int, lines[ii].split())
@@ -36,34 +42,43 @@ while ii < len(lines):
     matrix.reverse()
     csmatrix = cumsum2d(matrix)
     combs = [(1,1), (1,-1), (-1,1), (-1,-1)]
-    for xs in matrix:
-        print(xs)
+    k = min(k, max(n,m))
     def score(i, j, vert_dir, diagdir, k):
-        if k == 0 or i < 0 or i >= len(matrix) or j < 0 or j > len(matrix[0]):
+        if i < 0 or i >= len(matrix) or j < 0 or j >= len(matrix[0]):
             return 0
-        if k == 1:
+        if k == 0:
             return matrix[i][j]
-        capi = i + k*vert_dir
-        capj = j + k*diagdir
-        square = (k+1)//2
-        points = [(i, j), (i+square*vert_dir, j+square*diagdir), (i+square*vert_dir, j), (i, j+square*diagdir)]
+        square = (k+2)//2
+        
+        # print("k and square", k, square)
+        points = [[i, j], [i+(square-1)*vert_dir, j+(square-1)*diagdir], [i+(square-1)*vert_dir, j], [i, j+(square-1)*diagdir]]
+        for xs in points:
+            xs[0] = max(xs[0], 0)
+            xs[0] = min(xs[0], len(matrix)-1)
+            xs[1] = max(xs[1], 0)
+            xs[1] = min(xs[1], len(matrix[0])-1)
+        # print(points)
         points.sort()
         a,b = points[0]
         A,B = points[3]
         scorethis = query(csmatrix, a,b,A,B)
-        vert_score = score(i+square*vert_dir, j, vert_dir, diagdir, k - square)
-        diag_score = score(i, j+square*diagdir, vert_dir, diagdir, k - square)
+        vert_score = score(i+(square)*vert_dir, j, vert_dir, diagdir, k - square)
+        diag_score = score(i, j+(square)*diagdir, vert_dir, diagdir, k - square)
         return scorethis + vert_score + diag_score
     result = 0
     seenmatrix = []
+    # for xs in matrix:
+    #     print(xs)
     for i in range(n, 2*n):
         curr = []
         for j in range(m, 2*m):
             curr.append(matrix[i][j])
             for vert_dir, diagdir in combs:
-                result = max(result, score(i, j, vert_dir, diagdir, k))
+                sc = score(i, j, vert_dir, diagdir, k)
+                # print(i, j, sc)
+                result = max(result, sc)
         seenmatrix.append(curr)
-    print("Seen matrix")
-    for xs in seenmatrix:
-        print(xs)
+    # print("Seen matrix")
+    # for xs in seenmatrix:
+    #     print(xs)
     print(result)
