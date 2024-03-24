@@ -9,52 +9,45 @@ for ii in range(1, len(lines), 2):
     idx = a.index(x)
     l = 1
     r = n+1
-    valid = {} # number -> idx
+    valid = {y:i for i, y in enumerate(a)} # number -> idx
+    del valid[10**9]
+    # print("Looking for index", idx)
     moves = []
-    print("Looking for index", idx)
     while True:
         if r - l == 1:
             break
         m = (l + r) // 2
-        if m <= idx:
-            for i in range(m):
-                valid[a[i]] = i
-        else:
-            print("here")
-            for i in range(m+1, len(a)):
-                valid[a[i]] = i
-        if 10**9 in valid:
-            del valid[10**9]
+        # print("m is", m)
+        greater = None
         if m < idx and a[m] > x:
-            for cand, j in valid.items():
-                if cand <= x:
-                    moves.append((j, m))
-                    del valid[cand]
-                    if j == idx:
-                        idx = m
-                    print("Swapping", j, m)
-                    a[m], a[j] = a[j], a[m]
-                    break
+            greater = False
         if m > idx and a[m] < x:
+            greater = True
+        if greater is not None:
             for cand, j in valid.items():
-                if cand >= m:
+                if (greater and cand >= x) or (not greater and cand <= x):
                     moves.append((j, m))
-                    del valid[cand]
-                    if j == idx:
-                        idx = m
-                    print("Swapping", j, m)
+                    # print("Swapping", j, m)
                     a[m], a[j] = a[j], a[m]
+                    if a[m] in valid:
+                        del valid[a[m]]
+                    if a[j] in valid:
+                        del valid[a[j]]
                     break
-        print(a[1:])
-        print(m)
-        print(valid)
-        print()
+        # print(a[1:])
+        # print(valid)
+        # print()
         if a[m] <= x:
             l = m
         else:
             r = m
-    # assert a[l] == x
-    print(a[l], x)
+        if a[m] in valid:
+            del valid[a[m]]
+    # print(a[l], x)
+    assert a[l] == x
+    print(len(moves))
+    for m in moves:
+        print(m[0], m[1])
     # print(moves)
     # print("\n\n")
     
