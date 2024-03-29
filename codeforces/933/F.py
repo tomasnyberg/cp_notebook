@@ -22,22 +22,13 @@ for ii in range(1, len(lines), 4):
     in_c = set(c)
     def check(mid):
         for x in b:
-            first_bound = lb + mid
-            second_bound = rb - mid
-            left = min(first_bound, second_bound)
-            right = max(first_bound, second_bound)
-            left_middle = left + (right - left) // 2
-            right_middle = left_middle + 1 if right != left else left_middle
-            for middle in [left_middle, right_middle]:
-                target = middle - x
-                idx = bisect_left(c, target)
-                if idx < len(c) and x + c[idx] <= first_bound and x + c[idx] >= second_bound:
+            lt = lb + mid
+            gt = rb - mid
+            target = gt - x
+            idx = bisect_left(c, target)
+            for d in range(-5, 5):
+                if 0 <= idx + d < len(c) and x + c[idx+d] <= lt and x + c[idx+d] >= gt:
                     return True
-            # idx = bisect_right(c, target)
-            # if idx > 0 and c[idx-1] == target:
-            #     return True
-            # if (idx < len(c) and c[idx] + x <= right):
-            #     return True
         return False
     while low < high:
         mid = (low + high) // 2
@@ -45,10 +36,8 @@ for ii in range(1, len(lines), 4):
             high = mid
         else:
             low = mid + 1
-    # print(a)
     a.append(a[maxd[1]-1] + low)
     a.sort()
-    # print(a)
     maxd = 0
     for i in range(1, len(a)):
         maxd = max(maxd, a[i] - a[i-1])
