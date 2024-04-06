@@ -29,7 +29,15 @@ while ii < len(lines):
         def check(mid):
             sections = CS[mid] - (CS[l-1] if l > 0 else 0)
             return sections >= u
-        low = l
+        def f(x):
+            return x*(x+1) // 2
+        def score(pos):
+            sections = CS[pos] - (CS[l-1] if l > 0 else 0)
+            diff = u - sections
+            if diff < 0:
+                return f(u) - f(-diff - 1)
+            return f(u) - f(diff)
+        low = l + 1
         high = len(nums)
         while low < high:
             mid = (low + high) // 2
@@ -37,5 +45,15 @@ while ii < len(lines):
                 high = mid
             else:
                 low = mid + 1
-        print(low, end=" ")
+        best = [-10**9, -1]
+        cands = []
+        for d in range(10, -10, -1):
+            if l <= low + d < len(nums):
+                cand = score(low + d)
+                cands.append((low + d, cand))
+                if cand >= best[0]:
+                    best = [cand, low + d + 1]
+        print(best[-1], end=" ")
+        # print("cands", cands)
+        # print()
     print()
