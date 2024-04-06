@@ -98,11 +98,24 @@ alias gp="git push"
 alias gd="git diff"
 alias gc="git commit"
 alias ga="git add"
-
-
+alias gb="git branch"
+alias py="python3"
+alias jc="javac"
+alias jr="java"
+alias cdwin="cd /mnt/c/Users/Tomas/Downloads"
+alias dcup="docker-compose up -d"
+alias dcd="docker-compose down"
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias fixclock='sudo hwclock -s'
+alias sambi="sam build --use-container --cached && sam local invoke"
+alias ..="cd .."
+cdf() {
+    local dir
+    dir=$(find * -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+}
+alias seewin='explorer.exe'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -124,6 +137,11 @@ if ! shopt -oq posix; then
   fi
 fi
 # Top one is without pc name but with git branch name
-# export PS1="\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;9m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
-export PS1="\[\033[38;5;32m\]\u\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;123m\][\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]\h\[$(tput sgr0)\]\[\033[38;5;123m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
-export LESS=eFRX # Makes git diff output always stay in terminal
+export PS1="\\[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;9m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+# export PS1="\[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+export LESS=eFRX # Makes git diff output always stay in terminalcomm�: command not fouind
+export PATH=$PATH:/usr/local/go/bin
+# copilot cli thing
+eval "$(github-copilot-cli alias -- "$0")"
+export EDITOR=vim
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
