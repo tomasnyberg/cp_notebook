@@ -13,14 +13,15 @@ for ii in range(1, len(lines), 3):
     right = 0
     result = 0
     while right < len(a):
+        # print(targets, left, right)
         if a[right] in targets:
             targets[a[right]] -= 1
-            if targets[a[right]] == 0:
+            if targets[a[right]] >= 0:
                 negative += 1
         if right - left + 1 == m:
             result += 1 if negative >= k else 0
             if a[left] in targets:
-                if targets[a[left]] == 0:
+                if targets[a[left]] >= 0:
                     negative -= 1
                 targets[a[left]] += 1
             left += 1
