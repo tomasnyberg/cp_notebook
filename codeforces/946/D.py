@@ -22,7 +22,7 @@ for line in lines[2::2]:
     # rover = do_move(rover, moves[1])
     # moves = moves[2:]
     moved = [False, False]
-    result = ""
+    result = []
     for move in moves:
         # print(heli, rover)
         smallest_dist = [10**10, -1]
@@ -34,12 +34,12 @@ for line in lines[2::2]:
         if smallest_dist[1] == 0:
             heli = do_move(heli, move)
             moved[0] = True
-            result += 'H'
+            result.append('H')
         else:
             moved[1] = True
             rover = do_move(rover, move)
-            result += 'R'
+            result.append('R')
     if heli == rover and all(moved):
-        print(result)
+        print(''.join(result))
     else:
         print("NO")
