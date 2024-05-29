@@ -56,21 +56,7 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
 unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -111,9 +97,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias fixclock='sudo hwclock -s'
 alias sambi="sam build --use-container --cached && sam local invoke"
 alias ..="cd .."
+alias v="nvim"
 cdf() {
     local dir
-    dir=$(find * -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+    dir=$(find ~/stuff -type d -not -path '*/node_modules/*' -print 2> /dev/null | fzf +m) && cd "$dir"
 }
 alias seewin='explorer.exe'
 
@@ -136,12 +123,18 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-# Top one is without pc name but with git branch name
 export PS1="\\[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;9m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
-# export PS1="\[$(tput sgr0)\]\[\033[38;5;219m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[38;5;247m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
-export LESS=eFRX # Makes git diff output always stay in terminalcomm�: command not fouind
+export LESS=eFRX # Makes git diff output always stay in terminal
 export PATH=$PATH:/usr/local/go/bin
 # copilot cli thing
 eval "$(github-copilot-cli alias -- "$0")"
-export EDITOR=vim
+export EDITOR=nvim
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export DISPLAY=:0
+export PROMPT_DIRTRIM=2
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
