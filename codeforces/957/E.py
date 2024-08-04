@@ -41,6 +41,9 @@ for line in lines[1:]:
             elif new_len < digit_len:
                 high = mid
             elif new_len == digit_len:
+                if new_len == 0:
+                    high = mid
+                    continue
                 # print(a*str(n)[:-b], a, b, n)
                 str_actual = str(actual)
                 # remaining_chars = n_str_len*a - b
