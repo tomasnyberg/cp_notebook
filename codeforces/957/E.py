@@ -4,8 +4,25 @@ if sys.argv[-1] == "--debug":
 lines = list(map(str.strip, sys.stdin.readlines()))
 # TODO Remember to add int wrapping if using d::jjk
 
+
+def gen_str(n, a, b):
+    n_str = str(n)
+    n_str_len = len(str(n))
+    remaining_chars = n_str_len*a - b
+    circular = n_str_len - 1 - (b % n_str_len)
+    str_candidate = []
+    for _ in range(remaining_chars):
+        str_candidate.append(n_str[circular])
+        circular -= 1
+        circular %= n_str_len
+    str_candidate = "".join(str_candidate[::-1])
+    return str_candidate
+
+
 for line in lines[1:]:
     n = int(line)
+    n_str = str(n)
+    n_str_len = len(str(n))
     result = []
     for a in range(1, 10001):
         low = 1
@@ -18,15 +35,24 @@ for line in lines[1:]:
                 high = mid
                 continue
             digit_len = len(str(actual)) if actual else 0
-            new_len = a - b
+            new_len = a*n_str_len - b
             if new_len > digit_len:
                 low = mid + 1
             elif new_len < digit_len:
                 high = mid
             elif new_len == digit_len:
-                intvalue = 0 if a-b == 0 else int((a-b)*str(n))
-                # print("intval", intvalue, b)
-                if intvalue <= actual:
+                # print(a*str(n)[:-b], a, b, n)
+                str_actual = str(actual)
+                # remaining_chars = n_str_len*a - b
+                # circular = n_str_len - 1 - (b % n_str_len)
+                # str_candidate = []
+                # for _ in range(remaining_chars):
+                #     str_candidate.append(n_str[circular])
+                #     circular -= 1
+                #     circular %= n_str_len
+                # # print("intval", intvalue, b)
+                str_candidate = gen_str(n, a, b)
+                if str_candidate <= str_actual:
                     low = mid + 1
                 else:
                     high = mid
@@ -36,8 +62,8 @@ for line in lines[1:]:
         low -= 1
         actual = n*a - low
         digit_len = len(str(actual))
-        if digit_len == a - low and low != 0:
-            if int((a - low) * str(n)) == n*a - low:
+        if digit_len == a*len(n_str) - low and low != 0:
+            if gen_str(n, a, low) == str(actual):
                 result.append((a, low))
     print(len(result))
     for a, b in result:
