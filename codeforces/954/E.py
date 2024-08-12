@@ -1,3 +1,4 @@
+from random import getrandbits
 import sys
 from collections import defaultdict
 from functools import lru_cache
@@ -5,6 +6,17 @@ if sys.argv[-1] == '--debug':
     sys.stdin = open('in')
 lines = list(map(str.strip, sys.stdin.readlines()))
 # TODO Remember to add int wrapping if using dict
+
+
+RANDOM = getrandbits(32)
+
+
+class Wrapper(int):
+    def __init__(self, x):
+        int.__init__(x)
+
+    def __hash__(self):
+        return super(Wrapper, self).__hash__() ^ RANDOM
 
 
 def get_sum(xs):
@@ -17,9 +29,10 @@ def get_sum(xs):
 for ii in range(1, len(lines), 2):
     n, kk = map(int, lines[ii].split())
     nums = list(map(int, lines[ii+1].split()))
+    nums = [Wrapper(x) for x in nums]
     mods = defaultdict(list)
     for x in nums:
-        mods[x % kk].append(x)
+        mods[Wrapper(x % kk)].append(x)
     can_be_removed = len(nums) % 2
     for k, v in list(mods.items()):
         v.sort()
@@ -35,27 +48,16 @@ for ii in range(1, len(lines), 2):
                 continue
 
             n = len(v)
-            # @lru_cache(None)
-            # def dp(i, one_removed):
-            #     if i == len(v):
-            #         return 0
-            #     if i == len(v) - 1 and one_removed:
-            #         return 0
-            #     if i == len(v) - 1:
-            #         return 10**9
-            #     if not one_removed:
-            #         return dp(i+2, 0) + v[i+1] - v[i]
-            #     return min(dp(i+1, 0), dp(i+2, 1) + v[i+1] - v[i])
-            dp = [[0]*2 for _ in range(n+1)]
-            dp[n-1][1] = 10**9
+            dp = [[0]*(n+1) for _ in range(2)]
+            dp[1][n-1] = 10**9
+
             for i in range(n-2, -1, -1):
-                dp[i][0] = dp[i+2][0] + v[i+1] - v[i]
-                dp[i][1] = min(dp[i+1][0], dp[i+2][1] + v[i+1] - v[i])
-            # for xs in dp:
-            #     print(xs)
-            result += min(dp[0][1], dp[0][0]) // kk
-            # result += dp(0, 1)// kk
+                dp[0][i] = dp[0][i+2] + v[i+1] - v[i]
+                dp[1][i] = min(dp[0][i+1], dp[1][i+2] + v[i+1] - v[i])
+
+            result += min(dp[1][0], dp[0][0]) // kk
             continue
+
         for i in range(0, len(v), 2):
             result += (v[i+1] - v[i]) // kk
     # print(mods)
