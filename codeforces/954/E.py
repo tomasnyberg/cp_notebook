@@ -29,7 +29,6 @@ def get_sum(xs):
 for ii in range(1, len(lines), 2):
     n, kk = map(int, lines[ii].split())
     nums = list(map(int, lines[ii+1].split()))
-    nums = [Wrapper(x) for x in nums]
     mods = defaultdict(list)
     for x in nums:
         mods[Wrapper(x % kk)].append(x)
@@ -48,16 +47,13 @@ for ii in range(1, len(lines), 2):
                 continue
 
             n = len(v)
-            dp = [[0]*(n+1) for _ in range(2)]
-            dp[1][n-1] = 10**9
-
+            dp = [[0]*2 for _ in range(n+1)]
+            dp[n-1][1] = 10**9
             for i in range(n-2, -1, -1):
-                dp[0][i] = dp[0][i+2] + v[i+1] - v[i]
-                dp[1][i] = min(dp[0][i+1], dp[1][i+2] + v[i+1] - v[i])
-
-            result += min(dp[1][0], dp[0][0]) // kk
+                dp[i][0] = dp[i+2][0] + v[i+1] - v[i]
+                dp[i][1] = min(dp[i+1][0], dp[i+2][1] + v[i+1] - v[i])
+            result += min(dp[0][1], dp[0][0]) // kk
             continue
-
         for i in range(0, len(v), 2):
             result += (v[i+1] - v[i]) // kk
     # print(mods)
