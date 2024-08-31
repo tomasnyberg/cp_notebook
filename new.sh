@@ -34,7 +34,7 @@ else
     #Create file with baseline
     echo "import sys" >> $first.py
     echo "if sys.argv[-1] == '--debug':" >> $first.py
-    echo "   sys.stdin = open('in')" >> $first.py
+    echo "    sys.stdin = open('in')" >> $first.py
     echo "lines = list(map(str.strip, sys.stdin.readlines()))" >> $first.py
     echo "# TODO Remember to add int wrapping if using dict" >> $first.py
     exit 0
